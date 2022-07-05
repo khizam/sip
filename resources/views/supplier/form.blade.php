@@ -31,6 +31,13 @@
                     <span class="help-block with-errors"></span>
                 </div>
               </div>
+              <div class="form-group row">
+                <label for="telepon" class="col-md-2 col-md-offset-1 control-label">Telepon</label>
+                <div class="col-md-8">
+                    <input type="number" name="contact_person" id="contact_person" class="form-control">
+                    <span class="help-block with-errors"></span>
+                </div>
+              </div>
             </div>
             <div class="modal-footer">
               <button class="btn btn-sm btn-flat btn-primary">Simpan</button>
