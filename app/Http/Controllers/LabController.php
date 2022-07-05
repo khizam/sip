@@ -6,6 +6,7 @@ use App\Models\Bahan;
 use App\Models\Kategori;
 use App\Models\Supplier;
 use App\Models\Barangmasuk;
+use App\Models\Lab;
 use Illuminate\Http\Request;
 
 
@@ -27,18 +28,19 @@ class LabController extends Controller
 
     public function data()
     {
-        $barangmasuk = Barangmasuk::leftJoin('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
+        $lab = Lab::leftJoin('barangmasuk','barangmasuk.id_barangmasuk','=','lab.id_barangmasuk')
+        ->leftJoin('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
         ->leftJoin('kategori', 'kategori.id_kategori', '=', 'barangmasuk.id_kategori')
         ->leftJoin('supplier', 'supplier.id_supplier', '=', 'barangmasuk.id_supplier')
-        ->select('barangmasuk.*', 'nama_bahan', 'nama_kategori', 'nama_supplier')
+        ->select('*','barangmasuk.*', 'nama_bahan', 'nama_kategori', 'nama_supplier')
         ->orderBy('kode_barangmasuk', 'asc')
         ->get();
 
         return datatables()
-        ->of($barangmasuk)
+        ->of($lab)
         ->addIndexColumn()
-        ->addColumn('kode_barangmasuk', function ($barangmasuk) {
-            return '<span class="label label-success">'. $barangmasuk->kode_barangmasuk .'</span>';
+        ->addColumn('id_lab', function ($lab) {
+            return '<span class="label label-success">'. $lab->id_lab .'</span>';
         })
         ->addColumn('jumlah_bahan', function ($barangmasuk) {
             return format_uang($barangmasuk->jumlah_bahan);
@@ -47,11 +49,11 @@ class LabController extends Controller
             return '
             <div class="btn-group">
                 <button onclick="editForm(`'. route('lab.update', $lab->id_lab) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                <button onclick="deleteData(`'. route('barangmasuk.destroy', $barangmasuk->id_barangmasuk) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button> 
+                <button onclick="deleteData(`'. route('lab.destroy', $lab->id_lab) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button> 
             </div>
             ';
         })
-        ->rawColumns(['aksi', 'kode_barangmasuk'])
+        ->rawColumns(['aksi', 'id_lab'])
         ->make(true);
     }
 

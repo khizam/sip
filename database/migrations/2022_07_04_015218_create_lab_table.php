@@ -21,11 +21,11 @@ class CreateLabTable extends Migration
                   ->on('barangmasuk')
                   ->onUpdate('restrict')
                   ->onDelete('restrict');
-            $table->enum('satuan', ['Kg', 'liter']);
-            $table->string('parameter');
-            $table->string('hasil');
-            $table->text('kesimpulan');
-            $table->string('grid');
+            $table->enum('satuan', ['kg', 'liter'])->nullable();
+            $table->string('parameter')->nullable();
+            $table->string('hasil')->nullable();
+            $table->text('kesimpulan')->nullable();
+            $table->string('grid')->nullable();
             $table->timestamps();
         });
     }
