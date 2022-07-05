@@ -22,13 +22,14 @@
             <table class="table table-striped table-bordered">
               <thead>
                 <th width="5%">No</th>
-                <th>Supplier</th>
+                <th>Perusahaan</th>
                 <th>Alamat</th>
                 <th>Telepon</th>
+                <th>Contact Person</th>
                 <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
               <tbody>
-               
+
               </tbody>
             </table>
           </div>
@@ -55,6 +56,7 @@
             {data: 'nama_supplier'},
             {data: 'alamat'},
             {data: 'telepon'},
+            {data: 'contact_person'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });
@@ -98,6 +100,7 @@
           $('#modal-form [name=nama_supplier]').val(response.nama_supplier);
           $('#modal-form [name=alamat]').val(response.alamat);
           $('#modal-form [name=telepon]').val(response.telepon);
+          $('#modal-form [name=contact_person]').val(response.contact_person);
         })
       .fail((errors) => {
           alert('Tidak dapat menampilkan data');

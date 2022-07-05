@@ -96,6 +96,7 @@ class SupplierController extends Controller
         $supplier->nama_supplier = $request->nama_supplier;
         $supplier->alamat = $request->alamat;
         $supplier->telepon = $request->telepon;
+        $supplier->contact_person = $request->contact_person;
         $supplier->update();
 
         return response()->json('Data berhasil disimpan', 200);
