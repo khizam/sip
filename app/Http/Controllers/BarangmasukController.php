@@ -6,8 +6,10 @@ use App\Models\Bahan;
 use App\Models\Kategori;
 use App\Models\Supplier;
 use App\Models\Barangmasuk;
+use App\Models\Lab;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class BarangmasukController extends Controller
 {
@@ -97,12 +99,24 @@ class BarangmasukController extends Controller
      */
     public function store(Request $request)
     {
-        $barangmasuk = Barangmasuk::latest()->first() ?? new Barangmasuk();
-        $request['kode_barangmasuk'] = 'P'. tambah_nol_didepan((int)$barangmasuk->id_barangmasuk +1, 6);
-
-        $barangmasuk = Barangmasuk::create($request->all());
-    
-        return response()->json('Data berhasil disimpan', 200); 
+        try {
+            DB::beginTransaction();
+            $barangmasuk = Barangmasuk::latest()->first() ?? new Barangmasuk();
+            $request['kode_barangmasuk'] = 'P'. tambah_nol_didepan((int)$barangmasuk->id_barangmasuk +1, 6);
+            $barangmasuk = Barangmasuk::create($request->all());
+            if ($barangmasuk) {
+                Lab::create([
+                    'id_barangmasuk'=> $barangmasuk->id_barangmasuk,
+                    'satuan' => 'kg'
+                ]);
+            }
+            DB::commit();
+            return response()->json('Data berhasil disimpan', 200); 
+        } catch (\Throwable $th) {
+            DB::rollback();
+            Log::error("tambah barang masuk".$th);
+            return response()->json('gagal disimpan'.$th->getMessage(), 500); 
+        }
     }
 
     /**

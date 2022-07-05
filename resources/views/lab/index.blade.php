@@ -16,7 +16,7 @@
       <div class="col-md-12">
         <div class="box">
           <div class="box-header with-border">
-            <button onclick="" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
+            {{-- <button onclick="" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button> --}}
           </div>
           <div class="box-body table-responsive">
             <table class="table table-striped table-bordered">
@@ -25,7 +25,6 @@
                 {{-- <th>
                   <input type="checkbox" name="select_all" id="select_all">
                 </th> --}}
-                <th>Kode_Lap</th>
                 <th>Tanggal</th>
                 <th>nama_bahan</th>
                 <th>Satuan</th>
@@ -55,14 +54,25 @@
           processing: true,
           autoWidth: false,
           ajax: {
-            url: '{{ route('barangmasuk.data') }}',
+            url: '{{ route('lab.data') }}',
+            dataSrc: (result) => {
+              return result.data.map((result) => {
+                  result.satuan = result.satuan ?? 'Data kosong'
+                  result.parameter = result.parameter ?? 'Data kosong'
+                  result.hasil = result.hasil ?? 'Data kosong'
+                  result.kesimpulan = result.kesimpulan ?? 'Data kosong'
+                  result.grid = result.grid ?? 'Data kosong'
+                  return result
+                }
+              )
+            }
           },
           columns: [
+            // console.log(data)
             {data: 'DT_RowIndex', searchable: false, sortable: false},
             // {data: 'select_all'},
-            {data: 'kode_lap'},
-            {data: 'tanggal'},
-            {data: 'nama_barang'},
+            {data: 'updated_at'},
+            {data: 'nama_bahan'},
             {data: 'satuan'},
             {data: 'parameter'},
             {data: 'hasil'},
