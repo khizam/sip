@@ -15,6 +15,7 @@ class AddPersonalContactToSupplierTable extends Migration
     {
         Schema::table('supplier', function (Blueprint $table) {
             $table->string('contact_person')
+            ->nullable()
             ->after('telepon');
         });
     }
@@ -27,7 +28,7 @@ class AddPersonalContactToSupplierTable extends Migration
     public function down()
     {
         Schema::table('supplier', function (Blueprint $table) {
-            //
+            $table->dropColumn('contact_person');
         });
     }
 }

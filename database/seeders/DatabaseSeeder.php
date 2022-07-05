@@ -19,23 +19,24 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-        User::firstOrNew([
+        User::firstOrCreate([
             'name' => 'user 1',
             'email'=>'user@gmail.com',
             'password'=> bcrypt('123')
         ]);
-        Produk::firstOrNew([
+        Produk::firstOrCreate([
             'nama_produk'=>'nike'
         ]);
-        Supplier::firstOrNew([
+        Supplier::firstOrCreate([
             'nama_supplier'=>'PT BENKA NUSANTARA',
             'alamat'=>'jl samudra surabaya',
-            'telepon'=> '081456338765',
+            'telepon'=> '0221098664',
+            'contact_person' => '082234554330'
         ]);
-        Kategori::firstOrNew([
+        Kategori::firstOrCreate([
             'nama_kategori'=>'sepatu',
         ]);
-        Bahan::firstOrNew([
+        Bahan::firstOrCreate([
             'nama_bahan'=>'kain',
         ]);
     }
