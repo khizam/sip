@@ -52,7 +52,7 @@ class BarangmasukController extends Controller
             <div class="">
                 <button onclick="editForm(`'. route('barangmasuk.update', $barangmasuk->id_barangmasuk) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
                 <button onclick="deleteData(`'. route('barangmasuk.destroy', $barangmasuk->id_barangmasuk) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
-                <button onclick="deleteData(`'. route('barangmasuk.destroy', $barangmasuk->id_barangmasuk) .'`)" class="btn btn-xs btn-primary btn-flat">Lab <i class="fa fa-flask"></i></button>
+                <button onclick="alert(`belum ada fungsi :(`)" class="btn btn-xs btn-primary btn-flat">Lab <i class="fa fa-flask"></i></button>
             </div>
             ';
         })

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 function format_uang ($angka) {
       return number_format($angka, 0, ',', '.');
@@ -63,7 +64,7 @@ function tambah_nol_didepan($value, $threshold = null)
       return sprintf("%0". $threshold . "s", $value);
 }
 
-function jsonResponse($data='', $status=200, array $headers = []) {
+function jsonResponse($data='', $status=Response::HTTP_OK, array $headers = []) {
     return response()->json($data, $status, $headers);
 }
 
