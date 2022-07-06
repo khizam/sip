@@ -49,9 +49,10 @@ class BarangmasukController extends Controller
         })
         ->addColumn('aksi', function ($barangmasuk) {
             return '
-            <div class="btn-group">
+            <div class="">
                 <button onclick="editForm(`'. route('barangmasuk.update', $barangmasuk->id_barangmasuk) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                <button onclick="deleteData(`'. route('barangmasuk.destroy', $barangmasuk->id_barangmasuk) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button> 
+                <button onclick="deleteData(`'. route('barangmasuk.destroy', $barangmasuk->id_barangmasuk) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                <button onclick="deleteData(`'. route('barangmasuk.destroy', $barangmasuk->id_barangmasuk) .'`)" class="btn btn-xs btn-primary btn-flat">Lab <i class="fa fa-flask"></i></button>
             </div>
             ';
         })
@@ -69,7 +70,7 @@ class BarangmasukController extends Controller
     //     date_default_timezone_set('Asia/jakarta');
     //     $date = date('dmy');
     //     return $date;
-    // }   
+    // }
 
     // public static function autonumber($barangmasuk, $primary, $prefix) {
     //     $q=DB::table($barangmasuk)->select(DB::raw('Max(RIGHT('.$primary.',5)) as kd_max'));
@@ -81,14 +82,14 @@ class BarangmasukController extends Controller
     //             $tmp = ((int)$k->kd_max)+1;
     //             $kd = $prx.sprintf("%06s", $tmp);
     //         }
-    // } 
+    // }
     // else
     // {
     //     $kd = $prx."000001";
     // }
     // return $kd;
     // }
-   
+
 
 
     /**
@@ -100,6 +101,9 @@ class BarangmasukController extends Controller
     public function store(Request $request)
     {
         try {
+            $request->whenFilled('jumlah_bahan',function($input) use($request) {
+                $request->merge(['sisa_bahan'=>$input]);
+            });
             DB::beginTransaction();
             $barangmasuk = Barangmasuk::latest()->first() ?? new Barangmasuk();
             $kode_barangmasuk = (int) $barangmasuk->kode_barangmasuk +1;
@@ -116,15 +120,17 @@ class BarangmasukController extends Controller
             if ($barangmasuk) {
                 Lab::create([
                     'id_barangmasuk'=> $barangmasuk->id_barangmasuk,
-                    'satuan' => 'kg'
+                    'satuan' => 'kg',
+                    'bahan_layak' => 0,
+                    'bahan_tidak_layak' => 0,
                 ]);
             }
             DB::commit();
-            return response()->json('Data berhasil disimpan', 200); 
+            return response()->json('Data berhasil disimpan', 200);
         } catch (\Throwable $th) {
             DB::rollback();
             Log::error("tambah barang masuk".$th);
-            return response()->json('gagal disimpan'.$th->getMessage(), 500); 
+            return response()->json('gagal disimpan'.$th->getMessage(), 500);
         }
     }
     

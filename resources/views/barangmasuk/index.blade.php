@@ -29,10 +29,11 @@
                 <th>Bahan</th>
                 <th>Kategori</th>
                 <th>Supplier</th>
-                <th>Jumlah_Bahan</th>
+                <th>Jumlah Bahan</th>
+                {{-- <th>Sisa Bahan</th> --}}
                 <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
-              <tbody>                   
+              <tbody>
               </tbody>
             </table>
           </div>
@@ -62,6 +63,7 @@
             {data: 'nama_kategori'},
             {data: 'nama_supplier'},
             {data: 'jumlah_bahan'},
+            // {data: 'sisa_bahan'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });
