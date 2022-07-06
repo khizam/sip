@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form">
+<div class="modal fade" id="modal-form-edit-lab" tabindex="-1" role="dialog" aria-labelledby="modal-form">
       <div class="modal-dialog modal-lg" role="document">
        <form action="#" method="#" class="form-horizontal">
           @csrf
@@ -25,60 +25,54 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label for="id_bahan" class="col-md-2 col-md-offset-1 control-label">Bahan</label>
+                                <label for="satuan" class="col-md-2 col-md-offset-1 control-label">Satuan</label>
                                 <div class="col-md-8">
-                                    <input name="id_bahan" id="id_bahan" class="form-control" readonly/>
+                                    <select name="satuan" id="satuan" class="form-control">
+                                        <option value="kg">KG</option>
+                                        <option value="liter">liter</option>
+                                    </select>
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label for="id_kategori" class="col-md-2 col-md-offset-1 control-label">Kategori</label>
+                                <label for="parameter" class="col-md-2 col-md-offset-1 control-label">Parameter</label>
                                 <div class="col-md-8">
-                                    <input name="id_kategori" id="id_kategori" class="form-control" readonly/>
+                                    <input name="parameter" id="parameter" class="form-control" />
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label for="id_supplier" class="col-md-2 col-md-offset-1 control-label">Supplier</label>
+                                <label for="hasil" class="col-md-2 col-md-offset-1 control-label">Hasil</label>
                                 <div class="col-md-8">
-                                    <input name="id_supplier" id="id_supplier" class="form-control" readonly/>
+                                    <input name="hasil" id="hasil" class="form-control" />
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label for="jumlah_bahan" class="col-md-2 col-md-offset-1 control-label">Jumlah Bahan</label>
+                                <label for="kesimpulan" class="col-md-2 col-md-offset-1 control-label">Kesimpulan</label>
                                 <div class="col-md-8">
-                                    <input type="number" name="jumlah_bahan" id="jumlah_bahan" class="form-control" readonly/>
+                                    <input type="kesimpulan" name="kesimpulan" id="kesimpulan" class="form-control" />
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label for="bahan_layak" class="col-md-2 col-md-offset-1 control-label">Bahan Layak</label>
+                                <label for="grid" class="col-md-2 col-md-offset-1 control-label">Grid</label>
                                 <div class="col-md-8">
-                                    <input type="number" name="bahan_layak" id="bahan_layak" class="form-control" />
-                                    <span class="help-block with-errors"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="bahan_tidak_layak" class="col-md-2 col-md-offset-1 control-label">Bahan Tidak Layak</label>
-                                <div class="col-md-8">
-                                    <input type="number" name="bahan_tidak_layak" id="bahan_tidak_layak" class="form-control" />
+                                    <input type="grid" name="grid" id="bahan_layak" class="form-control" />
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>
                         </div>
                       </div>
                   </div>
-              </div>
-              <div class="form-group">
               </div>
             </div>
             <div class="modal-footer">

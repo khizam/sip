@@ -26,19 +26,13 @@
                   <input type="checkbox" name="select_all" id="select_all">
                 </th>
                 <th width="5%">No</th>
-                {{-- <th>
-                  <input type="checkbox" name="select_all" id="select_all">
-                </th> --}}
                 <th>Tanggal</th>
                 <th>Nama bahan</th>
                 <th>Jumlah bahan</th>
                 <th>Bahan Layak</th>
                 <th>Bahan Tdk Layak</th>
-                {{-- <th>Satuan</th>
-                <th>Parameter</th>
-                <th>Hasil</th>
-                <th>Kesimpulan</th> --}}
-                <th>Grid</th>
+                <th>Satuan</th>
+                <th>Status</th>
                 <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
               <tbody>
@@ -50,6 +44,8 @@
 </div>
 
 @includeIf('lab.form')
+@includeIf('lab.form_edit')
+@includeIf('lab.form_check')
 @endsection
 
 @push('scripts')
@@ -64,31 +60,26 @@
             url: '{{ route('lab.data') }}',
             dataSrc: (result) => {
               return result.data.map((result) => {
+                  console.log(result.status)
                   result.satuan = result.satuan ?? 'Data kosong'
-                //   result.parameter = result.parameter ?? 'Data kosong'
-                //   result.hasil = result.hasil ?? 'Data kosong'
-                //   result.kesimpulan = result.kesimpulan ?? 'Data kosong'
-                //   result.grid = result.grid ?? 'Data kosong'
                   return result
                 }
               )
             }
           },
           columns: [
+
             // console.log(data)
             {data: 'select_all', searchable: false, sortable: false},
+
             {data: 'DT_RowIndex', searchable: false, sortable: false},
-            // {data: 'select_all'},
             {data: 'updated_at'},
             {data: 'nama_bahan'},
             {data: 'jumlah_bahan'},
             {data: 'bahan_layak'},
             {data: 'bahan_tidak_layak'},
             {data: 'satuan'},
-            // {data: 'parameter'},
-            // {data: 'hasil'},
-            // {data: 'kesimpulan'},
-            // {data: 'grid'},
+            {data: 'status'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });
@@ -116,20 +107,70 @@
             }
         })
 
+<<<<<<< HEAD
         $('[name=select_all]').on('click', function () {
           $(':checkbox').prop('checked', this.checked);
         });
 
+=======
+        $('#modal-form-edit-lab').validator().on('submit', function (e) {
+            if (! e.preventDefault()) {
+              $.ajax({
+                  url: $('#modal-form-edit-lab form').attr('action'),
+                  method: $('#modal-form-edit-lab [name=_method]').val() ?? 'PUT',
+                  data: $('#modal-form-edit-lab form').serialize(),
+                  dataType: "json"
+              })
+              .done((response) => {
+                $('#modal-form-edit-lab').modal('hide');
+                table.ajax.reload();
+              })
+              .fail((errors) => {
+                console.log(errors)
+                errors.responseJSON !== '' ? alert(errors.responseJSON) : alert('Tidak dapat menyimpan data');
+                return;
+              });
+            }
+        })
+
+        $('#modal-form-check').validator().on('submit', function (e) {
+            if (! e.preventDefault()) {
+              $.ajax({
+                  url: $('#modal-form-check form').attr('action'),
+                  method: $('#modal-form-check [name=_method]').val() ?? 'PUT',
+                  data: $('#modal-form-check form').serialize(),
+                  dataType: "json"
+              })
+              .done((response) => {
+                $('#modal-form-check').modal('hide');
+                table.ajax.reload();
+              })
+              .fail((errors) => {
+                console.log(errors)
+                errors.responseJSON !== '' ? alert(errors.responseJSON) : alert('Tidak dapat menyimpan data');
+                return;
+              });
+            }
+        })
+>>>>>>> c4cfdbf81fb996012ce7739dbb2cbe32e8d66190
     });
 
-    function addForm(url) {
-      $('#modal-form').modal('show');
-      $('#modal-form .modal-title').text('Tambah Barangmasuk');
+    function check(url, formUrl) {
+      $('#modal-form-check').modal('show');
+      $('#modal-form-check .modal-title').text('Status');
 
-      $('#modal-form form')[0].reset();
-      $('#modal-form form').attr('action', url);
-      $('#modal-form [name=_method]').val('post');
-      $('#modal-form [name=id_bahan]').focus();
+      $('#modal-form-check form')[0].reset();
+      $('#modal-form-check form').attr('action', formUrl);
+      $('#modal-form-check [name=_method]').val('put');
+      $.get(url)
+        .done((response) => {
+          $('#modal-form-check [name=id_lab]').val(response.id_lab);
+          $('#modal-form-check [name=status][value="'+response.status+'"]').prop('checked', true);
+        })
+      .fail((errors) => {
+          alert('Tidak dapat menampilkan data');
+          return;
+      });
     }
 
     function editForm(url, formUrl) {
@@ -143,7 +184,7 @@
 
       $.get(url)
         .done((response) => {
-          $('#modal-form [name=id_barangmasuk]').val(response.id_barangmasuk);
+          $('#modal-form [name=id_lab]').val(response.id_lab);
           $('#modal-form [name=kd_barangmasuk]').val(response.barang_masuk.kode_barangmasuk);
           $('#modal-form [name=id_bahan]').val(response.barang_masuk.bahan.nama_bahan);
           $('#modal-form [name=id_kategori]').val(response.barang_masuk.kategori.nama_kategori);
@@ -151,7 +192,33 @@
           $('#modal-form [name=jumlah_bahan]').val(response.barang_masuk.jumlah_bahan);
           $('#modal-form [name=bahan_layak]').val(response.bahan_layak);
           $('#modal-form [name=bahan_tidak_layak]').val(response.bahan_tidak_layak);
-          $('#modal-form [name=status][value='+response.status+']').prop('checked', true);
+          $('#modal-form [name=status][value="'+response.status+'"]').prop('checked', true);
+        })
+      .fail((errors) => {
+          alert('Tidak dapat menampilkan data');
+          return;
+      });
+
+    }
+
+    function editLabForm(url, formUrl) {
+      $('#modal-form-edit-lab').modal('show');
+      $('#modal-form-edit-lab .modal-title').text('Edit Lab');
+
+      $('#modal-form-edit-lab form')[0].reset();
+      $('#modal-form-edit-lab form').attr('action',formUrl);
+      $('#modal-form-edit-lab [name=_method]').val('put');
+      $('#modal-form-edit-lab [name=satuan]').focus();
+
+      $.get(url)
+        .done((response) => {
+          $('#modal-form-edit-lab [name=id_lab]').val(response.id_barangmasuk);
+          $('#modal-form-edit-lab [name=kd_barangmasuk]').val(response.barang_masuk.kode_barangmasuk);
+          $('#modal-form-edit-lab [name=satuan] option[value="'+response.satuan+'"]').attr("selected", "selected");
+          $('#modal-form-edit-lab [name=parameter]').val(response.parameter);
+          $('#modal-form-edit-lab [name=hasil]').val(response.hasil);
+          $('#modal-form-edit-lab [name=kesimpulan]').val(response.kesimpulan);
+          $('#modal-form-edit-lab [name=grid]').val(response.grid);
         })
       .fail((errors) => {
           alert('Tidak dapat menampilkan data');

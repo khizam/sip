@@ -51,5 +51,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/barangmasuk', BarangmasukController::class);
 
     Route::get('/lab/data', [LabController::class, 'data'])->name('lab.data');
+    Route::get('/lab/edit-lab/{id}', [LabController::class, 'editLab'])->name('lab.editLab');
+    Route::put('/lab/update-lab/{id}', [LabController::class, 'updateLab'])->name('lab.updateLab');
+    Route::put('/lab/check-status/{id}', [LabController::class, 'checkStatus'])->name('lab.checkStatus');
     Route::resource('/lab', LabController::class);
 });
