@@ -16,11 +16,15 @@
       <div class="col-md-12">
         <div class="box">
           <div class="box-header with-border">
+            <button onclick="cetakLab('{{ route('lab.store') }}')" class="btn btn-danger btn-xs btn-flat"><i class="fa fa-id-card"></i> Cetak Lab</button>
             {{-- <button onclick="" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button> --}}
           </div>
           <div class="box-body table-responsive">
             <table class="table table-striped table-bordered">
               <thead>
+                <th width="5%">
+                  <input type="checkbox" name="select_all" id="select_all">
+                </th>
                 <th width="5%">No</th>
                 {{-- <th>
                   <input type="checkbox" name="select_all" id="select_all">
@@ -72,6 +76,7 @@
           },
           columns: [
             // console.log(data)
+            {data: 'select_all', searchable: false, sortable: false},
             {data: 'DT_RowIndex', searchable: false, sortable: false},
             // {data: 'select_all'},
             {data: 'updated_at'},
@@ -110,6 +115,11 @@
               });
             }
         })
+
+        $('[name=select_all]').on('click', function () {
+          $(':checkbox').prop('checked', this.checked);
+        });
+
     });
 
     function addForm(url) {
@@ -165,6 +175,21 @@
         });
       }
     }
+
+    function cetakLab(url) {
+          if ($('input:checked').length < 1) {
+              alert('Pilih data yang akan dicetak');
+              return;
+            } else if ($('input:checked').length < 3) {
+              alert('Pilih minimal 3 data untuk dicetak');
+              return;
+            } else {
+              $('.form-lab')
+              .attr('target', '_blank')
+              .attr('action', url)
+              .submit();
+            }
+      }
 
 
 </script>

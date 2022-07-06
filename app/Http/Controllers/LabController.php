@@ -41,9 +41,15 @@ class LabController extends Controller
         return datatables()
         ->of($lab)
         ->addIndexColumn()
+        ->addColumn('select_all', function ($lab){
+            return '
+            <input type="checkbox" name="id_lab[]" value="'. $lab->id_lab .'">
+            ';
+        })
         ->addColumn('id_lab', function ($lab) {
             return '<span class="label label-success">'. $lab->id_lab .'</span>';
         })
+
         ->addColumn('jumlah_bahan', function ($barangmasuk) {
             return format_uang($barangmasuk->jumlah_bahan);
         })
