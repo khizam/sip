@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\JsonResponse;
+
 function format_uang ($angka) {
       return number_format($angka, 0, ',', '.');
 }
@@ -16,7 +18,7 @@ function terbilang($angka) {
       } elseif ($angka < 100) {
             $terbilang = terbilang($angka / 10) . ' puluh' . terbilang($angka % 10);
       } elseif ($angka < 200) {
-            $terbilang = ' seratus' . terbilang($angka -100); 
+            $terbilang = ' seratus' . terbilang($angka -100);
       } elseif ($angka < 1000) { //999
             $terbilang = terbilang($angka / 100) . ' ratus' . terbilang($angka % 100);
       } elseif ($angka < 2000) { //1000 - 1999
@@ -52,13 +54,17 @@ function tanggal_indonesia($tgl, $tampil_hari = true)
       } else {
             $text .= "$tanggal $bulan $tahun";
       }
-      
+
       return $text;
 }
 
 function tambah_nol_didepan($value, $threshold = null)
 {
       return sprintf("%0". $threshold . "s", $value);
+}
+
+function jsonResponse($data='', $status=200, array $headers = []) {
+    return response()->json($data, $status, $headers);
 }
 
 

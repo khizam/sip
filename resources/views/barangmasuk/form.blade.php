@@ -45,7 +45,7 @@
               <div class="form-group row">
                 <label for="jumlah_bahan" class="col-md-2 col-md-offset-1 control-label">Jumlah Bahan</label>
                 <div class="col-md-8">
-                    <input type="number" name="jumlah_bahan" id="jumlah_bahan" class="form-control">
+                    <input type="number" name="jumlah_bahan" id="jumlah_bahan" class="form-control" value="0">
                     <span class="help-block with-errors"></span>
                 </div>
               </div>

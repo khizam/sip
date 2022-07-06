@@ -26,15 +26,18 @@
                   <input type="checkbox" name="select_all" id="select_all">
                 </th> --}}
                 <th>Tanggal</th>
-                <th>nama_bahan</th>
-                <th>Satuan</th>
+                <th>Nama bahan</th>
+                <th>Jumlah bahan</th>
+                <th>Bahan Layak</th>
+                <th>Bahan Tdk Layak</th>
+                {{-- <th>Satuan</th>
                 <th>Parameter</th>
                 <th>Hasil</th>
-                <th>Kesimpulan</th>
+                <th>Kesimpulan</th> --}}
                 <th>Grid</th>
                 <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
-              <tbody>                   
+              <tbody>
               </tbody>
             </table>
           </div>
@@ -58,10 +61,10 @@
             dataSrc: (result) => {
               return result.data.map((result) => {
                   result.satuan = result.satuan ?? 'Data kosong'
-                  result.parameter = result.parameter ?? 'Data kosong'
-                  result.hasil = result.hasil ?? 'Data kosong'
-                  result.kesimpulan = result.kesimpulan ?? 'Data kosong'
-                  result.grid = result.grid ?? 'Data kosong'
+                //   result.parameter = result.parameter ?? 'Data kosong'
+                //   result.hasil = result.hasil ?? 'Data kosong'
+                //   result.kesimpulan = result.kesimpulan ?? 'Data kosong'
+                //   result.grid = result.grid ?? 'Data kosong'
                   return result
                 }
               )
@@ -73,24 +76,36 @@
             // {data: 'select_all'},
             {data: 'updated_at'},
             {data: 'nama_bahan'},
+            {data: 'jumlah_bahan'},
+            {data: 'bahan_layak'},
+            {data: 'bahan_tidak_layak'},
             {data: 'satuan'},
-            {data: 'parameter'},
-            {data: 'hasil'},
-            {data: 'kesimpulan'},
-            {data: 'grid'},
+            // {data: 'parameter'},
+            // {data: 'hasil'},
+            // {data: 'kesimpulan'},
+            // {data: 'grid'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });
 
+        /*
+        * Submit form edit
+        */
         $('#modal-form').validator().on('submit', function (e) {
             if (! e.preventDefault()) {
-              $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
+              $.ajax({
+                  url: $('#modal-form form').attr('action'),
+                  method: $('#modal-form [name=_method]').val() ?? 'PUT',
+                  data: $('#modal-form form').serialize(),
+                  dataType: "json"
+              })
               .done((response) => {
                 $('#modal-form').modal('hide');
                 table.ajax.reload();
               })
               .fail((errors) => {
-                alert('Tidak dapat menyimpan data');
+                console.log(errors)
+                errors.responseJSON !== '' ? alert(errors.responseJSON) : alert('Tidak dapat menyimpan data');
                 return;
               });
             }
@@ -107,22 +122,26 @@
       $('#modal-form [name=id_bahan]').focus();
     }
 
-    function editForm(url) {
+    function editForm(url, formUrl) {
       $('#modal-form').modal('show');
-      $('#modal-form .modal-title').text('Edit Barangmasuk');
+      $('#modal-form .modal-title').text('Edit Bahan Layak dan tidak');
 
       $('#modal-form form')[0].reset();
-      $('#modal-form form').attr('action',url);
+      $('#modal-form form').attr('action',formUrl);
       $('#modal-form [name=_method]').val('put');
-      $('#modal-form [name=id_bahan]').focus();
+      $('#modal-form [name=bahan_layak]').focus();
 
       $.get(url)
         .done((response) => {
-          $('#modal-form [name=kode_barangmasuk]').val(response.kode_barangmasuk);
-          $('#modal-form [name=id_bahan]').val(response.id_bahan);
-          $('#modal-form [name=id_kategori]').val(response.id_kategori);
-          $('#modal-form [name=id_supplier]').val(response.id_supplier);
-          $('#modal-form [name=jumlah_bahan]').val(response.jumlah_bahan);
+          $('#modal-form [name=id_barangmasuk]').val(response.id_barangmasuk);
+          $('#modal-form [name=kd_barangmasuk]').val(response.barang_masuk.kode_barangmasuk);
+          $('#modal-form [name=id_bahan]').val(response.barang_masuk.bahan.nama_bahan);
+          $('#modal-form [name=id_kategori]').val(response.barang_masuk.kategori.nama_kategori);
+          $('#modal-form [name=id_supplier]').val(response.barang_masuk.supplier.nama_supplier);
+          $('#modal-form [name=jumlah_bahan]').val(response.barang_masuk.jumlah_bahan);
+          $('#modal-form [name=bahan_layak]').val(response.bahan_layak);
+          $('#modal-form [name=bahan_tidak_layak]').val(response.bahan_tidak_layak);
+          $('#modal-form [name=status][value='+response.status+']').prop('checked', true);
         })
       .fail((errors) => {
           alert('Tidak dapat menampilkan data');
@@ -146,5 +165,7 @@
         });
       }
     }
+
+
 </script>
 @endpush
