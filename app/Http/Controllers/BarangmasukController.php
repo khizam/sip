@@ -102,8 +102,17 @@ class BarangmasukController extends Controller
         try {
             DB::beginTransaction();
             $barangmasuk = Barangmasuk::latest()->first() ?? new Barangmasuk();
-            $request['kode_barangmasuk'] = 'P'. tambah_nol_didepan((int)$barangmasuk->id_barangmasuk +1, 6);
-            $barangmasuk = Barangmasuk::create($request->all());
+            $kode_barangmasuk = (int) $barangmasuk->kode_barangmasuk +1;
+
+            $barangmasuk = new barangmasuk();
+            $barangmasuk->kode_barangmasuk = tambah_nol_didepan($kode_barangmasuk, 6);
+            // $request['kode_barangmasuk'] = 'P'. tambah_nol_didepan((int)$barangmasuk->id_barangmasuk +1, 6);
+            $barangmasuk->id_bahan = $request->id_bahan;
+            $barangmasuk->id_kategori = $request->id_kategori;
+            $barangmasuk->id_supplier = $request->id_supplier;
+            $barangmasuk->jumlah_bahan = $request->jumlah_bahan;
+            $barangmasuk->save();
+
             if ($barangmasuk) {
                 Lab::create([
                     'id_barangmasuk'=> $barangmasuk->id_barangmasuk,
@@ -118,6 +127,7 @@ class BarangmasukController extends Controller
             return response()->json('gagal disimpan'.$th->getMessage(), 500); 
         }
     }
+    
 
     /**
      * Display the specified resource.
@@ -140,7 +150,7 @@ class BarangmasukController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
