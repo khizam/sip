@@ -34,7 +34,8 @@ class BarangmasukController extends Controller
         $barangmasuk = Barangmasuk::leftJoin('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
         ->leftJoin('kategori', 'kategori.id_kategori', '=', 'barangmasuk.id_kategori')
         ->leftJoin('supplier', 'supplier.id_supplier', '=', 'barangmasuk.id_supplier')
-        ->select('barangmasuk.*', 'nama_bahan', 'nama_kategori', 'nama_supplier')
+        ->join('lab', 'lab.id_barangmasuk', '=', 'barangmasuk.id_barangmasuk')
+        ->select('barangmasuk.*', 'nama_bahan', 'nama_kategori', 'nama_supplier', 'lab.status')
         ->orderBy('kode_barangmasuk', 'asc')
         ->get();
 
@@ -101,9 +102,6 @@ class BarangmasukController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->whenFilled('jumlah_bahan',function($input) use($request) {
-                $request->merge(['sisa_bahan'=>$input]);
-            });
             DB::beginTransaction();
             $barangmasuk = Barangmasuk::latest()->first() ?? new Barangmasuk();
             $kode_barangmasuk = (int) $barangmasuk->kode_barangmasuk +1;
@@ -133,7 +131,7 @@ class BarangmasukController extends Controller
             return response()->json('gagal disimpan'.$th->getMessage(), 500);
         }
     }
-    
+
 
     /**
      * Display the specified resource.
@@ -156,7 +154,7 @@ class BarangmasukController extends Controller
      */
     public function edit($id)
     {
-        
+
     }
 
     /**

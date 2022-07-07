@@ -107,12 +107,10 @@
             }
         })
 
-<<<<<<< HEAD
         $('[name=select_all]').on('click', function () {
           $(':checkbox').prop('checked', this.checked);
         });
 
-=======
         $('#modal-form-edit-lab').validator().on('submit', function (e) {
             if (! e.preventDefault()) {
               $.ajax({
@@ -152,7 +150,6 @@
               });
             }
         })
->>>>>>> c4cfdbf81fb996012ce7739dbb2cbe32e8d66190
     });
 
     function check(url, formUrl) {
