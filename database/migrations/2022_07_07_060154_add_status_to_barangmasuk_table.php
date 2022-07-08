@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddStatusDanSisaBahanToBarangmasukTable extends Migration
+class AddStatusToBarangmasukTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,7 @@ class AddStatusDanSisaBahanToBarangmasukTable extends Migration
     public function up()
     {
         Schema::table('barangmasuk', function (Blueprint $table) {
-            $table->enum('status',['selesai','tidak selesai'])->nullable()->default('tidak selesai');
-            // $table->tinyInteger('sisa_bahan')->after('jumlah_bahan')->nullable()->default(0);
+            $table->enum('status', ['Accept', 'Reject'])->nullable()->default('Reject');
         });
     }
 
@@ -27,8 +26,7 @@ class AddStatusDanSisaBahanToBarangmasukTable extends Migration
     public function down()
     {
         Schema::table('barangmasuk', function (Blueprint $table) {
-            $table->dropColumn('status');
-            // $table->dropColumn('sisa_bahan');
+            //
         });
     }
 }

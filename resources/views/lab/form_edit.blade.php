@@ -39,7 +39,7 @@
                             <div class="col-md-12">
                                 <label for="parameter" class="col-md-2 col-md-offset-1 control-label">Parameter</label>
                                 <div class="col-md-8">
-                                    <input name="parameter" id="parameter" class="form-control" />
+                                    <textarea type="text" name="parameter" id="parameter" cols="10" rows="10" class="form-control"></textarea> 
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>
@@ -48,7 +48,7 @@
                             <div class="col-md-12">
                                 <label for="hasil" class="col-md-2 col-md-offset-1 control-label">Hasil</label>
                                 <div class="col-md-8">
-                                    <input name="hasil" id="hasil" class="form-control" />
+                                    <textarea type="text" name="hasil" id="hasil" cols="10" rows="10" class="form-control"></textarea>
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>

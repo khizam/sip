@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddStatusToLabTable extends Migration
+class AddKodeLabToLabTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,10 @@ class AddStatusToLabTable extends Migration
     public function up()
     {
         Schema::table('lab', function (Blueprint $table) {
-            $table->enum('status', ['selesai', 'tidak selesai'])->nullable()->default('tidak selesai');
-            $table->mediumText('keterangan')->nullable();
+            $table->string('kode_lab')
+            ->unique()
+            ->after('id_lab');
+            $table->enum('status', ['Accept', 'Reject'])->nullable()->default('Reject');
         });
     }
 
@@ -27,8 +29,7 @@ class AddStatusToLabTable extends Migration
     public function down()
     {
         Schema::table('lab', function (Blueprint $table) {
-            $table->dropColumn('status');
-            $table->dropColumn('keterangan');
+            //
         });
     }
 }

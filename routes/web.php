@@ -55,4 +55,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/lab/update-lab/{id}', [LabController::class, 'updateLab'])->name('lab.updateLab');
     Route::put('/lab/check-status/{id}', [LabController::class, 'checkStatus'])->name('lab.checkStatus');
     Route::resource('/lab', LabController::class);
+    Route::get('/lab/cetak-lab', [LabController::class, 'cetakLab'])->name('lab.cetak_lab');
+     
 });

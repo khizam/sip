@@ -13,6 +13,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use PDF;
+
+
 
 class LabController extends Controller
 {
@@ -39,12 +42,11 @@ class LabController extends Controller
         return datatables()
         ->of($lab)
         ->addIndexColumn()
-
-        ->addColumn('select_all', function ($lab){
-            return '
-            <input type="checkbox" name="id_lab[]" value="'. $lab->id_lab .'">
-            ';
+        
+        ->addColumn('kode_lab', function ($lab) {
+            return '<span class="label label-success">'. $lab->kode_lab .'</span>';
         })
+
         ->addColumn('id_lab', function ($lab) {
             return '<span class="label label-success">'. $lab->id_lab .'</span>';
         })
@@ -62,7 +64,7 @@ class LabController extends Controller
             </div>
             ';
         })
-        ->rawColumns(['aksi', 'id_lab'])
+        ->rawColumns(['aksi', 'id_lab', 'kode_lab'])
         ->make(true);
     }
 
@@ -129,11 +131,11 @@ class LabController extends Controller
                     return jsonResponse('Data berhasil disimpan', 200);
                 } else {
                     DB::rollback();
-                    return jsonResponse('Jumlah bahan layak dan tidak, tidak boleh lebih dari '.$jumlahBahanBrgMsk, Response::HTTP_NOT_ACCEPTABLE);
+                    return jsonResponse('Jumlah bahan layak dan tidak, tidak boleh lebih dari '.$totalBahanLab, Response::HTTP_NOT_ACCEPTABLE);
                 }
             } else {
                 DB::rollback();
-                return jsonResponse('Jumlah bahan layak dan tidak, tidak boleh lebih dari '.$jumlahBahanBrgMsk, Response::HTTP_NOT_ACCEPTABLE);
+                return jsonResponse('Jumlah bahan layak dan tidak, tidak boleh lebih dari '.$totalBahanLab, Response::HTTP_NOT_ACCEPTABLE);
             }
         } catch (\Throwable $th) {
             DB::rollback();
@@ -174,6 +176,7 @@ class LabController extends Controller
         $barangmasuk->delete();
 
         return response(null, 204);
+        
     }
 
     public function checkStatus(Request $request, $id): JsonResponse
@@ -184,7 +187,7 @@ class LabController extends Controller
                 $jumlahHasilLab = $lab->bahan_layak + $lab->bahan_tidak_layak;
                 $jumlahBahanBrgMsk = $lab->barang_masuk->jumlah_bahan;
                 if($jumlahBahanBrgMsk != $jumlahHasilLab){
-                    return jsonResponse("Bahan yang diverifikasi {$jumlahHasilLab} dari {$jumlahBahanBrgMsk}", Response::HTTP_NOT_ACCEPTABLE);
+                    return jsonResponse("Bahan yang diverifikasi {$jumlahHasilLab} kurang dari {$jumlahBahanBrgMsk}", Response::HTTP_NOT_ACCEPTABLE);
                 }
             }
             $lab->update($request->all());
@@ -192,5 +195,13 @@ class LabController extends Controller
         } catch (\Throwable $th) {
             return jsonResponse("{$th}");
         }
+    }
+
+    public function cetakLab(Request $request)
+    {   
+        $data = Lab::all();
+        view()->share('lab', $data);
+        $pdf = PDF::loadView('lab_pdf', $data);
+        return $pdf->download('invoice.pdf');    
     }
 }

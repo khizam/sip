@@ -16,21 +16,20 @@
       <div class="col-md-12">
         <div class="box">
           <div class="box-header with-border">
-            <button onclick="cetakLab('{{ route('lab.store') }}')" class="btn btn-danger btn-xs btn-flat"><i class="fa fa-id-card"></i> Cetak Lab</button>
+            
+            <a class="btn btn-primary btn-xs" href="{{ URL::to('/lab/lab_pdf') }}">Export to PDF</a>
             {{-- <button onclick="" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button> --}}
           </div>
           <div class="box-body table-responsive">
             <table class="table table-striped table-bordered">
               <thead>
-                <th width="5%">
-                  <input type="checkbox" name="select_all" id="select_all">
-                </th>
                 <th width="5%">No</th>
+                <th>Kode Lab</th>
                 <th>Tanggal</th>
                 <th>Nama bahan</th>
                 <th>Jumlah bahan</th>
                 <th>Bahan Layak</th>
-                <th>Bahan Tdk Layak</th>
+                <th class="hidden">Bahan Tdk Layak</th>
                 <th>Satuan</th>
                 <th>Status</th>
                 <th width="15%"><i class="fa fa-cog"></i></th>
@@ -70,14 +69,13 @@
           columns: [
 
             // console.log(data)
-            {data: 'select_all', searchable: false, sortable: false},
-
             {data: 'DT_RowIndex', searchable: false, sortable: false},
+            {data: 'kode_lab'},
             {data: 'updated_at'},
             {data: 'nama_bahan'},
             {data: 'jumlah_bahan'},
             {data: 'bahan_layak'},
-            {data: 'bahan_tidak_layak'},
+            {data: 'bahan_tidak_layak', visible:false,},
             {data: 'satuan'},
             {data: 'status'},
             {data: 'aksi', searchable: false, sortable: false},
@@ -241,19 +239,10 @@
     }
 
     function cetakLab(url) {
-          if ($('input:checked').length < 1) {
-              alert('Pilih data yang akan dicetak');
-              return;
-            } else if ($('input:checked').length < 3) {
-              alert('Pilih minimal 3 data untuk dicetak');
-              return;
-            } else {
-              $('.form-lab')
-              .attr('target', '_blank')
-              .attr('action', url)
-              .submit();
-            }
-      }
+
+      alert('Tidak dapat menampilkan data');   
+      return;
+    }
 
 
 </script>

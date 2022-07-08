@@ -109,6 +109,12 @@ class BarangmasukController extends Controller
             $barangmasuk = new barangmasuk();
             $barangmasuk->kode_barangmasuk = tambah_nol_didepan($kode_barangmasuk, 6);
             // $request['kode_barangmasuk'] = 'P'. tambah_nol_didepan((int)$barangmasuk->id_barangmasuk +1, 6);
+            $lab = Lab::latest()->first() ?? new Lab();
+            $kode_lab = (int) $lab->kode_lab +1;
+
+            $lab = new lab();
+            $lab->kode_lab = tambah_nol_didepan($kode_lab, 6);
+
             $barangmasuk->id_bahan = $request->id_bahan;
             $barangmasuk->id_kategori = $request->id_kategori;
             $barangmasuk->id_supplier = $request->id_supplier;
@@ -117,6 +123,7 @@ class BarangmasukController extends Controller
 
             if ($barangmasuk) {
                 Lab::create([
+                    'kode_lab' => $lab->kode_lab,
                     'id_barangmasuk'=> $barangmasuk->id_barangmasuk,
                     'satuan' => 'kg',
                     'bahan_layak' => 0,

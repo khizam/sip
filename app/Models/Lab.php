@@ -11,7 +11,7 @@ class Lab extends Model
 
     protected $table = 'lab';
     protected $primaryKey = 'id_lab';
-    protected $fillable = ['id_barangmasuk','satuan','parameter','hasil','kesimpulan','grid','bahan_layak','bahan_tidak_layak', 'status'];
+    protected $fillable = ['kode_lab','id_barangmasuk','satuan','parameter','hasil','kesimpulan','grid','bahan_layak','bahan_tidak_layak', 'status'];
     protected $guarded = [];
 
     protected $casts = [

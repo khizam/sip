@@ -68,9 +68,9 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <label for="bahan_tidak_layak" class="col-md-2 col-md-offset-1 control-label">Bahan Tidak Layak</label>
+                                <label for="bahan_tidak_layak" class="col-md-2 col-md-offset-1 control-label hidden">Bahan Tidak Layak</label>
                                 <div class="col-md-8">
-                                    <input type="number" name="bahan_tidak_layak" id="bahan_tidak_layak" class="form-control" />
+                                    <input type="number" name="bahan_tidak_layak" id="bahan_tidak_layak" class="form-control hidden" />
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>

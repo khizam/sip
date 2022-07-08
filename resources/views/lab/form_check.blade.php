@@ -16,12 +16,12 @@
                         <div class="form-group">
                             <label for="bahan_tdk_layak" class="col-md-2 col-md-offset-1 control-label">Status</label>
                             <div class="col-md-4 custom-control custom-radio mt-1" style="margin-top: .5rem">
-                                <input type="radio" id="status_lab" name="status" class="custom-control-input" value="tidak selesai">
-                                <label class="custom-control-label" for="status_lab">Tidak selesai</label>
+                                <input type="radio" id="status_lab" name="status" class="custom-control-input" value="reject">
+                                <label class="custom-control-label" for="status_lab">Reject</label>
                             </div>
                             <div class="col-md-4 custom-control custom-radio" style="margin-top: .5rem">
-                                <input type="radio" id="status_lab2" name="status" class="custom-control-input" value="selesai">
-                                <label class="custom-control-label" for="status_lab2">Selesai</label>
+                                <input type="radio" id="status_lab2" name="status" class="custom-control-input" value="accepted">
+                                <label class="custom-control-label" for="status_lab2">Accepted</label>
                             </div>
                         </div>
                     </div>
