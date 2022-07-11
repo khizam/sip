@@ -5,17 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateLabRequest;
 use App\Models\Barangmasuk;
 use App\Models\Lab;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Throwable;
-use PDF;
 
 class LabController extends Controller
 {
@@ -42,7 +39,7 @@ class LabController extends Controller
         return datatables()
         ->of($lab)
         ->addIndexColumn()
-        
+
         ->addColumn('kode_lab', function ($lab) {
             return '<span class="label label-success">'. $lab->kode_lab .'</span>';
         })
@@ -214,10 +211,12 @@ class LabController extends Controller
         }
     }
 
-    public function cetakLab()
-
+    public function printPdfLab()
     {
-        $lab = Lab::all();
-        dd($lab);
+        $labs = Lab::with('barang_masuk.bahan')->get();
+        // return view('lab.lab_pdf', compact('labs'));
+        $pdf = Pdf::loadview('lab.lab_pdf',compact('labs'));
+        return $pdf->download('laporan-lab.pdf');
+
     }
 }
