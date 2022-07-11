@@ -17,7 +17,10 @@
         <div class="box">
           <div class="box-header with-border">
             
-            <a class="btn btn-primary btn-xs" href="{{ URL::to('/lab/lab_pdf') }}">Export to PDF</a>
+         {{-- <a class="btn btn-primary btn-xs" href="{{ URL::to('/lab/cetak_pdf') }}">Export to PDF</a> --}}
+         <a href="/lab/cetak_pdf" class="btn btn-primary" target="_blank">CETAK PDF</a>
+            {{-- <a class="btn btn-primary" href="{{ URL::to('lab') }}">Export to PDF</a> 
+            <a href="/lab/cetakLab" class="btn btn-primary" target="_blank">CETAK PDF</a> --}}
             {{-- <button onclick="" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button> --}}
           </div>
           <div class="box-body table-responsive">
@@ -236,12 +239,6 @@
           return;
         });
       }
-    }
-
-    function cetakLab(url) {
-
-      alert('Tidak dapat menampilkan data');   
-      return;
     }
 
 

@@ -197,11 +197,14 @@ class LabController extends Controller
         }
     }
 
-    public function cetakLab(Request $request)
-    {   
-        $data = Lab::all();
-        view()->share('lab', $data);
-        $pdf = PDF::loadView('lab_pdf', $data);
-        return $pdf->download('invoice.pdf');    
+    public function cetakLab()
+    
+    {
+        $lab = Lab::all();
+        // share lab to view
+        dd($lab);
+        // $pdf = PDF::loadview('lab_pdf',['lab'=>$lab]);
+        // return $pdf->download('laporan-lab-pdf');
+      
     }
 }
