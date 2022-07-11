@@ -62,7 +62,6 @@
             url: '{{ route('lab.data') }}',
             dataSrc: (result) => {
               return result.data.map((result) => {
-                  console.log(result.status)
                   result.satuan = result.satuan ?? 'Data kosong'
                   return result
                 }
@@ -71,7 +70,7 @@
           },
           columns: [
 
-            // console.log(data)
+            {data: 'select_all', searchable: false, sortable: false},
             {data: 'DT_RowIndex', searchable: false, sortable: false},
             {data: 'kode_lab'},
             {data: 'updated_at'},
@@ -101,7 +100,6 @@
                 table.ajax.reload();
               })
               .fail((errors) => {
-                console.log(errors)
                 errors.responseJSON !== '' ? alert(errors.responseJSON) : alert('Tidak dapat menyimpan data');
                 return;
               });
@@ -125,7 +123,6 @@
                 table.ajax.reload();
               })
               .fail((errors) => {
-                console.log(errors)
                 errors.responseJSON !== '' ? alert(errors.responseJSON) : alert('Tidak dapat menyimpan data');
                 return;
               });
@@ -145,7 +142,6 @@
                 table.ajax.reload();
               })
               .fail((errors) => {
-                console.log(errors)
                 errors.responseJSON !== '' ? alert(errors.responseJSON) : alert('Tidak dapat menyimpan data');
                 return;
               });
@@ -166,7 +162,7 @@
           $('#modal-form-check [name=status][value="'+response.status+'"]').prop('checked', true);
         })
       .fail((errors) => {
-          alert('Tidak dapat menampilkan data');
+          alert(errors.responseJSON ?? 'Tidak dapat menampilkan data');
           return;
       });
     }
@@ -193,7 +189,7 @@
           $('#modal-form [name=status][value="'+response.status+'"]').prop('checked', true);
         })
       .fail((errors) => {
-          alert('Tidak dapat menampilkan data');
+          alert(errors.responseJSON ?? 'Tidak dapat menampilkan data');
           return;
       });
 
@@ -219,7 +215,7 @@
           $('#modal-form-edit-lab [name=grid]').val(response.grid);
         })
       .fail((errors) => {
-          alert('Tidak dapat menampilkan data');
+          alert(errors.responseJSON ?? 'Tidak dapat menampilkan data');
           return;
       });
 
