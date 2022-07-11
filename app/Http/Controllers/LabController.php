@@ -215,13 +215,9 @@ class LabController extends Controller
     }
 
     public function cetakLab()
-    
+
     {
         $lab = Lab::all();
-        // share lab to view
         dd($lab);
-        // $pdf = PDF::loadview('lab_pdf',['lab'=>$lab]);
-        // return $pdf->download('laporan-lab-pdf');
-      
     }
 }
