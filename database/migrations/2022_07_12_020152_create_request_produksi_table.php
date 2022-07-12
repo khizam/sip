@@ -15,7 +15,7 @@ class CreateRequestProduksiTable extends Migration
     {
         Schema::create('request_produksi', function (Blueprint $table) {
             $table->increments('id_reqproduksi');
-            $table->unsignedInteger('id');
+            $table->unsignedBigInteger('id');
             $table->foreign('id')
                     ->references('id')
                     ->on('users')

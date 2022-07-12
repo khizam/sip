@@ -25,6 +25,6 @@ class RemoveStatusFromBarangmasukTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('barangmasuk');
+        // Schema::dropIfExists('barangmasuk');
     }
 }

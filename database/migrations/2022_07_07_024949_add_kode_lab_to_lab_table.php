@@ -17,7 +17,7 @@ class AddKodeLabToLabTable extends Migration
             $table->string('kode_lab')
             ->unique()
             ->after('id_lab');
-            $table->enum('status', ['Accept', 'Reject'])->nullable()->default('Reject');
+            $table->enum('status', ['Accept', 'Reject'])->default('Reject');
         });
     }
 
@@ -28,6 +28,9 @@ class AddKodeLabToLabTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lab');
+        Schema::table('lab', function (Blueprint $table) {
+            $table->dropColumn('kode_lab');
+            $table->dropColumn('status');
+        });
     }
 }

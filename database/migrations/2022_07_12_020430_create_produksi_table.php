@@ -20,7 +20,7 @@ class CreateProduksiTable extends Migration
             $table->unsignedInteger('id_reqproduksi');
             $table->foreign('id_reqproduksi')
                     ->references('id_reqproduksi')
-                    ->on('produksi')
+                    ->on('request_produksi')
                     ->onUpdate('restrict')
                     ->onDelete('restrict');
             $table->integer('request_bahan')->nullable();
