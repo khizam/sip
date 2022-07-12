@@ -30,9 +30,6 @@ class AddBahanLayakDanTidakLayakToLabTable extends Migration
      */
     public function down()
     {
-        Schema::table('lab', function (Blueprint $table) {
-            $table->dropColumn('bahan_layak');
-            $table->dropColumn('bahan_tidak_layak');
-        });
+        Schema::dropIfExists('lab');
     }
 }

@@ -1,21 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Hi</title>
+	<title>Laporan Lab</title>
 </head>
 <body>
-	<h1>{{ "Print PDF" }}</h1>
-    <ul>
-        @foreach ($labs as $l)
-        <li>{{ $l->barang_masuk->bahan->nama_bahan }}</li>
-        @endforeach
-    </ul>
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+	<h3>{{ "Laporan Lab" }}</h3>
+	<style type="text/css">
+		table tr td,
+		table tr th{
+			
+			font-size: 8pt;
+			padding: 7px;
+			
+			
+		}
+	</style>
+
+    <table class='table' border="1">
+	<thead>
+		<tr>
+			<th>No</th>
+			<th>kode lab</th>
+			<th>tanggal</th>
+			<th>nama_bahan</th>
+			<th>satuan</th>
+			<th>parameter</th>
+			<th>hasil</th>
+			<th>kesimpulan</th>
+			<th>grid</th>
+			<th>bahan_layak</th>
+			<th>status</th>
+		</tr>
+	</thead>
+	<tbody>
+		@php $i=1 @endphp
+		@foreach($labs as $l)
+		<tr>
+			<td>{{ $i++ }}</td>
+			<td>{{$l->kode_lab}}</td>
+			<td>{{$l->updated_at}}</td>
+			<td>{{$l->barang_masuk->bahan->nama_bahan}}</td>
+			<td>{{$l->satuan}}</td>
+			<td>{{$l->parameter}}</td>
+			<td>{{$l->hasil}}</td>
+			<td>{{$l->kesimpulan}}</td>
+			<td>{{$l->grid}}</td>
+			<td>{{$l->bahan_layak}}</td>
+			<td>{{$l->status}}</td>
+		</tr>
+		@endforeach
+	</tbody>
+    </table>
 
 </body>
 </html>

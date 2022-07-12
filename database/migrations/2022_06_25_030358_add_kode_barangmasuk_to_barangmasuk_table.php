@@ -14,7 +14,7 @@ class AddKodeBarangmasukToBarangmasukTable extends Migration
     public function up()
     {
         Schema::table('barangmasuk', function (Blueprint $table) {
-            $table->string('kode_barangmasuk')
+            $table->string('kode_barangmasuk')->nullable()
             ->unique()
             ->after('id_barangmasuk');
         });
@@ -27,8 +27,6 @@ class AddKodeBarangmasukToBarangmasukTable extends Migration
      */
     public function down()
     {
-        Schema::table('barangmasuk', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('barangmasuk');
     }
 }

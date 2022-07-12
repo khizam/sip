@@ -28,8 +28,6 @@ class AddKodeLabToLabTable extends Migration
      */
     public function down()
     {
-        Schema::table('lab', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('lab');
     }
 }

@@ -25,8 +25,6 @@ class RemoveStatusFromBarangmasukTable extends Migration
      */
     public function down()
     {
-        Schema::table('barangmasuk', function (Blueprint $table) {
-            $table->dropColumn('status');
-        });
+        Schema::dropIfExists('barangmasuk');
     }
 }

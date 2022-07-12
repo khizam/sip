@@ -16,7 +16,7 @@
       <div class="col-md-12">
         <div class="box">
           <div class="box-header with-border">   
-         <a href="/lab/cetakLab" class="btn btn-primary" target="_blank">CETAK PDF</a>
+         <a href="/lab/cetak_pdf" class="btn btn-primary btn-xs" target="_blank">Cetak PDF</a>
             
           <div class="box-body table-responsive">
             <table class="table table-striped table-bordered">

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+
 class LabController extends Controller
 {
     /**
@@ -217,6 +218,6 @@ class LabController extends Controller
         // return view('lab.lab_pdf', compact('labs'));
         $pdf = Pdf::loadview('lab.lab_pdf',compact('labs'));
         return $pdf->download('laporan-lab.pdf');
-
     }
+
 }
