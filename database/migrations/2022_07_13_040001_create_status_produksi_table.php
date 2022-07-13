@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class RemoveStatusFromBarangmasukTable extends Migration
+class CreateStatusProduksiTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class RemoveStatusFromBarangmasukTable extends Migration
      */
     public function up()
     {
-        Schema::table('barangmasuk', function (Blueprint $table) {
-            //
+        Schema::create('status_produksi', function (Blueprint $table) {
+            $table->increments('id_status');
+            $table->string('status');
+            $table->timestamps();
         });
     }
 
@@ -25,6 +27,6 @@ class RemoveStatusFromBarangmasukTable extends Migration
      */
     public function down()
     {
-        // Schema::dropIfExists('barangmasuk');
+        Schema::dropIfExists('status_produksis');
     }
 }

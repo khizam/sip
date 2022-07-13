@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateLabRequest;
 use App\Models\Barangmasuk;
+use App\Models\Enums\StatusGudangEnum;
 use App\Models\Lab;
+use App\Models\Enums\StatusLabEnum;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -31,11 +32,11 @@ class LabController extends Controller
 
     public function data()
     {
-        $lab = Lab::join('barangmasuk','barangmasuk.id_barangmasuk','=','lab.id_barangmasuk')
+        $lab = Lab::with('status_gudang')
+        ->join('barangmasuk','barangmasuk.id_barangmasuk','=','lab.id_barangmasuk')
         ->join('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
         ->orderBy('kode_barangmasuk', 'asc')
         ->get();
-        // return Lab::all();
 
         return datatables()
         ->of($lab)
@@ -104,8 +105,10 @@ class LabController extends Controller
                 throw new NotFoundHttpException("barang tidak ditemukan");
             }
             return jsonResponse($barangMasuk, 200);
+        } catch (NotFoundHttpException $th) {
+            return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
         } catch (\Throwable $th) {
-            return jsonResponse("Terjadi kesalahan ".$th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+            return jsonResponse("Terjadi kesalahan ".$th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -132,11 +135,11 @@ class LabController extends Controller
                     return jsonResponse('Data berhasil disimpan', 200);
                 } else {
                     DB::rollback();
-                    return jsonResponse('Jumlah bahan layak dan tidak, tidak boleh lebih dari '.$totalBahanLab, Response::HTTP_NOT_ACCEPTABLE);
+                    return jsonResponse('Jumlah bahan layak dan tidak, tidak boleh lebih dari '.$jumlahBahanBrgMsk, Response::HTTP_NOT_ACCEPTABLE);
                 }
             } else {
                 DB::rollback();
-                return jsonResponse('Jumlah bahan layak dan tidak, tidak boleh lebih dari '.$totalBahanLab, Response::HTTP_NOT_ACCEPTABLE);
+                return jsonResponse('Jumlah bahan layak dan tidak, tidak boleh lebih dari '.$jumlahBahanBrgMsk, Response::HTTP_NOT_ACCEPTABLE);
             }
         } catch (\Throwable $th) {
             DB::rollback();
@@ -152,8 +155,10 @@ class LabController extends Controller
                 throw new NotFoundHttpException("barang tidak ditemukan");
             }
             return jsonResponse($lab, 200);
+        } catch (NotFoundHttpException $th) {
+            return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
         } catch (\Throwable $th) {
-            return jsonResponse($th->getMessage() ?? 'data tidak ditemukan', $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+            return jsonResponse($th->getMessage() ?? 'data tidak ditemukan', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -166,8 +171,10 @@ class LabController extends Controller
             }
             $lab->update($request->validated());
             return jsonResponse($lab);
-        } catch (\Throwable $th) {
+        } catch (NotFoundHttpException $th) {
             return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -186,8 +193,10 @@ class LabController extends Controller
             }
             $barangmasuk->delete();
             return jsonResponse(null, Response::HTTP_NO_CONTENT);
-        } catch (\Throwable $th) {
+        } catch (NotFoundHttpException $th) {
             return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -198,24 +207,29 @@ class LabController extends Controller
             if ($lab == null) {
                 throw new NotFoundHttpException("Barang tidak ditemukan");
             }
-            if($request->status == 'selesai') {
+            if($request->status == StatusLabEnum::Accept) {
                 $jumlahHasilLab = $lab->bahan_layak + $lab->bahan_tidak_layak;
                 $jumlahBahanBrgMsk = $lab->barang_masuk->jumlah_bahan;
                 if($jumlahBahanBrgMsk != $jumlahHasilLab){
                     throw new HttpException(Response::HTTP_NOT_ACCEPTABLE, "Bahan yang diverifikasi {$jumlahHasilLab} dari {$jumlahBahanBrgMsk}");
                 }
             }
+            $request->merge([
+                'id_status_gudang' => StatusGudangEnum::Sudah
+            ]);
             $lab->update($request->all());
+            return jsonResponse($request);
             return jsonResponse("berhasil");
-        } catch (\Throwable $th) {
+        } catch (NotFoundHttpException $th) {
             return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function printPdfLab()
     {
         $labs = Lab::with('barang_masuk.bahan')->get();
-        // return view('lab.lab_pdf', compact('labs'));
         $pdf = Pdf::loadview('lab.lab_pdf',compact('labs'));
         return $pdf->download('laporan-lab.pdf');
     }

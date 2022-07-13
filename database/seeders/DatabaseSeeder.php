@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Bahan;
 use App\Models\Kategori;
 use App\Models\Produk;
+use App\Models\StatusGudangProduksi;
 use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -38,6 +39,13 @@ class DatabaseSeeder extends Seeder
         ]);
         Bahan::firstOrCreate([
             'nama_bahan'=>'kain',
+        ]);
+
+        // nambah seeder
+        $this->call([
+            StatusGudangSeeder::class,
+            StatusProduksiSeeder::class,
+            StatusGudangProduksiSeeder::class,
         ]);
     }
 }

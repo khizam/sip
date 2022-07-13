@@ -22,10 +22,10 @@ class CreateLabTable extends Migration
                   ->onUpdate('restrict')
                   ->onDelete('restrict');
             $table->enum('satuan', ['kg', 'liter'])->nullable();
-            $table->string('parameter')->nullable();
-            $table->string('hasil')->nullable();
+            $table->text('parameter')->nullable();
+            $table->text('hasil')->nullable();
             $table->text('kesimpulan')->nullable();
-            $table->string('grid')->nullable();
+            $table->text('grid')->nullable();
             $table->timestamps();
         });
     }

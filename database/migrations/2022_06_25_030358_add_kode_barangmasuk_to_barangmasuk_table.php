@@ -27,6 +27,8 @@ class AddKodeBarangmasukToBarangmasukTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('barangmasuk');
+        Schema::table('barangmasuk', function (Blueprint $table) {
+            $table->dropColumn('kode_barangmasuk');
+        });
     }
 }

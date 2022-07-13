@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProduksiBarangsTable extends Migration
+class CreateProduksiBarangTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class CreateProduksiBarangsTable extends Migration
      */
     public function up()
     {
-        Schema::create('produksi_barangs', function (Blueprint $table) {
-            $table->increments('id_produksibarang');
+        Schema::create('produksi_barang', function (Blueprint $table) {
+            $table->increments('id_produksi');
             $table->unsignedInteger('id_produk');
             $table->foreign('id_produk')
                   ->references('id_produk')
@@ -22,18 +22,14 @@ class CreateProduksiBarangsTable extends Migration
                   ->onUpdate('restrict')
                   ->onDelete('restrict');
             $table->unsignedInteger('id_status');
-            $table->foreign('id_statusproduksi')
-                  ->references('id_statusproduksi')
-                  ->on('status_produksis')
-                  ->onUpdate('restrict')
-                  ->onDelete('restrict');
-            $table->unsignedInteger('id_bahan');
-            $table->foreign('id_bahan')
+            $table->foreign('id_status')
+                  ->references('id_status')
+                  ->on('status_produksi')
                   ->onUpdate('restrict')
                   ->onDelete('restrict');
             $table->integer('jumlah');
-            $table->unsignedBigInteger('id');
-            $table->foreign('id')
+            $table->unsignedBigInteger('id_user');
+            $table->foreign('id_user')
                   ->references('id')
                   ->on('users')
                   ->onUpdate('restrict')

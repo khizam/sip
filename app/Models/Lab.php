@@ -11,7 +11,19 @@ class Lab extends Model
 
     protected $table = 'lab';
     protected $primaryKey = 'id_lab';
-    protected $fillable = ['kode_lab','id_barangmasuk','satuan','parameter','hasil','kesimpulan','grid','bahan_layak','bahan_tidak_layak', 'status'];
+    protected $fillable = [
+        'kode_lab',
+        'id_barangmasuk',
+        'satuan',
+        'parameter',
+        'hasil',
+        'kesimpulan',
+        'grid',
+        'bahan_layak',
+        'bahan_tidak_layak',
+        'status',
+        'id_status_gudang',
+    ];
     protected $guarded = [];
 
     protected $casts = [
@@ -21,5 +33,9 @@ class Lab extends Model
 
     public function barang_masuk() {
         return $this->hasOne(Barangmasuk::class,'id_barangmasuk','id_barangmasuk');
+    }
+
+    public function status_gudang() {
+        return $this->belongsTo(StatusGudang::class,'id_status_gudang','id_status');
     }
 }

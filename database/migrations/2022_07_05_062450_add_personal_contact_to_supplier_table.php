@@ -27,6 +27,8 @@ class AddPersonalContactToSupplierTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('supplier');
+        Schema::table('supplier', function (Blueprint $table) {
+            $table->dropColumn('contact_person');
+        });
     }
 }

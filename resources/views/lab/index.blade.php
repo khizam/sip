@@ -15,9 +15,9 @@
 <div class="row">
       <div class="col-md-12">
         <div class="box">
-          <div class="box-header with-border">   
+          <div class="box-header with-border">
          <a href="/lab/cetak_pdf" class="btn btn-primary btn-xs" target="_blank">Cetak PDF</a>
-            
+
           <div class="box-body table-responsive">
             <table class="table table-striped table-bordered">
               <thead>
@@ -30,6 +30,7 @@
                 <th class="hidden">Bahan Tdk Layak</th>
                 <th>Satuan</th>
                 <th>Status</th>
+                <th>Status Gudang</th>
                 <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
               <tbody>
@@ -73,6 +74,7 @@
             {data: 'bahan_tidak_layak', visible:false,},
             {data: 'satuan'},
             {data: 'status'},
+            {data: 'status_gudang.status'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });
