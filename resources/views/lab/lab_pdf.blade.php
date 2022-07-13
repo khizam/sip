@@ -10,9 +10,6 @@
 		table tr th{
 			
 			font-size: 8pt;
-			padding: 7px;
-			
-			
 		}
 	</style>
 
