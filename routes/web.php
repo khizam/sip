@@ -6,6 +6,7 @@ use App\Http\Controllers\{
     ProdukController,
     BarangmasukController,
     LabController,
+    UserController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -56,4 +57,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/lab/check-status/{id}', [LabController::class, 'checkStatus'])->name('lab.checkStatus');
     Route::get('/lab/cetak_pdf', [LabController::class, 'printPdfLab']);
     Route::resource('/lab', LabController::class);
+
+    // Route User
+    Route::get('/user/data',[UserController::class,'data'])->name('user.data');
+    Route::resource('/user', UserController::class);
 });

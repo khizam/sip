@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
             StatusGudangSeeder::class,
             StatusProduksiSeeder::class,
             StatusGudangProduksiSeeder::class,
+            RoleSeeder::class,
         ]);
     }
 }

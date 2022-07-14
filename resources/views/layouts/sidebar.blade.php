@@ -45,12 +45,13 @@
               <li class="active"><a href="{{ route('bahan.index') }}"><i class="fa fa-reorder"></i>Bahan</a></li>
               <li class="active"><a href="{{ route('produk.index')}}"><i class="fa fa-cubes"></i>Produk</a></li>
               <li class="active"><a href="{{ route('kategori.index') }}"><i class="fa fa-cube"></i>Kategori</a></li>
+              <li class="active"><a href="{{ route('user.index') }}"><i class="fa fa-user"></i>User</a></li>
             </ul>
           </li>
-          
+
 
           <li class="header">Barang</li>
-          <li class="active treeview">          
+          <li class="active treeview">
             <a href="#">
               <i class="fa fa-th"></i> <span>Barang Masuk</span>
               <span class="pull-right-container">
