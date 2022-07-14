@@ -24,7 +24,7 @@
                     <span class="help-block with-errors"></span>
                 </div>
               </div>
-              <div class="form-group row">
+              <div class="form-group row" id="form_group_password">
                 <label for="password" class="col-md-2 col-md-offset-1 control-label">Password</label>
                 <div class="col-md-7">
                     <input type="password" name="password" id="password" class="form-control" required>

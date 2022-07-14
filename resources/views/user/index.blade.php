@@ -91,7 +91,6 @@
         .done((response) => {
             let option = '<option value="">Pilih Role</option>'
             response.forEach(value => {
-                console.log(value)
                 option += '<option value="' + value.id + '">'+value.name+'</option>'
             });
             $("#role").append(option);
@@ -102,23 +101,34 @@
         });
     }
 
-    function editForm(url) {
+    function editForm(url, url_edit) {
         $('#modal-form').modal('show');
-        $('#modal-form .modal-title').text('Tambah User');
+        $('#modal-form .modal-title').text('Edit User');
 
         $('#modal-form form')[0].reset();
         $('#modal-form form').attr('action', url);
         $('#modal-form [name=_method]').val('put');
-        $('#modal-form [name=nama_User]').focus();
+        $('#modal-form [name=name]').focus();
+        $('#form_group_password').remove();
+        $("#role option").each(function() {
+            $(this).remove();
+        });
 
-        $.get(url)
-            .done((response) => {
-              $('#modal-form [name=nama_User]').val(response.nama_User);
-            })
-            .fail((errors) => {
-                alert(errors)
-                return;
+        $.get(url_edit)
+        .done((response) => {
+            let option = '<option value="">Pilih Role</option>'
+            response.roles.forEach(value => {
+                let selected = value.id == response.user[0].roles[0].id ? "selected": "";
+                option += '<option value="' + value.id + '" '+selected+'>'+value.name+'</option>'
             });
+            $("#role").append(option);
+            $('#modal-form [name=name]').val(response.user[0].name);
+            $('#modal-form [name=email]').val(response.user[0].email);
+        })
+        .fail((errors) => {
+            alert(errors)
+            return;
+        });
     }
       function deleteData(url) {
             if (confirm('Yakin ingin menghapus data terpilih?')) {
