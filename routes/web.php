@@ -7,6 +7,7 @@ use App\Http\Controllers\{
     BarangmasukController,
     LabController,
     GudangController,
+    UserController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -60,4 +61,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/gudang/data', [GudangController::class, 'data'])->name('gudang.data');
     Route::resource('/gudang', GudangController::class);
+    // Route User
+    Route::get('/user/data',[UserController::class,'data'])->name('user.data');
+    Route::resource('/user', UserController::class);
 });
