@@ -130,6 +130,7 @@ class BarangmasukController extends Controller
                     'bahan_tidak_layak' => 0,
                 ]);
             }
+            
             DB::commit();
             return response()->json('Data berhasil disimpan', 200);
         } catch (\Throwable $th) {

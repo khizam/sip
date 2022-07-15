@@ -6,6 +6,7 @@ use App\Http\Requests\UpdateLabRequest;
 use App\Models\Barangmasuk;
 use App\Models\Enums\StatusGudangEnum;
 use App\Models\Lab;
+use App\Models\Gudang;
 use App\Models\Enums\StatusLabEnum;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
@@ -202,7 +203,9 @@ class LabController extends Controller
 
     public function checkStatus(Request $request, $id): JsonResponse
     {
+        
         try {
+            DB::beginTransaction();
             $lab = Lab::with('barang_masuk')->find($id);
             if ($lab == null) {
                 throw new NotFoundHttpException("Barang tidak ditemukan");
@@ -214,10 +217,25 @@ class LabController extends Controller
                     throw new HttpException(Response::HTTP_NOT_ACCEPTABLE, "Bahan yang diverifikasi {$jumlahHasilLab} dari {$jumlahBahanBrgMsk}");
                 }
             }
+
             $request->merge([
                 'id_status_gudang' => StatusGudangEnum::Sudah
             ]);
+
             $lab->update($request->all());
+            
+            try {
+                $gudang = new Gudang();
+                $gudang->id_lab = $request->id_lab;
+                $gudang->save();
+                DB::commit();
+                    return jsonResponse('Data berhasil disimpan', 200);
+            } catch (\Exception $e) {
+                DB::rollback();
+                throw $e;
+            }
+          
+
             return jsonResponse($request);
             return jsonResponse("berhasil");
         } catch (NotFoundHttpException $th) {
