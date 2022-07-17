@@ -2,19 +2,9 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Models\Lab;
 use App\Models\Gudang;
-use App\Models\Enums\StatusGudangEnum;
-// use App\Models\Gudang;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 class GudangController extends Controller
@@ -44,7 +34,7 @@ class GudangController extends Controller
 
     public function data()
     {
-        if (Gate::denies('produk_index')) {
+        if (Gate::denies('gudang_index')) {
             return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
         }
         $gudang = Gudang::with('status_gudang')
