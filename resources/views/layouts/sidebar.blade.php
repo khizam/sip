@@ -98,7 +98,7 @@
           </li>
           @endcan
 
-          @can('produksi_index')
+          @can('produksibarang_index')
           <li class="header">Produksi</li>
           <li class="active treeview">
             <a href="#">
