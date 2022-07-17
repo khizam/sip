@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kategori;
+use Illuminate\Support\Facades\Gate;
 
 class KategoriController extends Controller
 {
@@ -14,11 +15,15 @@ class KategoriController extends Controller
      */
     public function index()
     {
+        $this->authorize('produk_index');
         return view('kategori.index');
     }
 
     public function data()
     {
+        if (Gate::denies('kategori_index')) {
+            return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
+        }
         $kategori = Kategori::orderBy('id_kategori', 'desc')->get();
 
         return datatables()
@@ -29,7 +34,7 @@ class KategoriController extends Controller
                 <div class="btn-group">
                     <button onclick="editForm(`'. route('kategori.update', $kategori->id_kategori) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
                     <button onclick="deleteData(`'. route('kategori.destroy', $kategori->id_kategori) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
-                </div> 
+                </div>
                 ';
             })
             ->rawColumns(['aksi'])
@@ -54,6 +59,9 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
+        if (Gate::denies('kategori_create')) {
+            return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
+        }
         $kategori = new Kategori();
         $kategori->nama_kategori = $request->nama_kategori;
         $kategori->save();
@@ -69,6 +77,9 @@ class KategoriController extends Controller
      */
     public function show($id)
     {
+        if (Gate::denies('kategori_edit')) {
+            return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
+        }
         $kategori = Kategori::find($id);
 
         return response()->json($kategori);
@@ -94,6 +105,9 @@ class KategoriController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (Gate::denies('kategori_edit')) {
+            return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
+        }
         $kategori = Kategori::find($id);
         $kategori->nama_kategori = $request->nama_kategori;
         $kategori->update();
@@ -109,6 +123,9 @@ class KategoriController extends Controller
      */
     public function destroy($id)
     {
+        if (Gate::denies('kategori_delete')) {
+            return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
+        }
         $kategori = Kategori::find($id);
         $kategori->delete();
 

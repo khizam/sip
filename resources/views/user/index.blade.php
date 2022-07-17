@@ -118,7 +118,7 @@
         .done((response) => {
             let option = '<option value="">Pilih Role</option>'
             response.roles.forEach(value => {
-                let selected = value.id == response.user[0].roles[0].id ? "selected": "";
+                let selected = value.id == response.user[0].roles[0]?.id ? "selected": ""
                 option += '<option value="' + value.id + '" '+selected+'>'+value.name+'</option>'
             });
             $("#role").append(option);

@@ -12,6 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -25,6 +26,9 @@ class GudangController extends Controller
      */
     public function index()
     {
+        if (Gate::denies('gudang_index')) {
+            return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
+        }
         return view('gudang.index');
     }
 
@@ -40,6 +44,9 @@ class GudangController extends Controller
 
     public function data()
     {
+        if (Gate::denies('produk_index')) {
+            return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
+        }
         $gudang = Gudang::with('status_gudang')
         ->join('lab','lab.id_lab','=','gudang.id_lab')
         ->join('barangmasuk', 'barangmasuk.id_barangmasuk','=','lab.id_barangmasuk')
@@ -57,7 +64,7 @@ class GudangController extends Controller
         ->addColumn('bahan_layak', function ($lab) {
             return format_uang($lab->bahan_layak);
         })
-        
+
         // ->addColumn('aksi', function ($lab) {
         //     return '
         //     <div class="">
@@ -67,7 +74,7 @@ class GudangController extends Controller
         //     </div>
         //     ';
         // })
-        // 'aksi', 
+        // 'aksi',
         ->rawColumns(['id_gudang', 'bahan_layak'])
         ->make(true);
 

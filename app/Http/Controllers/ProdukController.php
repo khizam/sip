@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Produk;
+use Illuminate\Support\Facades\Gate;
 
 class ProdukController extends Controller
 {
@@ -14,11 +15,15 @@ class ProdukController extends Controller
      */
     public function index()
     {
+        $this->authorize('produk_index');
         return view('produk.index');
     }
 
     public function data()
     {
+        if (Gate::denies('produk_index')) {
+            return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
+        }
         $produk = Produk::orderBy('id_produk', 'desc')->get();
 
         return datatables()
@@ -54,6 +59,9 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
+        if (Gate::denies('produk_create')) {
+            return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
+        }
         $produk = Produk::latest()->first();
         $produk = Produk::create($request->all());
 
@@ -68,6 +76,9 @@ class ProdukController extends Controller
      */
     public function show($id)
     {
+        if (Gate::denies('produk_edit')) {
+            return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
+        }
         $produk = Produk::find($id);
 
         return response()->json($produk);
@@ -93,6 +104,9 @@ class ProdukController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (Gate::denies('produk_edit')) {
+            return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
+        }
         $produk = Produk::find($id);
         $produk->nama_produk = $request->nama_produk;
         $produk->update();
@@ -108,6 +122,9 @@ class ProdukController extends Controller
      */
     public function destroy($id)
     {
+        if (Gate::denies('produk_delete')) {
+            return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
+        }
         $produk = Produk::find($id);
         $produk->delete();
 

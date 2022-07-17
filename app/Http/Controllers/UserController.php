@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -20,11 +22,15 @@ class UserController extends Controller
      */
     public function index()
     {
+        $this->authorize('user_index');
         return view('user.index');
     }
 
     public function data()
     {
+        if (Gate::denies('user_index')) {
+            return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
+        }
         $user = User::all();
         $user = $user->map(function($user){
             $user->getRoleNames();
@@ -54,11 +60,14 @@ class UserController extends Controller
     public function create()
     {
         try {
+            $this->authorize('user_create');
             $role = Role::orderBy('id')->get(['id','name']);
             if ($role == null) {
                 throw new NotFoundHttpException("Role tidak ditemukan");
             }
             return jsonResponse($role);
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
         } catch (NotFoundHttpException $th) {
             return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
         } catch (\Throwable $th) {
@@ -76,10 +85,6 @@ class UserController extends Controller
     {
         try {
             DB::beginTransaction();
-            if ($request->filled('password')) {
-                $hash_password = bcrypt($request->password);
-                $request->merge(["password"=>$hash_password]);
-            }
             $user = User::create(
                 $request->only(['name','email','password'])
             );
@@ -87,6 +92,8 @@ class UserController extends Controller
             $user->assignRole($request->role);
             DB::commit();
             return jsonResponse($user);
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
         } catch (\Throwable $th) {
             return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -113,6 +120,7 @@ class UserController extends Controller
     {
         $data = [];
         try {
+            $this->authorize('user_edit');
             $user = User::where('id',$id)->get();
             $user->map(function($user){
                 $user->getRoleNames();
@@ -124,6 +132,8 @@ class UserController extends Controller
             $data['user'] = $user;
             $data['roles'] = $role;
             return jsonResponse($data);
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
         } catch (NotFoundHttpException $th) {
             return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
         } catch (\Throwable $th) {
@@ -141,6 +151,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, $id)
     {
         try {
+            $this->authorize('user_edit');
             DB::beginTransaction();
             $user = User::find($id);
             if ($user == null) {
@@ -150,6 +161,8 @@ class UserController extends Controller
             $user->syncRoles($request->only('role'));
             DB::commit();
             return jsonResponse($user);
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
         } catch (NotFoundHttpException $th) {
             DB::rollback();
             return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -168,12 +181,15 @@ class UserController extends Controller
     public function destroy($id)
     {
         try {
+            $this->authorize('user_delete');
             $user = User::find($id);
             if ($user == null) {
                 throw new NotFoundHttpException("User tidak ditemukan");
             }
             $user->delete();
             return jsonResponse(null, Response::HTTP_NO_CONTENT);
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
         } catch (NotFoundHttpException $th) {
             return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
         } catch (\Throwable $th) {

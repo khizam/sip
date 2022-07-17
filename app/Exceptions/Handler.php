@@ -2,9 +2,11 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
@@ -45,7 +47,9 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e)
     {
         if ($e instanceof QueryException || $e instanceof ModelNotFoundException) {
-            $e = new NotFoundHttpException("Resource Not Found");
+            $e = new NotFoundHttpException("Data Tidak ditemukan");
+        } elseif ($e instanceof AuthorizationException) {
+            $e = new AccessDeniedHttpException("Anda tidak dapat Mengakses Halaman atau Tindakan ini", $e);
         }
         return parent::render($request, $e);
     }

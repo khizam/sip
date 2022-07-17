@@ -9,16 +9,19 @@ use App\Models\Lab;
 use App\Models\Gudang;
 use App\Models\Enums\StatusLabEnum;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 class LabController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -26,13 +29,15 @@ class LabController extends Controller
      */
     public function index()
     {
-
+        $this->authorize('lab_index');
         return view('lab.index');
-
     }
 
     public function data()
     {
+        if (Gate::denies('lab_index')) {
+            return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
+        }
         $lab = Lab::with('status_gudang')
         ->join('barangmasuk','barangmasuk.id_barangmasuk','=','lab.id_barangmasuk')
         ->join('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
@@ -76,6 +81,7 @@ class LabController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('lab_create');
         return response()->json('Data berhasil disimpan', 200);
     }
 
@@ -87,6 +93,7 @@ class LabController extends Controller
      */
     public function show($id)
     {
+        $this->authorize('lab_edit');
         $barangmasuk = Barangmasuk::find($id);
 
         return response()->json($barangmasuk);
@@ -101,11 +108,14 @@ class LabController extends Controller
     public function edit($id)
     {
         try {
+            $this->authorize('lab_edit');
             $barangMasuk = Lab::with('barang_masuk.bahan','barang_masuk.kategori','barang_masuk.supplier')->find($id);
             if($barangMasuk == null) {
                 throw new NotFoundHttpException("barang tidak ditemukan");
             }
             return jsonResponse($barangMasuk, 200);
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
         } catch (NotFoundHttpException $th) {
             return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
         } catch (\Throwable $th) {
@@ -125,6 +135,7 @@ class LabController extends Controller
         $bahanLayak = $request->bahan_layak;
         $bahanTidakLayak = $request->bahan_tidak_layak;
         try {
+            $this->authorize('lab_edit');
             DB::beginTransaction();
             $barangMasuk = Lab::with('barang_masuk')->find($id);
             $jumlahBahanBrgMsk = $barangMasuk->barang_masuk->jumlah_bahan;
@@ -142,6 +153,8 @@ class LabController extends Controller
                 DB::rollback();
                 return jsonResponse('Jumlah bahan layak dan tidak, tidak boleh lebih dari '.$jumlahBahanBrgMsk, Response::HTTP_NOT_ACCEPTABLE);
             }
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
         } catch (\Throwable $th) {
             DB::rollback();
             return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -151,14 +164,18 @@ class LabController extends Controller
     public function editLab($id): JsonResponse
     {
         try {
+            $this->authorize('lab_edit');
             $lab = Lab::with('barang_masuk')->find($id);
             if ($lab == null) {
                 throw new NotFoundHttpException("barang tidak ditemukan");
             }
             return jsonResponse($lab, 200);
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
         } catch (NotFoundHttpException $th) {
             return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
         } catch (\Throwable $th) {
+            echo "authorization throwable";
             return jsonResponse($th->getMessage() ?? 'data tidak ditemukan', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -166,12 +183,16 @@ class LabController extends Controller
     public function updateLab(UpdateLabRequest $request, $id): JsonResponse
     {
         try {
+            $this->authorize('lab_edit');
             $lab = Lab::find($id);
             if ($lab == null) {
                 throw new NotFoundHttpException("Barang tidak ditemukan");
             }
             $lab->update($request->validated());
             return jsonResponse($lab);
+
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
         } catch (NotFoundHttpException $th) {
             return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
         } catch (\Throwable $th) {
@@ -188,12 +209,15 @@ class LabController extends Controller
     public function destroy($id)
     {
         try {
+            $this->authorize('lab_delete');
             $barangmasuk = Barangmasuk::find($id);
             if ($barangmasuk == null) {
                 throw new NotFoundHttpException("Barang tidak ditemukan");
             }
             $barangmasuk->delete();
             return jsonResponse(null, Response::HTTP_NO_CONTENT);
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
         } catch (NotFoundHttpException $th) {
             return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
         } catch (\Throwable $th) {
@@ -203,7 +227,7 @@ class LabController extends Controller
 
     public function checkStatus(Request $request, $id): JsonResponse
     {
-        
+        $this->authorize('lab_edit');
         try {
             DB::beginTransaction();
             $lab = Lab::with('barang_masuk')->find($id);
@@ -223,21 +247,11 @@ class LabController extends Controller
             ]);
 
             $lab->update($request->all());
-            
-            try {
-                $gudang = new Gudang();
-                $gudang->id_lab = $request->id_lab;
-                $gudang->save();
-                DB::commit();
-                    return jsonResponse('Data berhasil disimpan', 200);
-            } catch (\Exception $e) {
-                DB::rollback();
-                throw $e;
-            }
-          
-
-            return jsonResponse($request);
-            return jsonResponse("berhasil");
+            $gudang = new Gudang();
+            $gudang->id_lab = $request->id_lab;
+            $gudang->save();
+            DB::commit();
+            return jsonResponse('Data berhasil disimpan', 200);
         } catch (NotFoundHttpException $th) {
             return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
         } catch (\Throwable $th) {
@@ -247,6 +261,7 @@ class LabController extends Controller
 
     public function printPdfLab()
     {
+        $this->authorize('lab_edit');
         $labs = Lab::with('barang_masuk.bahan')->get();
         $pdf = Pdf::loadview('lab.lab_pdf',compact('labs'));
         return $pdf->download('laporan-lab.pdf');
