@@ -56,10 +56,6 @@ class LabController extends Controller
             return '<span class="label label-success">'. $lab->id_lab .'</span>';
         })
 
-        ->addColumn('jumlah_bahan', function ($barangmasuk) {
-            return format_uang($barangmasuk->jumlah_bahan);
-        })
-
         ->addColumn('aksi', function ($lab) {
             return '
             <div class="">

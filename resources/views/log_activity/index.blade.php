@@ -63,7 +63,7 @@
             {data: 'description'},
             {data: 'subject_type'},
             {data: 'causer.name'},
-            {data: 'properties'},
+            {data: 'attributes_to_text'},
           ]
         });
     });
