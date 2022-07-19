@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -19,7 +20,8 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
-    use HasRoles;
+    use HasRoles; // Spatie/Permission
+    use LogsActivity; //Spatie/laravel-activitylog
 
     /**
      * The attributes that are mass assignable.
@@ -31,6 +33,16 @@ class User extends Authenticatable
         'email',
         'password',
     ];
+
+    /**
+     * log any attribute that has changed. spatie/laravel-acitivtylog
+     */
+    protected static $logAttributes  = ['name','email'];
+
+    /**
+     * Specify $logName to make the model use another name than the default.
+     */
+    protected static $logName = 'user';
 
     /**
      * The attributes that should be hidden for serialization.

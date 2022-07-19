@@ -7,6 +7,7 @@ use App\Http\Controllers\{
     BarangmasukController,
     LabController,
     GudangController,
+    LogActivityController,
     UserController,
 };
 use Illuminate\Support\Facades\Route;
@@ -64,4 +65,8 @@ Route::group(['middleware' => 'auth'], function () {
     // Route User
     Route::get('/user/data',[UserController::class,'data'])->name('user.data');
     Route::resource('/user', UserController::class);
+
+    Route::get('logs',[LogActivityController::class, 'index'])->name('log.activity_user');
+    Route::get('logs/data',[LogActivityController::class, 'data'])->name('log.activity_data');
+    Route::get('logs/delete/all',[LogActivityController::class, 'delete'])->name('log.delete_all');
 });
