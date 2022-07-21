@@ -2,11 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Auth\Access\Gate;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Artisan;
 use Spatie\Activitylog\Models\Activity;
 
 class LogActivityController extends Controller

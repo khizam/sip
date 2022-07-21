@@ -19,11 +19,9 @@ class DatabaseSeeder extends Seeder
         // Artisan::call('php artisan permission:cache-reset');
         app(PermissionRegistrar::class)->forgetCachedPermissions();
         $this->call([
-            RoleSeeder::class,
             StatusGudangProduksiSeeder::class,
             StatusGudangSeeder::class,
             StatusProduksiSeeder::class,
-            StatusGudangProduksiSeeder::class,
             SatuanSeeder::class,
             RoleSeeder::class,
             BahanPermissionSeeder::class,
