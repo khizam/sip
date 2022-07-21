@@ -2,13 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Bahan;
-use App\Models\Enums\RolesEnum;
-use App\Models\Kategori;
-use App\Models\Produk;
-use App\Models\Supplier;
-use App\Models\User;
-use App\Models\Satuan;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\PermissionRegistrar;
 
@@ -48,11 +41,11 @@ class DatabaseSeeder extends Seeder
         // Artisan::call('php artisan permission:cache-reset');
         app(PermissionRegistrar::class)->forgetCachedPermissions();
         $this->call([
-            RoleSeeder::class,
             StatusGudangProduksiSeeder::class,
             StatusGudangSeeder::class,
             StatusProduksiSeeder::class,
             SatuanSeeder::class,
+            RoleSeeder::class,
             BahanPermissionSeeder::class,
             BarangMasukPermissionSeeder::class,
             DetailProduksiPermissionSeeder::class,

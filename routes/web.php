@@ -65,7 +65,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/gudang/data', [GudangController::class, 'data'])->name('gudang.data');
     Route::get('/gudang/edit-gudang/{id}', [GudangController::class, 'editGudang'])->name('gudang.editGudang');
     Route::resource('/gudang', GudangController::class);
-    
+
     // Route User
     Route::get('/user/data',[UserController::class,'data'])->name('user.data');
     Route::resource('/user', UserController::class);
