@@ -37,7 +37,7 @@ class OwnerController extends Controller
         ->leftJoin('status_produksi', 'status_produksi.id_status', '=', 'produksi_barang.id_status')
         ->leftJoin('users', 'users.id', '=', 'produksi_barang.id_user')
         ->leftJoin('satuan', 'satuan.id_satuan', '=', 'produksi_barang.id_satuan')
-        ->select('produksi_barang.*', 'produk.nama_produk', 'status_produksi.status', 'users.id', 'satuan.id_satuan')
+        ->select('produksi_barang.*', 'produk.nama_produk', 'status_produksi.status', 'users.id', 'satuan.satuan')
         ->orderBy('id_produksi', 'asc')
         ->get();
 
@@ -46,7 +46,7 @@ class OwnerController extends Controller
         ->addIndexColumn()
 
         ->addColumn('jumlah', function ($produksibarang) {
-            return format_uang($produksibarang->jumlah); 
+            return format_uang($produksibarang->jumlah);
         })
         ->addColumn('aksi', function ($produksibarang) {
             return '
@@ -61,7 +61,7 @@ class OwnerController extends Controller
         ->make(true);
     }
 
-    
+
     /**
      * Show the form for creating a new resource.
      *
@@ -85,7 +85,7 @@ class OwnerController extends Controller
             $produksibarang = new ProduksiBarang();
             $produksibarang->id_produk = $request->id_produk;
             $produksibarang->jumlah = $request->jumlah;
-            $produksibarang['id_satuan'] = $produksibarang;
+            $produksibarang->id_satuan = $request->id_satuan;
             $produksibarang->id_status = StatusProduksiEnum::Belum;
             $produksibarang->id_user = Auth::id();
             $produksibarang->save();
