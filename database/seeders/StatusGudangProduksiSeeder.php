@@ -16,11 +16,11 @@ class StatusGudangProduksiSeeder extends Seeder
     {
         $data = [
             [
-                'id_status'=>1,
+                
                 'status'=>'belum di gudang produksi',
             ],
             [
-                'id_status'=> 2,
+                
                 'status'=>'sudah di gudang produksi',
             ],
         ];

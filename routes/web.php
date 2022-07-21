@@ -75,6 +75,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/produksi/data', [ProduksiBarangController::class,'data'])->name('produksi.data');
     Route::resource('/produksi', ProduksiBarangController::class);
+    
     Route::get('logs',[LogActivityController::class, 'index'])->name('log.activity_user');
     Route::get('logs/data',[LogActivityController::class, 'data'])->name('log.activity_data');
     Route::get('logs/delete/all',[LogActivityController::class, 'delete'])->name('log.delete_all');

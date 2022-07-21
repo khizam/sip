@@ -14,6 +14,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // \App\Models\User::factory(10)->create();
+        User::firstOrCreate([
+            'name' => 'user 1',
+            'email'=>'user@gmail.com',
+            'password'=> bcrypt('123')
+        ]);
+        Produk::firstOrCreate([
+            'nama_produk'=>'nike'
+        ]);
+        Supplier::Create([
+            'nama_supplier'=>'PT BENKA NUSANTARA',
+            'alamat'=>'jl samudra surabaya',
+            'telepon'=> '0221098664',
+            'contact_person' => '082234554330'
+        ]);
+        Kategori::firstOrCreate([
+            'nama_kategori'=>'sepatu',
+        ]);
+        Bahan::firstOrCreate([
+            'nama_bahan'=>'kain',
+        ]);
+
         // nambah seeder
         // Hapus cache permission package spatie-permission
         // Artisan::call('php artisan permission:cache-reset');
@@ -37,7 +59,5 @@ class DatabaseSeeder extends Seeder
             UserPermissionSeeder::class,
             DumpInsertSeeder::class,
         ]);
-
-
     }
 }
