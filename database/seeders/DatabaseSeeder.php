@@ -3,13 +3,14 @@
 namespace Database\Seeders;
 
 use App\Models\Bahan;
+use App\Models\Enums\RolesEnum;
 use App\Models\Kategori;
 use App\Models\Produk;
-use App\Models\StatusGudangProduksi;
 use App\Models\Supplier;
 use App\Models\User;
 use App\Models\Satuan;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\PermissionRegistrar;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,6 +21,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+<<<<<<< HEAD
         // \App\Models\User::factory(10)->create();
         User::firstOrCreate([
             'name' => 'user 1',
@@ -42,13 +44,37 @@ class DatabaseSeeder extends Seeder
             'nama_bahan'=>'kain',
         ]);
 
+=======
+>>>>>>> 27c7ec6a4bdb9469e72e29aee30c08eefd8c2445
         // nambah seeder
+        // Hapus cache permission package spatie-permission
+        // Artisan::call('php artisan permission:cache-reset');
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
         $this->call([
+            RoleSeeder::class,
+            StatusGudangProduksiSeeder::class,
             StatusGudangSeeder::class,
             StatusProduksiSeeder::class,
+<<<<<<< HEAD
             StatusGudangProduksiSeeder::class,
             SatuanSeeder::class,
             RoleSeeder::class,
+=======
+            BahanPermissionSeeder::class,
+            BarangMasukPermissionSeeder::class,
+            DetailProduksiPermissionSeeder::class,
+            GudangPermissionSeeder::class,
+            KategoriPermissionSeeder::class,
+            LabPermissionSeeder::class,
+            LabProduksiPermissionSeeder::class,
+            ProdukPermissionSeeder::class,
+            ProduksiBarangPermissionSeeder::class,
+            SupplierPermissionSeeder::class,
+            UserPermissionSeeder::class,
+            DumpInsertSeeder::class,
+>>>>>>> 27c7ec6a4bdb9469e72e29aee30c08eefd8c2445
         ]);
+
+
     }
 }

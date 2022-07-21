@@ -2,18 +2,9 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Models\Lab;
 use App\Models\Gudang;
-use App\Models\Enums\StatusGudangEnum;
-// use App\Models\Gudang;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Support\Facades\Gate;
 
 
 class GudangController extends Controller
@@ -25,6 +16,9 @@ class GudangController extends Controller
      */
     public function index()
     {
+        if (Gate::denies('gudang_index')) {
+            return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
+        }
         return view('gudang.index');
     }
 
@@ -40,6 +34,9 @@ class GudangController extends Controller
 
     public function data()
     {
+        if (Gate::denies('gudang_index')) {
+            return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
+        }
         $gudang = Gudang::with('status_gudang')
         ->join('lab','lab.id_lab','=','gudang.id_lab')
         ->join('barangmasuk', 'barangmasuk.id_barangmasuk','=','lab.id_barangmasuk')
@@ -57,6 +54,7 @@ class GudangController extends Controller
         ->addColumn('bahan_layak', function ($lab) {
             return format_uang($lab->bahan_layak);
         })
+<<<<<<< HEAD
         
         ->addColumn('aksi', function ($gudang) {
             return '
@@ -68,6 +66,20 @@ class GudangController extends Controller
         })
         
         ->rawColumns(['aksi', 'id_gudang', 'bahan_layak'])
+=======
+
+        // ->addColumn('aksi', function ($lab) {
+        //     return '
+        //     <div class="">
+        //         <button onclick="editLabForm(`'. route('lab.editLab', $lab->id_lab) .'` , `'.route('lab.updateLab', $lab->id_lab).'`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-plus"></i></button>
+        //         <button onclick="editForm(`'. route('lab.edit', $lab->id_lab) .'` , `'.route('lab.update', $lab->id_lab).'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+        //         <button onclick="check(`'. route('lab.edit', $lab->id_lab) .'` , `'.route('lab.checkStatus', $lab->id_lab).'`)" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-check"></i></button>
+        //     </div>
+        //     ';
+        // })
+        // 'aksi',
+        ->rawColumns(['id_gudang', 'bahan_layak'])
+>>>>>>> 27c7ec6a4bdb9469e72e29aee30c08eefd8c2445
         ->make(true);
     }
 

@@ -11,18 +11,7 @@
             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
           </div>
         </div>
-        <!-- search form -->
-        {{-- <form action="#" method="get" class="sidebar-form">
-          <div class="input-group">
-            <input type="text" name="q" class="form-control" placeholder="Search...">
-            <span class="input-group-btn">
-                  <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                  </button>
-                </span>
-          </div>
-        </form> --}}
-        <!-- /.search form -->
-        <!-- sidebar menu: : style can be found in sidebar.less -->
+
         <ul class="sidebar-menu" data-widget="tree">
           <li>
             <a href="{{ route('dashboard') }}">
@@ -32,6 +21,7 @@
             </a>
           </li>
 
+          @can(['supplier_index','bahan_index','produk_index','kategori_index','user_index'])
           <li class="header">Master</li>
           <li class="active treeview">
             <a href="#">
@@ -41,15 +31,26 @@
               </span>
             </a>
             <ul class="treeview-menu">
+              @can('supplier_index')
               <li class="active"><a href="{{ route('supplier.index') }}"><i class="fa fa-truck"></i>Supplier</a></li>
+              @endcan
+              @can('bahan_index')
               <li class="active"><a href="{{ route('bahan.index') }}"><i class="fa fa-reorder"></i>Bahan</a></li>
+              @endcan
+              @can('produk_index')
               <li class="active"><a href="{{ route('produk.index')}}"><i class="fa fa-cubes"></i>Produk</a></li>
+              @endcan
+              @can('kategori_index')
               <li class="active"><a href="{{ route('kategori.index') }}"><i class="fa fa-cube"></i>Kategori</a></li>
+              @endcan
+              @can('user_index')
               <li class="active"><a href="{{ route('user.index') }}"><i class="fa fa-user"></i>User</a></li>
+              @endcan
             </ul>
           </li>
+          @endcan
 
-
+          @can('barangmasuk_index')
           <li class="header">Barang</li>
           <li class="active treeview">
             <a href="#">
@@ -62,24 +63,30 @@
               <li class="active"><a href="{{ route('barangmasuk.index') }}"><i class=" fa fa-cubes"></i>Bahan Mentah</a></li>
             </ul>
           </li>
+          @endcan
 
-          <li class="header">Uji Lep</li>
-
+          @can('lab_index')
+          <li class="header">Uji Lab</li>
           <li class="active treeview">
             <a href="#">
-              <i class="fa fa-th"></i> <span>Lep</span>
+              <i class="fa fa-th"></i> <span>Lab</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
+<<<<<<< HEAD
               <li class="active"><a href="{{ route('lab.index') }}"><i class="fa fa-flask"></i>Uji Bahan Awal</a></li>
               <li class="active"><a href="index.html"><i class="fa fa-industry"></i>Uji Produk Jadi</a></li>
+=======
+              <li class="active"><a href="{{ route('lab.index') }}"><i class="fa fa-circle-o"></i>Uji Bahan Awal</a></li>
+>>>>>>> 27c7ec6a4bdb9469e72e29aee30c08eefd8c2445
             </ul>
           </li>
+          @endcan
 
+          @can('gudang_index')
           <li class="header">Penyimpanan Gudang</li>
-
           <li class="active treeview">
             <a href="#">
               <i class="fa fa-th"></i> <span>Gudang</span>
@@ -94,9 +101,10 @@
               <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Evaluasi Code</a></li>
             </ul>
           </li>
+          @endcan
 
+          @can('produksibarang_index')
           <li class="header">Produksi</li>
-
           <li class="active treeview">
             <a href="#">
               <i class="fa fa-th"></i> <span>Produksi</span>
@@ -110,6 +118,7 @@
               <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Proses Produksi</a></li>
             </ul>
           </li>
+          @endcan
 
           <li class="header">Owner</li>
           <li>
@@ -127,6 +136,19 @@
               <span class="pull-right-container">
               </span>
             </a>
+          </li>
+
+          <li class="header">Log Aktivitas</li>
+          <li class="active treeview">
+            <a href="#">
+              <i class="fa fa-th"></i> <span>Log Aktivitas</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+                <li class="active"><a href="{{ route('log.activity_user') }}"><i class="fa fa-circle-o"></i>Aktivitas user</a></li>
+            </ul>
           </li>
 
         </ul>

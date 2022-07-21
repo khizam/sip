@@ -7,9 +7,13 @@ use App\Models\Kategori;
 use App\Models\Supplier;
 use App\Models\Barangmasuk;
 use App\Models\Lab;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BarangmasukController extends Controller
 {
@@ -20,17 +24,19 @@ class BarangmasukController extends Controller
      */
     public function index()
     {
+        $this->authorize('barangmasuk_index');
         $bahan = Bahan::all()->pluck('nama_bahan', 'id_bahan');
         $kategori = Kategori::all()->pluck('nama_kategori', 'id_kategori');
         $supplier = Supplier::all()->pluck('nama_supplier', 'id_supplier');
 
         return view('barangmasuk.index', compact('bahan','kategori','supplier'));
-        // return view('barangmasuk.index', compact('kategori'));
-        // return view('barangmasuk.index', compact('supplier'));
     }
 
     public function data()
     {
+        if (Gate::denies('barangmasuk_index')) {
+            return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
+        }
         $barangmasuk = Barangmasuk::leftJoin('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
         ->leftJoin('kategori', 'kategori.id_kategori', '=', 'barangmasuk.id_kategori')
         ->leftJoin('supplier', 'supplier.id_supplier', '=', 'barangmasuk.id_supplier')
@@ -102,6 +108,7 @@ class BarangmasukController extends Controller
     public function store(Request $request)
     {
         try {
+            $this->authorize('barangmasuk_create');
             DB::beginTransaction();
             $barangmasuk = Barangmasuk::latest()->first() ?? new Barangmasuk();
             $kode_barangmasuk = (int) $barangmasuk->kode_barangmasuk +1;
@@ -130,10 +137,12 @@ class BarangmasukController extends Controller
                     'bahan_tidak_layak' => 0,
                 ]);
             }
-            
+
             DB::commit();
             return response()->json('Data berhasil disimpan', 200);
-        } catch (\Throwable $th) {
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
+        }  catch (\Throwable $th) {
             DB::rollback();
             Log::error("tambah barang masuk".$th);
             return response()->json('gagal disimpan'.$th->getMessage(), 500);
@@ -149,9 +158,19 @@ class BarangmasukController extends Controller
      */
     public function show($id)
     {
-        $barangmasuk = Barangmasuk::find($id);
-
-        return response()->json($barangmasuk);
+        try {
+            $this->authorize('barangmasuk_edit');
+            $barangmasuk = Barangmasuk::find($id);
+            if ($barangmasuk == null) {
+                throw new NotFoundHttpException('barang masuk tidak ditemukan');
+            }
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
+        } catch (NotFoundHttpException $th) {
+            return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -174,10 +193,20 @@ class BarangmasukController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $barangmasuk = Barangmasuk::find($id);
-        $barangmasuk->update($request->all());
-
-        return response()->json('Data Berhasil Disimpan', 200);
+        try {
+            $this->authorize('barangmasuk_edit');
+            $barangmasuk = Barangmasuk::find($id);
+            if ($barangmasuk == null) {
+                throw new NotFoundHttpException('barang masuk tidak ditemukan');
+            }
+            $barangmasuk->update($request->all());
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
+        } catch (NotFoundHttpException $th) {
+            return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -188,9 +217,19 @@ class BarangmasukController extends Controller
      */
     public function destroy($id)
     {
-        $barangmasuk = Barangmasuk::find($id);
-        $barangmasuk->delete();
-
-        return response(null, 204);
+        try {
+            $this->authorize('barangmasuk_delete');
+            $barangmasuk = Barangmasuk::find($id);
+            if ($barangmasuk == null) {
+                throw new NotFoundHttpException('barang masuk tidak ditemukan');
+            }
+            $barangmasuk->delete();
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
+        } catch (NotFoundHttpException $th) {
+            return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

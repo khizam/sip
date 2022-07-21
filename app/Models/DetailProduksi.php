@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class DetailProduksi extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     protected $table = 'detail_produksi';
 
@@ -17,6 +19,16 @@ class DetailProduksi extends Model
         'id_bahan',
         'id_produksi',
     ];
+
+    /**
+     * log any attribute that has changed. spatie/laravel-acitivtylog
+     */
+    protected static $logFillable = true;
+
+    /**
+     * Specify $logName to make the model use another name than the default. spatie/laravel-acitivtylog
+     */
+    protected static $logName = 'detailproduksi';
 
     protected $casts = ['created_at','updated_at'];
 }
