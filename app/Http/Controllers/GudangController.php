@@ -54,8 +54,7 @@ class GudangController extends Controller
         ->addColumn('bahan_layak', function ($lab) {
             return format_uang($lab->bahan_layak);
         })
-<<<<<<< HEAD
-        
+
         ->addColumn('aksi', function ($gudang) {
             return '
             <div class="">
@@ -64,22 +63,8 @@ class GudangController extends Controller
             </div>
             ';
         })
-        
-        ->rawColumns(['aksi', 'id_gudang', 'bahan_layak'])
-=======
 
-        // ->addColumn('aksi', function ($lab) {
-        //     return '
-        //     <div class="">
-        //         <button onclick="editLabForm(`'. route('lab.editLab', $lab->id_lab) .'` , `'.route('lab.updateLab', $lab->id_lab).'`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-plus"></i></button>
-        //         <button onclick="editForm(`'. route('lab.edit', $lab->id_lab) .'` , `'.route('lab.update', $lab->id_lab).'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-        //         <button onclick="check(`'. route('lab.edit', $lab->id_lab) .'` , `'.route('lab.checkStatus', $lab->id_lab).'`)" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-check"></i></button>
-        //     </div>
-        //     ';
-        // })
-        // 'aksi',
-        ->rawColumns(['id_gudang', 'bahan_layak'])
->>>>>>> 27c7ec6a4bdb9469e72e29aee30c08eefd8c2445
+        ->rawColumns(['aksi', 'id_gudang', 'bahan_layak'])
         ->make(true);
     }
 

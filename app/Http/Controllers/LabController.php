@@ -243,28 +243,11 @@ class LabController extends Controller
             ]);
 
             $lab->update($request->all());
-<<<<<<< HEAD
-            
-                $lab = Lab::with('barang_masuk')->find($id);
-                $gudang = new Gudang();
-                $gudang->id_lab = $request->id_lab;
-                $gudang->save();
-
-                DB::commit();
-                    return jsonResponse('Data berhasil disimpan', 200);
-                DB::rollback();
-               
-            
-          
-            return jsonResponse($request);
-            return jsonResponse("berhasil");
-=======
             $gudang = new Gudang();
             $gudang->id_lab = $request->id_lab;
             $gudang->save();
             DB::commit();
             return jsonResponse('Data berhasil disimpan', 200);
->>>>>>> 27c7ec6a4bdb9469e72e29aee30c08eefd8c2445
         } catch (NotFoundHttpException $th) {
             return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
         } catch (\Throwable $th) {

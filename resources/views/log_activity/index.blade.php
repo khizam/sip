@@ -21,10 +21,10 @@
             <table class="table table-striped table-bordered" style="table-layout: auto; width: 100%;">
               <thead>
                 <th width="5%">No</th>
+                <th width="10%">User</th>
                 <th width="10%">Log Name</th>
                 <th width="10%">Description</th>
                 <th width="10%">Type</th>
-                <th width="10%">User</th>
                 <th width="40%">Detail Perubahan</th>
               </thead>
             </table>
@@ -59,10 +59,10 @@
           },
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
+            {data: 'causer.name'},
             {data: 'log_name'},
             {data: 'description'},
             {data: 'subject_type'},
-            {data: 'causer.name'},
             {data: 'attributes_to_text'},
           ]
         });
