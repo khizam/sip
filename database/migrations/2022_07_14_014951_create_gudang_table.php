@@ -20,7 +20,7 @@ class CreateGudangTable extends Migration
                   ->references('id_lab')
                   ->on('lab')
                   ->onUpdate('restrict')
-                  ->onDelete('restrict');
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }

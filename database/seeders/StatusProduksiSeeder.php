@@ -27,6 +27,10 @@ class StatusProduksiSeeder extends Seeder
                 'id_status'=> 3,
                 'status'=>'selesai diproduksi',
             ],
+            [
+                'id_status'=> 4,
+                'status'=>'tolak diproduksi',
+            ],
         ];
         StatusProduksi::insert($data);
     }

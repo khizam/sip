@@ -8,6 +8,7 @@ use App\Models\Produk;
 use App\Models\StatusGudangProduksi;
 use App\Models\Supplier;
 use App\Models\User;
+use App\Models\Satuan;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -28,7 +29,7 @@ class DatabaseSeeder extends Seeder
         Produk::firstOrCreate([
             'nama_produk'=>'nike'
         ]);
-        Supplier::firstOrCreate([
+        Supplier::Create([
             'nama_supplier'=>'PT BENKA NUSANTARA',
             'alamat'=>'jl samudra surabaya',
             'telepon'=> '0221098664',
@@ -46,6 +47,7 @@ class DatabaseSeeder extends Seeder
             StatusGudangSeeder::class,
             StatusProduksiSeeder::class,
             StatusGudangProduksiSeeder::class,
+            SatuanSeeder::class,
             RoleSeeder::class,
         ]);
     }

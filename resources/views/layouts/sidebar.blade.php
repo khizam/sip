@@ -59,7 +59,7 @@
               </span>
             </a>
             <ul class="treeview-menu">
-              <li class="active"><a href="{{ route('barangmasuk.index') }}"><i class=" fa fa-bar-chart"></i>Bahan Mentah</a></li>
+              <li class="active"><a href="{{ route('barangmasuk.index') }}"><i class=" fa fa-cubes"></i>Bahan Mentah</a></li>
             </ul>
           </li>
 
@@ -73,8 +73,8 @@
               </span>
             </a>
             <ul class="treeview-menu">
-              <li class="active"><a href="{{ route('lab.index') }}"><i class="fa fa-circle-o"></i>Uji Bahan Awal</a></li>
-              <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Uji Produk Jadi</a></li>
+              <li class="active"><a href="{{ route('lab.index') }}"><i class="fa fa-flask"></i>Uji Bahan Awal</a></li>
+              <li class="active"><a href="index.html"><i class="fa fa-industry"></i>Uji Produk Jadi</a></li>
             </ul>
           </li>
 
@@ -105,10 +105,19 @@
               </span>
             </a>
             <ul class="treeview-menu">
-              <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Request Produksi</a></li>
+              <li class="active"><a href="{{ route('produksi.index') }}"><i class="fa fa-check"></i>Request Produksi</a></li>
               <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Request Permintaan Kegudang</a></li>
               <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Proses Produksi</a></li>
             </ul>
+          </li>
+
+          <li class="header">Owner</li>
+          <li>
+            <a href="{{ route('owner.index') }}">
+              <i class="fa fa-plus-square"></i> <span>Request Produksi</span>
+              <span class="pull-right-container">
+              </span>
+            </a>
           </li>
 
           <li class="header">Peralatan</li>

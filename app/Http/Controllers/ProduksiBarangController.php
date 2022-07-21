@@ -2,8 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Enums\StatusProduksiEnum;
+use App\Models\StatusProduksi;
+use App\Models\User;
+use App\Models\Produk;
 use App\Models\ProduksiBarang;
 use Illuminate\Http\Request;
+use Illuminate\Facades\Auth;
+use Illuminate\Facedes\DB;
+USE Illuminate\Facedes\Log;
 
 class ProduksiBarangController extends Controller
 {
@@ -14,7 +21,16 @@ class ProduksiBarangController extends Controller
      */
     public function index()
     {
-        //
+        $produk = Produk::all()->pluck('nama_produk', 'id_produk');
+        $statusProduksi = StatusProduksi::all()->pluck('status', 'id_status');
+        $user = User::all()->pluck('name', 'id');
+
+        return view('produksi.index', compact('produk', 'user', 'statusProduksi'));
+    }
+
+    public function data()
+    {
+        // $produksibarang = ProduksiBarang::leftJoin('produk', '')
     }
 
     /**

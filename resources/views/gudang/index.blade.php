@@ -25,9 +25,9 @@
                 <th>Bahan</th>
                 <th>Jumlah Bahan</th>
                 <th>Satuan</th>
+                <th>Stok</th>
                 <th>Kesimpulan</th>
-                
-                {{-- <th width="15%"><i class="fa fa-cog"></i></th> --}}
+                <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
               <tbody>
               </tbody>
@@ -41,6 +41,7 @@
 @includeIf('lab.form_edit')
 @includeIf('lab.form_check') --}}
 @endsection
+
 
 @push('scripts')
 <script>
@@ -65,8 +66,9 @@
             {data: 'nama_bahan'},
             {data: 'bahan_layak'},
             {data: 'satuan'},
+            {data: 'stok'},
             {data: 'kesimpulan'},
-            // {data: 'aksi', searchable: false, sortable: false},
+            {data: 'aksi', searchable: false, sortable: false},
           ]
         });
 
@@ -153,7 +155,7 @@
       });
     }
 
-    function editForm(url, formUrl) {
+    function editStok(url, formUrl) {
       $('#modal-form').modal('show');
       $('#modal-form .modal-title').text('Edit Bahan Layak dan tidak');
 

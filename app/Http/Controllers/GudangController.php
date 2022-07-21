@@ -58,19 +58,17 @@ class GudangController extends Controller
             return format_uang($lab->bahan_layak);
         })
         
-        // ->addColumn('aksi', function ($lab) {
-        //     return '
-        //     <div class="">
-        //         <button onclick="editLabForm(`'. route('lab.editLab', $lab->id_lab) .'` , `'.route('lab.updateLab', $lab->id_lab).'`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-plus"></i></button>
-        //         <button onclick="editForm(`'. route('lab.edit', $lab->id_lab) .'` , `'.route('lab.update', $lab->id_lab).'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-        //         <button onclick="check(`'. route('lab.edit', $lab->id_lab) .'` , `'.route('lab.checkStatus', $lab->id_lab).'`)" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-check"></i></button>
-        //     </div>
-        //     ';
-        // })
-        // 'aksi', 
-        ->rawColumns(['id_gudang', 'bahan_layak'])
+        ->addColumn('aksi', function ($gudang) {
+            return '
+            <div class="">
+                <button onclick="deleteData(`'. route('gudang.destroy', $gudang->id_gudang) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                <button onclick="editStok(`'. route('gudang.edit', $gudang->id_gudang) .'`, `'.route('gudang.update', $gudang->id_gudang).'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+            </div>
+            ';
+        })
+        
+        ->rawColumns(['aksi', 'id_gudang', 'bahan_layak'])
         ->make(true);
-
     }
 
     /**
@@ -124,8 +122,27 @@ class GudangController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    public function editGudang($id): JsonResponse
+    {
+        try {
+            $gudang = Gudang::with('lab')->find($id);
+            if ($gudang == null) {
+                throw new NotFoundHttpException("stok tidak ditemukan");
+            }
+            return jsonResponse($gudang, 200);
+        } catch (NotFoundHttpException $th) {
+            return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage() ?? 'data tidak ditemukan', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function destroy($id)
     {
-        //
+        $gudang = Gudang::find($id);
+        $gudang->delete();
+
+        return response(null, 204);
     }
 }

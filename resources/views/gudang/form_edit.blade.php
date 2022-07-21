@@ -4,7 +4,7 @@
           @csrf
           @method('post')
 
-          <input type="hidden" name="id_lab" id="id_lab" />
+          <input type="hidden" name="id_gudang" id="id_gudang" />
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

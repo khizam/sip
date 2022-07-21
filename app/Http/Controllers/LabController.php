@@ -224,18 +224,17 @@ class LabController extends Controller
 
             $lab->update($request->all());
             
-            try {
+                $lab = Lab::with('barang_masuk')->find($id);
                 $gudang = new Gudang();
                 $gudang->id_lab = $request->id_lab;
                 $gudang->save();
+
                 DB::commit();
                     return jsonResponse('Data berhasil disimpan', 200);
-            } catch (\Exception $e) {
                 DB::rollback();
-                throw $e;
-            }
+               
+            
           
-
             return jsonResponse($request);
             return jsonResponse("berhasil");
         } catch (NotFoundHttpException $th) {
