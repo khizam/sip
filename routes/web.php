@@ -65,20 +65,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/gudang/data', [GudangController::class, 'data'])->name('gudang.data');
     Route::get('/gudang/edit-gudang/{id}', [GudangController::class, 'editGudang'])->name('gudang.editGudang');
     Route::resource('/gudang', GudangController::class);
-    
+
     // Route User
     Route::get('/user/data',[UserController::class,'data'])->name('user.data');
     Route::resource('/user', UserController::class);
 
-<<<<<<< HEAD
     Route::get('/owner/data',[OwnerController::class,'data'])->name('owner.data');
     Route::resource('/owner', OwnerController::class);
 
     Route::get('/produksi/data', [ProduksiBarangController::class,'data'])->name('produksi.data');
     Route::resource('/produksi', ProduksiBarangController::class);
-=======
     Route::get('logs',[LogActivityController::class, 'index'])->name('log.activity_user');
     Route::get('logs/data',[LogActivityController::class, 'data'])->name('log.activity_data');
     Route::get('logs/delete/all',[LogActivityController::class, 'delete'])->name('log.delete_all');
->>>>>>> 27c7ec6a4bdb9469e72e29aee30c08eefd8c2445
 });

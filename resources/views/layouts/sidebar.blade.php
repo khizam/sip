@@ -75,12 +75,7 @@
               </span>
             </a>
             <ul class="treeview-menu">
-<<<<<<< HEAD
-              <li class="active"><a href="{{ route('lab.index') }}"><i class="fa fa-flask"></i>Uji Bahan Awal</a></li>
-              <li class="active"><a href="index.html"><i class="fa fa-industry"></i>Uji Produk Jadi</a></li>
-=======
               <li class="active"><a href="{{ route('lab.index') }}"><i class="fa fa-circle-o"></i>Uji Bahan Awal</a></li>
->>>>>>> 27c7ec6a4bdb9469e72e29aee30c08eefd8c2445
             </ul>
           </li>
           @endcan
