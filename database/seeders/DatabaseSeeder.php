@@ -21,7 +21,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-<<<<<<< HEAD
         // \App\Models\User::factory(10)->create();
         User::firstOrCreate([
             'name' => 'user 1',
@@ -44,8 +43,6 @@ class DatabaseSeeder extends Seeder
             'nama_bahan'=>'kain',
         ]);
 
-=======
->>>>>>> 27c7ec6a4bdb9469e72e29aee30c08eefd8c2445
         // nambah seeder
         // Hapus cache permission package spatie-permission
         // Artisan::call('php artisan permission:cache-reset');
@@ -55,11 +52,7 @@ class DatabaseSeeder extends Seeder
             StatusGudangProduksiSeeder::class,
             StatusGudangSeeder::class,
             StatusProduksiSeeder::class,
-<<<<<<< HEAD
-            StatusGudangProduksiSeeder::class,
             SatuanSeeder::class,
-            RoleSeeder::class,
-=======
             BahanPermissionSeeder::class,
             BarangMasukPermissionSeeder::class,
             DetailProduksiPermissionSeeder::class,
@@ -72,9 +65,6 @@ class DatabaseSeeder extends Seeder
             SupplierPermissionSeeder::class,
             UserPermissionSeeder::class,
             DumpInsertSeeder::class,
->>>>>>> 27c7ec6a4bdb9469e72e29aee30c08eefd8c2445
         ]);
-
-
     }
 }
