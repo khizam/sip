@@ -30,7 +30,7 @@
                 <th>Satuan</th>
                 <th>Status</th>
                 <th>Keterangan</th>
-                
+
                 <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
               <tbody>

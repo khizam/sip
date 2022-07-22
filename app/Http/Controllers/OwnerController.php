@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Events\OwnerProductRequestEvent;
+use App\Events\RequestProductionEvent;
+use App\Models\Enums\RolesEnum;
 use App\Models\Enums\StatusProduksiEnum;
 use App\Models\StatusProduksi;
 use App\Models\ProduksiBarang;
 use App\Models\Produk;
 use App\Models\Satuan;
 use App\Models\User;
+use App\Notifications\RequestProductionNotification;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -91,6 +95,8 @@ class OwnerController extends Controller
             $produksibarang->save();
 
             DB::commit();
+            $data = $produksibarang->load('produk','user');
+            event(new OwnerProductRequestEvent($data));
             return response()->json('Data berhasil disimpan', 200);
         } catch (\Throwable $th) {
             DB::rollback();

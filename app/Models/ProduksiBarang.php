@@ -37,4 +37,14 @@ class ProduksiBarang extends Model
 
     protected $casts = ['created_at','updated_at'];
 
+    public function produk(): BelongsTo
+    {
+        return $this->belongsTo(Produk::class,'id_produk');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'id_user');
+    }
+
 }
