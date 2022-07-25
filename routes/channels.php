@@ -18,6 +18,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-// Broadcast::channel('owner_product_request.{roleUser}', function($user,$roleUser){
-//     return $roleUser == RolesEnum::Produksi;
-// });
+Broadcast::channel('pushNotification.{roleUser}', function($user,$roleUser){
+    return $roleUser == RolesEnum::Produksi;
+});

@@ -2,31 +2,29 @@
 
 namespace App\Events;
 
-use App\Http\Controllers\NotificationController;
+use App\Models\Enums\RolesEnum;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithBroadcasting;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Auth;
 
-class Testing implements ShouldBroadcast
+class PushNotificationEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels, InteractsWithBroadcasting;
 
-    public $test;
+    public $data;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($test)
+    public function __construct($data)
     {
         $this->broadcastVia('pusher');
-        $this->test = $test;
+        $this->data = $data;
     }
 
     /**
@@ -36,12 +34,12 @@ class Testing implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('channel_testing');
+        return new PrivateChannel('pushNotification.'.RolesEnum::Produksi);
     }
 
     public function broadcastAs()
     {
-        return 'server.testing';
+        return 'push.notification';
     }
 
 }
