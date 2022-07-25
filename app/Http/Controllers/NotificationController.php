@@ -9,8 +9,13 @@ class NotificationController extends Controller
 {
     public function index()
     {
+        return jsonResponse($this->notications());
+    }
+
+    public function notications()
+    {
         $unread = Auth::user()->unreadNotifications;
         $totalUnread = $unread->isNotEmpty() ? Auth::user()->unreadNotifications->count() : 0;
-        return jsonResponse(compact('unread','totalUnread'));
+        return compact('unread','totalUnread');
     }
 }

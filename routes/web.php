@@ -1,4 +1,7 @@
 <?php
+
+use App\Events\OwnerProductRequestEvent;
+use App\Events\Testing;
 use App\Http\Controllers\{
     KategoriController,
     SupplierController,
@@ -13,8 +16,9 @@ use App\Http\Controllers\{
     OwnerController,
     ProduksiBarangController,
 };
-use App\Models\User;
-use Illuminate\Support\Facades\Request;
+use App\Models\Enums\StatusProduksiEnum;
+use App\Models\ProduksiBarang;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -84,4 +88,20 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('logs/delete/all',[LogActivityController::class, 'delete'])->name('log.delete_all');
 
     Route::get('notifications/user', [NotificationController::class,'index'])->name('notifications.index');
+});
+Route::get('pusher/test', function () {
+    event(new Testing('Broadcasting testing'));
+    return "berhasil";
+});
+Route::get('pusher/test/owner', function () {
+    $produksibarang = new ProduksiBarang();
+    $produksibarang->id_produk = 1;
+    $produksibarang->jumlah = 1;
+    $produksibarang->id_satuan = 1;
+    $produksibarang->id_status = StatusProduksiEnum::Belum;
+    $produksibarang->id_user = 1;
+    $produksibarang->save();
+    $data = $produksibarang->load('produk','user');
+    event(new OwnerProductRequestEvent($data));
+    return "berhasil";
 });

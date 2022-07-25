@@ -4,11 +4,13 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class OwnerProductRequestEvent implements ShouldBroadcastNow
+class BarangmasukIntoLabEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -31,11 +33,6 @@ class OwnerProductRequestEvent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new Channel('owner_product_request');
-    }
-
-    public function broadcastAs()
-    {
-        return 'owner_product_request';
+        return new PrivateChannel('barangmasuk_into_lab');
     }
 }

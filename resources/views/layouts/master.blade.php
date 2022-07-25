@@ -7,9 +7,9 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
 <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  
+
   {{-- <link rel="icon" href="{{ url($setting->path_logo) }}" type="image/png"> --}}
-  
+
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="{{ asset('template/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
       <!-- Font Awesome -->
@@ -57,12 +57,12 @@
 
     <!-- Main content -->
     <section class="content">
-      
+
       <!-- /.row -->
       @yield('content')
       <!-- Main row -->
-      
-     
+
+
     </section>
     <!-- /.content -->
   </div>
@@ -70,11 +70,11 @@
  @includeIf('layouts.footer')
 
   <!-- Control Sidebar -->
- 
+
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
-  
+
 </div>
 <!-- ./wrapper -->
 
@@ -98,7 +98,23 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('template/dist/js/pages/dashboard2.js')}}"></script>
 
-
+<script src="{{ asset('js/app.js') }}"></script>
+{{-- <script src="{{ asset('js/pusher_channel.js') }}"></script> --}}
+<script>
+    console.log('data before echo')
+    let auth = {{ Auth::user()->roles->pluck('id') }}
+    // Echo.private(`App.Models.User.${auth}`)
+    Echo.channel(`channel_testing`)
+        .listen('.server.testing', (e) => {
+            console.log('Received test event');
+            console.log(e);
+        });
+    Echo.channel(`owner_product_request`)
+        .listen('.owner_product_request', (e) => {
+            console.log('Received test event');
+            console.log(e);
+        });
+</script>
 @stack('scripts')
 </body>
 </html>
