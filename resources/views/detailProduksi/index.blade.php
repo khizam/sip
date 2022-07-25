@@ -15,6 +15,7 @@
 <div class="box box-default">
   <div class="box-header with-border">
     {{-- <h3 class="box-title">Select2</h3> --}}
+    <a href="{{ route('produksi.index') }}" class="btn btn-sm btn-flat btn-info">Back</a>
 
     <div class="box-tools pull-right">
       <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -24,57 +25,42 @@
   <!-- /.box-header -->
   <div class="box-body">
     <div class="row">
-      <form action="" method="post">
+      <form action="{{ route('detailProduksi.store') }}" method="post">
         @csrf
         @method('post')
+        <input type="hidden" name="id_produksi" value="{{ request()->route('id_produksi') }}">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Bahan</label>
+                <select class="form-control select2" style="width: 100%;" name="id_bahan" id="id_bahan">
+                    <option selected="selected" >Pilih Bahan</option>
+                    @foreach ($bahan as $item)
+                    <option value="{{ $item->id_bahan }}">{{ $item->nama_bahan }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <!-- /.form-group -->
+            <div class="form-group">
+                <label for="jumlah">Jumlah Bahan</label>
+                    <input type="number" name="jumlah" id="jumlah" class="form-control" value="0">
+                    <span class="help-block with-errors"></span>
+                </div>
 
-      <div class="col-md-6">
-        <div class="form-group">
-          <label>Bahan</label>
-          <select class="form-control select2" style="width: 100%;"  id="kota">
-            <option selected="selected" name="id_bahan" id="id_bahan">Pilih Bahan</option>
-            @foreach ($bahan as $key => $item)
-              <option value="{{ $key }}">{{ $item }}</option>
-            @endforeach
-          </select>
+                <button class="btn btn-sm btn-flat btn-primary">Simpan</button>
         </div>
-        <!-- /.form-group -->
-        <div class="form-group">
-          <label for="jumlah">Jumlah Bahan</label>
-              <input type="number" name="jumlah" id="jumlah" class="form-control" value="0">
-              <span class="help-block with-errors"></span>
-        </div>
-
-        <button class="btn btn-sm btn-flat btn-primary">Simpan</button>
-      </div>
-      <!-- /.col -->
-      <div class="col-md-6">
-       
-        <!-- /.form-group -->
-        <div class="form-group">
-          {{-- <label>Produk</label> --}}
-          {{-- <select class="form-control select2" style="width: 100%;" id="kota2" >
-            <option selected="selected">Pilih Produk</option>
-            
-          </select> --}}
-        </div>
-        
-        <!-- /.form-group -->
-      </div>
-      <!-- /.col -->
-    </form>
+        </form>
     </div>
     <!-- /.row -->
   </div>
   <!-- /.box-body -->
- 
+
 </div>
 
 <div class="row">
   <div class="col-md-12">
     <div class="box">
       <div class="box-header with-border">
-       
+
       </div>
       <div class="box-body table-responsive">
         <table class="table table-striped table-bordered">
@@ -85,6 +71,7 @@
             </th> --}}
             <th>Nama Bahan</th>
             <th>Jumlah</th>
+            <th>Permintaan Bahan</th>
             <th width="15%"><i class="fa fa-cog"></i></th>
           </thead>
           <tbody>
@@ -111,17 +98,19 @@
     let table;
 
     $(function () {
+        let url = '{{ route("detailProduksi.data", request()->route("id_produksi")) }}'
         table = $('.table').DataTable({
           processing: true,
           autoWidth: false,
           ajax: {
-            url: '{{ route('detailProduksi.data') }}',
+            url: url,
           },
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
             // {data: 'select_all'},
             {data: 'nama_bahan'},
             {data: 'jumlah'},
+            {data: "permintaan_bahan"},
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });

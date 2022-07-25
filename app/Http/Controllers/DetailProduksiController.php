@@ -23,11 +23,12 @@ class DetailProduksiController extends Controller
         return view('detailProduksi.index', compact('bahan'));
     }
 
-    public function data()
+    public function data($id_produksi)
     {
         $detailproduksi = DetailProduksi::leftJoin('bahan', 'bahan.id_bahan', '=', 'detail_produksi.id_bahan')
         ->select('detail_produksi.*', 'bahan.nama_bahan')
         ->orderBy('id_detail', 'asc')
+        ->where('id_produksi', $id_produksi)
         ->get();
 
         return datatables()
@@ -36,6 +37,10 @@ class DetailProduksiController extends Controller
 
         ->addColumn('jumlah', function ($detailproduksi) {
             return format_uang($detailproduksi->jumlah);
+        })
+
+        ->addColumn('permintaan_bahan', function ($detailproduksi) {
+            return 'masih dikosongin';
         })
 
         ->addColumn('aksi', function ($detailproduksi) {
@@ -52,7 +57,7 @@ class DetailProduksiController extends Controller
 
     public function create()
     {
-        
+
     }
 
     /**
@@ -65,14 +70,13 @@ class DetailProduksiController extends Controller
     {
         try {
             DB::beginTransaction();
-
-            $detailproduksi = new detailproduksi();
+            $detailproduksi = new DetailProduksi();
             $detailproduksi->id_bahan = $request->id_bahan;
             $detailproduksi->jumlah = $request->jumlah;
+            $detailproduksi->id_produksi = $request->id_produksi;
             $detailproduksi->save();
-
             DB::commit();
-            return response()->json('Data berhasil disimpan', 200);    
+            return redirect()->route('detailProduksi.show',$request->id_produksi);
         } catch (\Throwable $th) {
             DB::rollback();
             Log::error("tambah request detail produksi".$th);
@@ -88,7 +92,8 @@ class DetailProduksiController extends Controller
      */
     public function show($id)
     {
-        //
+        $bahan = Bahan::all();
+        return view('detailProduksi.index', compact('bahan'));
     }
 
     /**

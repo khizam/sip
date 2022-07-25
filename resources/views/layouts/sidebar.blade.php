@@ -110,7 +110,7 @@
             </a>
             <ul class="treeview-menu">
               <li class="active"><a href="{{ route('produksi.index') }}"><i class="fa fa-check"></i>Produksi Barang</a></li>
-              <li class="active"><a href="{{ route('detailProduksi.index') }}"><i class="fa fa-circle-o"></i>Detail Produksi</a></li>
+              {{-- <li class="active"><a href="{{ route('detailProduksi.index') }}"><i class="fa fa-circle-o"></i>Detail Produksi</a></li> --}}
               <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Request Permintaan Kegudang</a></li>
             </ul>
           </li>

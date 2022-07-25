@@ -84,8 +84,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/owner/data',[OwnerController::class,'data'])->name('owner.data');
     Route::resource('/owner', OwnerController::class);
 
-    Route::get('/detailProduksi/data',[DetailProduksiController::class,'data'])->name('detailProduksi.data');
-    Route::resource('/detailProduksi', DetailProduksiController::class);
+    Route::get('/detailProduksi/data/{id_produksi}',[DetailProduksiController::class,'data'])->name('detailProduksi.data');
+    Route::resource('/detailProduksi', DetailProduksiController::class)->except('show');
+    Route::get('/detailProduksi/{id_produksi}',[DetailProduksiController::class,'show'])->name('detailProduksi.show');
 
     Route::get('/produksibarang/data', [ProduksiBarangController::class,'data'])->name('produksibarang.data');
     Route::put('/produksi/check-status/{id}', [detailProduksiController::class, 'data'])->name('produksi.checkStatus');

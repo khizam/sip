@@ -2,8 +2,7 @@
       <div class="modal-dialog modal-lg" role="document">
        <form action="" method="post" class="form-horizontal">
           @csrf
-          
-
+          <input type="hidden" name="id_produksi" value="{{ request()->route('id_produksi') }}">
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -14,7 +13,7 @@
                 <label for="" class="col-md-2 col-md-offset-1 control-label">Produk</label>
                 <div class="col-md-8">
                     <select name="" id="" class="form-control" required>
-                     
+
                     </select>
                     <span class="help-block with-errors"></span>
                 </div>
@@ -29,7 +28,7 @@
               <div class="form-group row">
                 <label for="id_satuan" class="col-md-2 col-md-offset-1 control-label">Satuan</label>
                 <div class="col-md-8">
-                    
+
                     <span class="help-block with-errors"></span>
                 </div>
               </div>

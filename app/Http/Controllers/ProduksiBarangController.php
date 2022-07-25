@@ -55,7 +55,7 @@ class ProduksiBarangController extends Controller
             <div class="">
                 <button onclick="editForm(`'. route('produksi.update', $produksibarang->id_produksi) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
                 <button onclick="deleteData(`'. route('produksi.destroy', $produksibarang->id_produksi) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
-                <a href=`'.route('detailProduk.index').'`class="btn btn-xs btn-primary btn-flat">button</a>
+                <a href='.route('detailProduksi.show',$produksibarang->id_produksi).' class="btn btn-xs btn-primary btn-flat">detail produksi</a>
             </div>
             ';
         })
@@ -82,7 +82,7 @@ class ProduksiBarangController extends Controller
      */
     public function store(Request $request)
     {
-      
+
     }
 
     /**
