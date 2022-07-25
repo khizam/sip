@@ -16,7 +16,7 @@
       <div class="col-md-12">
         <div class="box">
           <div class="box-header with-border">
-            <button onclick="addForm('{{ route('produksi.store') }}')" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
+            {{-- <button onclick="addForm('{{ route('produksi.store') }}')" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button> --}}
           </div>
           <div class="box-body table-responsive">
             <table class="table table-striped table-bordered">
@@ -25,10 +25,12 @@
                 {{-- <th>
                   <input type="checkbox" name="select_all" id="select_all">
                 </th> --}}
+                <th>Kode Produksi</th>
                 <th>Produk</th>
                 <th>Jumlah</th>
                 <th>Satuan</th>
                 <th>Status</th>
+                <th>Keterangan</th>
                 <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
               <tbody>
@@ -51,15 +53,17 @@
           processing: true,
           autoWidth: false,
           ajax: {
-            url: '{{ route('owner.data') }}',
+            url: '{{ route('produksibarang.data') }}',
           },
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
             // {data: 'select_all'},
+            {data: 'kode_produksi'},
             {data: 'nama_produk'},
             {data: 'jumlah'},
-            {data: 'satuan'}, 
+            {data: 'satuan'},
             {data: 'status'},
+            {data: 'keterangan'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });

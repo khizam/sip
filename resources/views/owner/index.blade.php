@@ -25,12 +25,12 @@
                 {{-- <th>
                   <input type="checkbox" name="select_all" id="select_all">
                 </th> --}}
+                <th>Kode Produksi</th>
                 <th>Produk</th>
                 <th>Jumlah</th>
                 <th>Satuan</th>
                 <th>Status</th>
                 <th>Keterangan</th>
-
                 <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
               <tbody>
@@ -58,6 +58,7 @@
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
             // {data: 'select_all'},
+            {data: 'kode_produksi'},
             {data: 'nama_produk'},
             {data: 'jumlah'},
             {data: 'satuan'},
@@ -103,11 +104,11 @@
 
       $.get(url)
         .done((response) => {
-          $('#modal-form [name=id_produk]').val(response.kode_barangmasuk);
-          $('#modal-form [name=jumlah]').val(response.id_bahan);
-          $('#modal-form [name=id_status]').val(response.id_kategori);
-          $('#modal-form [name=id_satuan]').val(response.id_supplier);
-          $('#modal-form [name=keterangan]').val(response.jumlah_bahan);
+          $('#modal-form [name=id_produk]').val(response.id_produk);
+          $('#modal-form [name=jumlah]').val(response.jumlah);
+          $('#modal-form [name=id_status]').val(response.id_status);
+          $('#modal-form [name=id_satuan]').val(response.id_satuan);
+          $('#modal-form [name=keterangan]').val(response.keterangan);
         })
       .fail((errors) => {
           alert('Tidak dapat menampilkan data');

@@ -8,6 +8,7 @@ use App\Http\Controllers\{
     BahanController,
     ProdukController,
     BarangmasukController,
+    DetailProduksiController,
     LabController,
     GudangController,
     LogActivityController,
@@ -19,6 +20,9 @@ use App\Http\Controllers\{
 use App\Models\Enums\StatusProduksiEnum;
 use App\Models\ProduksiBarang;
 use Illuminate\Support\Facades\Auth;
+use App\Models\DetailProduksi;
+use App\Models\User;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -80,7 +84,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/owner/data',[OwnerController::class,'data'])->name('owner.data');
     Route::resource('/owner', OwnerController::class);
 
-    Route::get('/produksi/data', [ProduksiBarangController::class,'data'])->name('produksi.data');
+    Route::get('/detailProduksi/data',[DetailProduksiController::class,'data'])->name('detailProduksi.data');
+    Route::resource('/detailProduksi', DetailProduksiController::class);
+
+    Route::get('/produksibarang/data', [ProduksiBarangController::class,'data'])->name('produksibarang.data');
+    Route::put('/produksi/check-status/{id}', [detailProduksiController::class, 'data'])->name('produksi.checkStatus');
     Route::resource('/produksi', ProduksiBarangController::class);
 
     Route::get('logs',[LogActivityController::class, 'index'])->name('log.activity_user');

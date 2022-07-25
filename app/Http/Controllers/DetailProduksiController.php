@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetailProduksi;
+use App\Models\Bahan;
+use App\Models\ProduksiBarang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DetailProduksiController extends Controller
 {
@@ -13,17 +19,40 @@ class DetailProduksiController extends Controller
      */
     public function index()
     {
-        //
+        $bahan = Bahan::all()->pluck('nama_bahan', 'id_bahan');
+        return view('detailProduksi.index', compact('bahan'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function data()
+    {
+        $detailproduksi = DetailProduksi::leftJoin('bahan', 'bahan.id_bahan', '=', 'detail_produksi.id_bahan')
+        ->select('detail_produksi.*', 'bahan.nama_bahan')
+        ->orderBy('id_detail', 'asc')
+        ->get();
+
+        return datatables()
+        ->of($detailproduksi)
+        ->addIndexColumn()
+
+        ->addColumn('jumlah', function ($detailproduksi) {
+            return format_uang($detailproduksi->jumlah);
+        })
+
+        ->addColumn('aksi', function ($detailproduksi) {
+            return '
+            <div class="">
+                <button onclick="editForm(`'. route('detailProduksi.update', $detailproduksi->id_detail) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                <button onclick="deleteData(`'. route('detailProduksi.destroy', $detailproduksi->id_detail) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+            </div>
+            ';
+        })
+        ->rawColumns(['aksi'])
+        ->make(true);
+    }
+
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -34,7 +63,21 @@ class DetailProduksiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            $detailproduksi = new detailproduksi();
+            $detailproduksi->id_bahan = $request->id_bahan;
+            $detailproduksi->jumlah = $request->jumlah;
+            $detailproduksi->save();
+
+            DB::commit();
+            return response()->json('Data berhasil disimpan', 200);    
+        } catch (\Throwable $th) {
+            DB::rollback();
+            Log::error("tambah request detail produksi".$th);
+            return response()->json('gagal disimpan'.$th->getMessage(), 500);
+        }
     }
 
     /**
