@@ -10,6 +10,8 @@
   
   {{-- <link rel="icon" href="{{ url($setting->path_logo) }}" type="image/png"> --}}
   
+  <!-- Select2 -->
+  <link rel="stylesheet" href="{{ asset('template/bower_components/select2/dist/css/select2.min.css')}}">
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="{{ asset('template/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
       <!-- Font Awesome -->
@@ -97,7 +99,6 @@
 <script src="{{ asset('template/bower_components/chart.js/Chart.js')}}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('template/dist/js/pages/dashboard2.js')}}"></script>
-
 
 @stack('scripts')
 </body>

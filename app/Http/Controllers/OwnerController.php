@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\Enums\StatusProduksiEnum;
 use App\Models\StatusProduksi;
 use App\Models\ProduksiBarang;
@@ -45,9 +44,14 @@ class OwnerController extends Controller
         ->of($produksibarang)
         ->addIndexColumn()
 
+        ->addColumn('kode_produksi', function ($produksibarang) {
+            return '<span class="label label-success">'. $produksibarang->kode_produksi .'</span>';
+        })
+
         ->addColumn('jumlah', function ($produksibarang) {
             return format_uang($produksibarang->jumlah);
         })
+
         ->addColumn('aksi', function ($produksibarang) {
             return '
             <div class="">
@@ -56,8 +60,7 @@ class OwnerController extends Controller
             </div>
             ';
         })
-
-        ->rawColumns(['aksi', 'jumlah'])
+        ->rawColumns(['aksi', 'jumlah', 'kode_produksi'])
         ->make(true);
     }
 
@@ -82,14 +85,14 @@ class OwnerController extends Controller
     {
         try {
             DB::beginTransaction();
-            $produksibarang = new ProduksiBarang();
+            $produksibarang = ProduksiBarang::latest()->first() ?? new ProduksiBarang();
+            $kode_produksi = (int) $produksibarang->kode_produksi +1;
+
+            $produksibarang = new produksibarang();
+            $produksibarang->kode_produksi = tambah_nol_didepan($kode_produksi, 6);
             $produksibarang->id_produk = $request->id_produk;
             $produksibarang->jumlah = $request->jumlah;
-<<<<<<< HEAD
-            $produksibarang->id_satuan = $produksibarang;
-=======
             $produksibarang->id_satuan = $request->id_satuan;
->>>>>>> 557ef377cd122bb7a459d2f251bf6b28c1c5a36f
             $produksibarang->id_status = StatusProduksiEnum::Belum;
             $produksibarang->id_user = Auth::id();
             $produksibarang->save();

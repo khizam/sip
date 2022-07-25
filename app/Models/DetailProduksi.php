@@ -18,6 +18,7 @@ class DetailProduksi extends Model
     protected $fillable = [
         'id_bahan',
         'id_produksi',
+        'jumlah',
     ];
 
     /**
