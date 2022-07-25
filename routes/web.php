@@ -9,11 +9,14 @@ use App\Http\Controllers\{
     LabController,
     GudangController,
     LogActivityController,
+    NotificationController,
     UserController,
     OwnerController,
     ProduksiBarangController,
 };
 use App\Models\DetailProduksi;
+use App\Models\User;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -81,8 +84,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/produksibarang/data', [ProduksiBarangController::class,'data'])->name('produksibarang.data');
     Route::put('/produksi/check-status/{id}', [detailProduksiController::class, 'data'])->name('produksi.checkStatus');
     Route::resource('/produksi', ProduksiBarangController::class);
-    
+
     Route::get('logs',[LogActivityController::class, 'index'])->name('log.activity_user');
     Route::get('logs/data',[LogActivityController::class, 'data'])->name('log.activity_data');
     Route::get('logs/delete/all',[LogActivityController::class, 'delete'])->name('log.delete_all');
+
+    Route::get('notifications/user', [NotificationController::class,'index'])->name('notifications.index');
 });

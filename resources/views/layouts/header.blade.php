@@ -7,17 +7,31 @@
         <span class="logo-lg">{{ config ('app.name') }}</span>
       </a>
       <!-- Header Navbar: style can be found in header.less -->
-    
+
     <nav class="navbar navbar-static-top">
           <!-- Sidebar toggle button-->
           <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
             <span class="sr-only">Toggle navigation</span>
           </a>
-    
+
           <div class="navbar-custom-menu">
-            <ul class="nav navbar-nav">
-              <!-- Messages: style can be found in dropdown.less-->
-             
+            <ul class="nav navbar-nav"> <!-- Notifications: style can be found in dropdown.less -->
+                <li class="dropdown notifications-menu">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-bell-o"id="notification_user"></i>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li class="header header_notification">You have 0 notifications</li>
+                    <li>
+                      <!-- inner menu: contains the actual data -->
+                      <ul class="menu menu_notification">
+                          {{-- // Menu Notification --}}
+                      </ul>
+                    </li>
+                    <li class="footer"><a href="#">View all</a></li>
+                  </ul>
+                </li>
+
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -28,13 +42,13 @@
                   <!-- User image -->
                   <li class="user-header">
                     <img src="{{asset('template/dist/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
-    
+
                     <p>
                       {{ auth()->user()->name }} - {{ auth()->user()->email }}
                     </p>
                   </li>
                   <!-- Menu Body -->
-                 
+
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
@@ -57,3 +71,28 @@
 <form action="{{ route('logout') }}" method="post" id="logout-form" style="display: none;">
     @csrf
 </form>
+@push('scripts')
+<script>
+    let url_notification = "{{ route('notifications.index') }}";
+    $(function () {
+       $.get(url_notification)
+        .done(function (data) {
+            let element = `<span class="label label-warning" >${data.totalUnread}</span>`;
+            let menu_element = ''
+            data.unread.forEach(result => {
+                let object_key = Object.keys(result.data)
+                menu_element += `
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-warning text-yellow"></i>${object_key[0]} - ${result.data.produk},${object_key[1]} - ${result.data.jumlah},${object_key[2]} - ${result.data.user}
+                        </a>
+                    </li>`
+            });
+            $('#notification_user').after(element);
+            $('.header_notification').text(`Kamu punya ${data.totalUnread} notification`);
+            $('.menu_notification').append(menu_element);
+            console.log(data)
+        });
+    });
+</script>
+@endpush

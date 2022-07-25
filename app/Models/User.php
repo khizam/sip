@@ -22,6 +22,7 @@ class User extends Authenticatable
     use TwoFactorAuthenticatable;
     use HasRoles; // Spatie/Permission
     use LogsActivity; //Spatie/laravel-activitylog
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.

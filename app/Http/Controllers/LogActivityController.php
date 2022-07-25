@@ -36,7 +36,8 @@ class LogActivityController extends Controller
         ->of($newLogsActivity)
         ->addIndexColumn()
         ->addColumn('causer.name', function ($newLogsActivity) {
-            return "<span class='label label-success'>{$newLogsActivity->causer->name}</span";
+            $causer = $newLogsActivity->causer->name ?? 'Database Seeder';
+            return "<span class='label label-success'>{$causer}</span";
         })
         ->rawColumns(['attributes_to_text','causer.name'])
         ->make(true);
