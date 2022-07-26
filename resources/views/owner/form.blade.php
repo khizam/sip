@@ -23,7 +23,7 @@
                 </div>
               </div>
               <div class="form-group row">
-                <label for="jumlah" class="col-md-2 col-md-offset-1 control-label">Jumlah Bahan</label>
+                <label for="jumlah" class="col-md-2 col-md-offset-1 control-label">Jumlah Produk</label>
                 <div class="col-md-8">
                     <input type="number" name="jumlah" id="jumlah" class="form-control" value="0">
                     <span class="help-block with-errors"></span>
