@@ -40,7 +40,7 @@ class DetailProduksiController extends Controller
         })
 
         ->addColumn('permintaan_bahan', function ($detailproduksi) {
-            return 'masih dikosongin';
+            return 'masih dikosongin zam';
         })
 
         ->addColumn('aksi', function ($detailproduksi) {

@@ -102,8 +102,7 @@
 
 <script src="{{ asset('js/app.js') }}"></script>
 {{-- <script src="{{ asset('js/pusher_channel.js') }}"></script> --}}
-<script>
-    console.log('data before echo')
+<script text="text/javascript" fetchpriority="high">
     let url_notification = "{{ route('notifications.index') }}";
 
     let role = {{ Auth::user()->roles->pluck('id')[0] }}
@@ -127,12 +126,11 @@
         let element = `<span class="label label-warning" >${data.totalUnread}</span>`;
         let menu_element = '';
         data.unread.forEach(result => {
-            let object_key = Object.keys(result.data.attributes)
-            let object_val = Object.values(result.data.attributes)
+            let type = result.type.split('\\');
             menu_element += `
                 <li>
-                    <a href="${result.data.links}">
-                        <i class="fa fa-warning text-yellow"></i>${object_key[0]} - ${object_val[0]},${object_key[1]} - ${object_val[1]},${object_key[2]} - ${object_val[2]}
+                    <a href="{{ url('/notifications/mark-as-read/${result.id}/true') }}">
+                        <i class="fa fa-bell text-yellow"></i> ${type[2]}
                     </a>
                 </li>`
         });

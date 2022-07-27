@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Enums\RolesEnum;
 use App\Models\Lab;
+use App\Models\User;
 use App\Policies\LabPolicy;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
