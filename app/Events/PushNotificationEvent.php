@@ -42,4 +42,8 @@ class PushNotificationEvent implements ShouldBroadcast
         return 'push.notification';
     }
 
+    public function handle(PushNotificationEvent $event){
+        $uid = $event->transaction->user_id;
+    }
+
 }

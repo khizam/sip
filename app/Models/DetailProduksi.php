@@ -31,15 +31,15 @@ class DetailProduksi extends Model
      */
     protected static $logName = 'detailproduksi';
 
-    protected $casts = ['created_at','updated_at'];
+    protected $casts = ['created_at', 'updated_at'];
 
     public function bahan()
     {
-        return $this->belongsTo(Bahan::class,'id_bahan');
+        return $this->belongsTo(Bahan::class, 'id_bahan');
     }
 
     public function produksi()
     {
-        return $this->belongsTo(ProduksiBarang::class,'id_produksi');
+        return $this->belongsTo(ProduksiBarang::class, 'id_produksi');
     }
 }

@@ -39,7 +39,7 @@
                             <div class="col-md-12">
                                 <label for="parameter" class="col-md-2 col-md-offset-1 control-label">Parameter</label>
                                 <div class="col-md-8">
-                                    <textarea type="text" name="parameter" id="parameter" cols="10" rows="10" class="form-control"></textarea> 
+                                    <textarea type="text" name="parameter" id="parameter" cols="10" rows="10" class="form-control"></textarea>
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>

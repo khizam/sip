@@ -77,7 +77,6 @@ $(document).ready(function () {
         getNotification(
             url,
             function (data) {
-                console.log(element)
                 $(element).html(data);
                 $('#spinner').removeClass('lds-ripple')
                 $(tab_pane).attr('style', 'visibility: visible')

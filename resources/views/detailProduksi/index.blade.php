@@ -83,6 +83,8 @@
 </div>
 
 {{-- @includeIf('detailProduksi.form') --}}
+{{-- @includeIf('detailProduksi.form') --}}
+@includeIf('detailProduksi.form_edit')
 @endsection
 
 @push('scripts')
@@ -91,13 +93,11 @@
 <script src="{{asset('template/bower_components/select2/dist/js/select2.full.min.js')}}"></script>
 <!-- wajib jquery  -->
 <script>
-  $(function () {
-    //Initialize Select2 Elements
-    $('.select2').select2()
 
     let table;
 
     $(function () {
+        $('.select2').select2()
         let url = '{{ route("detailProduksi.data", request()->route("id_produksi")) }}'
         table = $('.table').DataTable({
           processing: true,
@@ -115,50 +115,50 @@
           ]
         });
 
-        $('#modal-form').validator().on('submit', function (e) {
-            if (! e.preventDefault()) {
-              $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
-              .done((response) => {
-                $('#modal-form').modal('hide');
+        $('#modal_edit_detail').validator().on('submit', function (e) {
+            e.preventDefault()
+            console.log('da')
+            let url = $('#modal_edit_detail').attr('action')
+            console.log(url)
+            $.ajax({
+                url: url,
+                method: $('#modal_edit_detail [name=_method]').val() ?? 'PUT',
+                data: $('#modal_edit_detail form').serialize(),
+                dataType: "json"
+            })
+            .done((response) => {
+                $('#modal_edit_detail').modal('hide');
                 table.ajax.reload();
-              })
-              .fail((errors) => {
-                alert('Tidak dapat menyimpan data');
+            })
+            .fail((errors) => {
+                errors.responseJSON !== '' ? alert(errors.responseJSON) : alert('Tidak dapat menyimpan data');
                 return;
-              });
-            }
+            });
         })
     });
 
-    function addForm(url) {
-      $('#modal-form').modal('show');
-      $('#modal-form .modal-title').text('Tambah Detail Produksi');
 
-      $('#modal-form form')[0].reset();
-      $('#modal-form form').attr('action', url);
-      $('#modal-form [name=_method]').val('post');
-      $('#modal-form [name=id_bahan]').focus();
-    }
+    function editDetailForm(url, formUrl) {
+        $('#modal_edit_detail').modal('show');
+        $('#modal_edit_detail .modal-title').text('Edit Detail Produksi');
 
-    function editForm(url) {
-      $('#modal-form').modal('show');
-      $('#modal-form .modal-title').text('Edit Detail Produksi');
-
-      $('#modal-form form')[0].reset();
-      $('#modal-form form').attr('action',url);
-      $('#modal-form [name=_method]').val('put');
-      $('#modal-form [name=id_bahan]').focus();
-
-      $.get(url)
-        .done((response) => {
-          $('#modal-form [name=id_bahan]').val(response.id_bahan);
-          $('#modal-form [name=jumlah]').val(response.jumlah);
-        })
-      .fail((errors) => {
-          alert('Tidak dapat menampilkan data');
-          return;
-      });
-
+        $('#modal_edit_detail form')[0].reset();
+        $('#modal_edit_detail').attr('action',formUrl);
+        $('#modal_edit_detail [name=_method]').val('put');
+        $('#modal_edit_detail [name=id_bahan]').focus();
+        $('#modal_edit_detail [name=id_bahan]').find('option:not(:first)').removeAttr('selected',true).trigger('change');
+        $.get(url)
+            .done((response) => {
+                $('#modal_edit_detail [name=id_detail]').val(response.id_detail);
+                $('#modal_edit_detail [name=id_produksi]').val(response.id_produksi);
+                $('#modal_edit_detail [name=jumlah]').val(response.jumlah);
+                $('#modal_edit_detail [name=id_bahan] option[value="'+response.id_bahan+'"]').attr("selected", true);
+                $('#modal_edit_detail [name=id_bahan]').trigger('change');
+            })
+        .fail((errors) => {
+            alert(errors.responseJSON ?? 'Tidak dapat menampilkan data');
+            return;
+        });
     }
 
     function deleteData(url) {
@@ -176,7 +176,5 @@
         });
       }
     }
-
-  })
 </script>
 @endpush

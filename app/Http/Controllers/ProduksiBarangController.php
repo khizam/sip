@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Testing;
 use App\Models\Enums\StatusProduksiEnum;
 use App\Models\StatusProduksi;
 use App\Models\Satuan;
@@ -11,7 +12,7 @@ use App\Models\ProduksiBarang;
 use Illuminate\Http\Request;
 use Illuminate\Facades\Auth;
 use Illuminate\Facedes\DB;
-USE Illuminate\Facedes\Log;
+use Illuminate\Facedes\Log;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -35,32 +36,32 @@ class ProduksiBarangController extends Controller
     public function data()
     {
         $produksibarang = ProduksiBarang::leftJoin('produk', 'produk.id_produk', '=', 'produksi_barang.id_produk')
-        ->leftJoin('status_produksi', 'status_produksi.id_status', '=', 'produksi_barang.id_status')
-        ->leftJoin('users', 'users.id', '=', 'produksi_barang.id_user')
-        ->leftJoin('satuan', 'satuan.id_satuan', '=', 'produksi_barang.id_satuan')
-        ->select('produksi_barang.*', 'produk.nama_produk', 'status_produksi.status', 'users.id', 'satuan.satuan')
-        ->orderBy('id_produksi', 'asc')
-        ->get();
+            ->leftJoin('status_produksi', 'status_produksi.id_status', '=', 'produksi_barang.id_status')
+            ->leftJoin('users', 'users.id', '=', 'produksi_barang.id_user')
+            ->leftJoin('satuan', 'satuan.id_satuan', '=', 'produksi_barang.id_satuan')
+            ->select('produksi_barang.*', 'produk.nama_produk', 'status_produksi.status', 'users.id', 'satuan.satuan')
+            ->orderBy('id_produksi', 'asc')
+            ->get();
 
         return datatables()
-        ->of($produksibarang)
-        ->addIndexColumn()
+            ->of($produksibarang)
+            ->addIndexColumn()
 
-        ->addColumn('jumlah', function ($produksibarang) {
-            return format_uang($produksibarang->jumlah);
-        })
+            ->addColumn('jumlah', function ($produksibarang) {
+                return format_uang($produksibarang->jumlah);
+            })
 
-        ->addColumn('aksi', function ($produksibarang) {
-            return '
+            ->addColumn('aksi', function ($produksibarang) {
+                return '
             <div class="">
-                <button onclick="editForm(`'. route('produksi.update', $produksibarang->id_produksi) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                <button onclick="deleteData(`'. route('produksi.destroy', $produksibarang->id_produksi) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
-                <a href='.route('detailProduksi.show',$produksibarang->id_produksi).' class="btn btn-xs btn-primary btn-flat">detail produksi</a>
+                <button onclick="editForm(`' . route('produksi.update', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                <button onclick="deleteData(`' . route('produksi.destroy', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                <a href=' . route('detailProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">detail produksi</a>
             </div>
             ';
-        })
-        ->rawColumns(['aksi', 'jumlah', 'kode_produksi'])
-        ->make(true);
+            })
+            ->rawColumns(['aksi', 'jumlah', 'kode_produksi'])
+            ->make(true);
     }
 
 
@@ -82,7 +83,6 @@ class ProduksiBarangController extends Controller
      */
     public function store(Request $request)
     {
-
     }
 
     /**

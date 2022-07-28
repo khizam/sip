@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateDetailRequest;
 use App\Models\DetailProduksi;
 use App\Models\Bahan;
 use App\Models\ProduksiBarang;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DetailProduksiController extends Controller
 {
@@ -17,47 +23,49 @@ class DetailProduksiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id_produksi = null)
     {
-        $bahan = Bahan::all()->pluck('nama_bahan', 'id_bahan');
+        $bahan = Bahan::all(['nama_bahan', 'id_bahan']);
         return view('detailProduksi.index', compact('bahan'));
     }
 
     public function data($id_produksi)
     {
         $detailproduksi = DetailProduksi::leftJoin('bahan', 'bahan.id_bahan', '=', 'detail_produksi.id_bahan')
-        ->select('detail_produksi.*', 'bahan.nama_bahan')
-        ->orderBy('id_detail', 'asc')
-        ->where('id_produksi', $id_produksi)
-        ->get();
+            ->select('detail_produksi.*', 'bahan.nama_bahan')
+            ->orderBy('id_detail', 'asc')
+            ->where('id_produksi', $id_produksi)
+            ->get();
 
         return datatables()
-        ->of($detailproduksi)
-        ->addIndexColumn()
+            ->of($detailproduksi)
+            ->addIndexColumn()
 
-        ->addColumn('jumlah', function ($detailproduksi) {
-            return format_uang($detailproduksi->jumlah);
-        })
+            ->addColumn('jumlah', function ($detailproduksi) {
+                return format_uang($detailproduksi->jumlah);
+            })
 
-        ->addColumn('permintaan_bahan', function ($detailproduksi) {
-            return 'masih dikosongin zam';
-        })
+            ->addColumn('permintaan_bahan', function ($detailproduksi) {
+                return 'masih dikosongin zam';
+            })
 
-        ->addColumn('aksi', function ($detailproduksi) {
-            return '
-            <div class="">
-                <button onclick="editForm(`'. route('detailProduksi.update', $detailproduksi->id_detail) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                <button onclick="deleteData(`'. route('detailProduksi.destroy', $detailproduksi->id_detail) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
-            </div>
-            ';
-        })
-        ->rawColumns(['aksi'])
-        ->make(true);
+            // 1. buat migration request
+            // 2. join detail_produksi dan permintaan_bahan yang dijoinkan id_detail dengan detail_bahan_produksi
+            // 3. permintaan bahan yg dicek id_request jika null muncul tombol jika ada id_request munculkan nama default
+
+            ->addColumn('aksi', function ($detailproduksi) {
+                return '
+                    <div class="">
+                    <button onclick="editDetailForm(`' . route('detailProduksi.show', $detailproduksi->id_detail) . '` , `' . route('detailProduksi.update', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-pencil"></i></button>
+                    <button onclick="deleteData(`' . route('detailProduksi.destroy', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                    </div>';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
     }
 
     public function create()
     {
-
     }
 
     /**
@@ -76,11 +84,11 @@ class DetailProduksiController extends Controller
             $detailproduksi->id_produksi = $request->id_produksi;
             $detailproduksi->save();
             DB::commit();
-            return redirect()->route('detailProduksi.show',$request->id_produksi);
+            return redirect()->route('detailProduksi.show', $request->id_produksi);
         } catch (\Throwable $th) {
             DB::rollback();
-            Log::error("tambah request detail produksi".$th);
-            return response()->json('gagal disimpan'.$th->getMessage(), 500);
+            Log::error("tambah request detail produksi" . $th);
+            return response()->json('gagal disimpan' . $th->getMessage(), 500);
         }
     }
 
@@ -92,19 +100,19 @@ class DetailProduksiController extends Controller
      */
     public function show($id)
     {
-        $bahan = Bahan::all();
-        return view('detailProduksi.index', compact('bahan'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        try {
+            $detailproduksi = DetailProduksi::with('bahan')->find($id);
+            if ($detailproduksi == null) {
+                throw new NotFoundHttpException('detail produksi tidak ditemukan');
+            }
+            return jsonResponse($detailproduksi);
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
+        } catch (NotFoundHttpException $th) {
+            return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -114,9 +122,18 @@ class DetailProduksiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateDetailRequest $request, DetailProduksi $detailProduksi)
     {
-        //
+        try {
+            $detailProduksi->update($request->validated());
+            return jsonResponse($detailProduksi);
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
+        } catch (NotFoundHttpException $th) {
+            return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -125,8 +142,17 @@ class DetailProduksiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(DetailProduksi $detailProduksi)
     {
-        //
+        try {
+            $detailProduksi->delete();
+            return jsonResponse('', Response::HTTP_NO_CONTENT);
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
+        } catch (NotFoundHttpException $th) {
+            return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }
