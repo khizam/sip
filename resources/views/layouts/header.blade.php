@@ -22,13 +22,13 @@
                   </a>
                   <ul class="dropdown-menu">
                     <li class="header header_notification">You have 0 notifications</li>
-                    <li>
+                    <li style="background: rgba(0,166,90,0.2)">
                       <!-- inner menu: contains the actual data -->
                       <ul class="menu menu_notification">
                           {{-- // Menu Notification --}}
                       </ul>
                     </li>
-                    <li class="footer"><a href="#">View all</a></li>
+                    <li class="footer"><a href="{{ route('notifications.show') }}">View all</a></li>
                   </ul>
                 </li>
 
