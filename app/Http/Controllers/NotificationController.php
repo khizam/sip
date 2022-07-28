@@ -12,12 +12,21 @@ class NotificationController extends Controller
         return jsonResponse($this->notications());
     }
 
-    public function show()
+    public function show($read_at='')
     {
         $role = Auth::user()->roles->pluck('id');
         $notifications = Notifications::where('notifiable_id', $role)
+                            ->when($read_at == 'read',function ($query){
+                                $query->whereNotNull('read_at');
+                            })
+                            ->when($read_at == 'unread',function ($query){
+                                $query->whereNull('read_at');
+                            })
                             ->orderBy('created_at','DESC')
                             ->paginate(10);
+        if (request()->ajax()) {
+            return view('notification.load_content', compact('notifications'));
+        }
         return view('notification.index', compact('notifications'));
     }
 
