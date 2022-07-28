@@ -115,116 +115,50 @@
           ]
         });
 
-        $('#modal-form').validator().on('submit', function (e) {
-          if (! e.preventDefault()) {
+        $('#modal_edit_detail').validator().on('submit', function (e) {
+            e.preventDefault()
+            console.log('da')
+            let url = $('#modal_edit_detail').attr('action')
+            console.log(url)
             $.ajax({
-              url: $('#modal-form form').attr('action'),
-              method: $('#modal-form [name=_method]').val() ?? 'PUT',
-              data: $('#modal-form form').serialize(),
-              dataTYPE: "json"
-            })
-            .done((response) => {
-              $('#modal-form').modal('hide');
-              table.ajax.reload();
-            })
-            .fail((errors) => {
-              errors.responseJSON !== '' ? alert(errors.responseJSON) : alert('Tidak dapat menyimpan data');
-              return;
-            });
-          }
-        })
-
-        $('#modal-form').validator().on('submit', function (e) {
-            if (! e.preventDefault()) {
-              $.ajax({
-                url: $('#modal-form form').attr('action'),
-                method: $('#modal-form [name=_method]').val() ?? 'PUT',
-                data: $('#mdal-form form').serialize(),
+                url: url,
+                method: $('#modal_edit_detail [name=_method]').val() ?? 'PUT',
+                data: $('#modal_edit_detail form').serialize(),
                 dataType: "json"
-              })
-              // $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
-              .done((response) => {
-                $('#modal-form').modal('hide');
-                table.ajax.reload();
-              })
-              .fail((errors) => {
-                alert('Tidak dapat menyimpan data');
-                return;
-              });
-            }
-        })
-
-        $('#modal-form-edit-detail').validator().on('submit', function (e) {
-          if ( e.preventDefault()) {
-            $.ajax({
-              url: $('#modal-form-edit-detail form').attr('action'),
-              method: $('#modal-form-edit-detail [name=_method]').val() ?? 'PUT',
-              data: $('modal-form-edit-detail form').serialize(),
-              dataType: "json"
             })
             .done((response) => {
-              $('#modal-form-edit-detail').modal('hide');
-              table.ajax.reload();
+                $('#modal_edit_detail').modal('hide');
+                table.ajax.reload();
             })
             .fail((errors) => {
-              errors.responseJSON !== '' ? alert(errors.responseJSON) : alert('Tidak dapat menyimpan data');
-              return;
+                errors.responseJSON !== '' ? alert(errors.responseJSON) : alert('Tidak dapat menyimpan data');
+                return;
             });
-          }
         })
-
-      $('#modal-form-edit-detail').validator().on('submit', function (e) {
-        if ( e.preventDefault()) {
-          $.ajax({
-              url: $('#modal-form-edit-detail form').attr('action'),
-              method: $('#modal-form-edit-detail [name=_method]').val() ?? 'PUT',
-              data: $('#modal-form-edit-detail form').serialize(),
-              dataType: "json"
-          })
-          .done((response) => {
-            $('#modal-form-edit-detail'),modal('hide');
-            table.ajax.reload();
-          })
-          .fail((errors) => {
-            errors.responseJSON !== '' ? alert(errors.responseJSON) : alert('Tidak dapat menyimpan data');
-            return;
-          });
-        }
-      })
     });
 
 
-
-  function addForm(url) {
-      $('#modal-form').modal('show');
-      $('#modal-form .modal-title').text('Tambah Detail Produksi');
-
-      $('#modal-form form')[0].reset();
-      $('#modal-form form').attr('action', url);
-      $('#modal-form [name=_method]').val('post');
-      $('#modal-form [name=id_bahan]').focus();
-    }
-
     function editDetailForm(url, formUrl) {
-      $('#modal-form-edit-detail').modal('show');
-      $('#modal-form-edit-detail .modal-title').text('Edit Detail Produksi');
+        $('#modal_edit_detail').modal('show');
+        $('#modal_edit_detail .modal-title').text('Edit Detail Produksi');
 
-      $('#modal-form-edit-detail')[0].reset();
-      $('#modal-form-edit-detail').attr('action',formUrl);
-      $('#modal-form-edit-detail [name=_method]').val('put');
-      $('#modal-form-edit-detail [name=id_bahan]').focus();
-
-      $.get(url)
-        .done((response) => {
-          $('#modal-form-edit-detail [name=id_detail]').val(response.id_detail);
-          $('#modal-form-edit-detail [name=id_bahan]').val(response.bahan.nama_bahan);
-          $('#modal-form-edit-detail [name=id_produksi]').val(response.id_produksi);
-          $('#modal-form-edit-detail [name=jumlah]').val(response.jumlah);
-        })
-      .fail((errors) => {
-        alert(errors.responseJSON ?? 'Tidak dapat menampilkan data');
-          return;
-      });
+        $('#modal_edit_detail form')[0].reset();
+        $('#modal_edit_detail').attr('action',formUrl);
+        $('#modal_edit_detail [name=_method]').val('put');
+        $('#modal_edit_detail [name=id_bahan]').focus();
+        $('#modal_edit_detail [name=id_bahan]').find('option:not(:first)').removeAttr('selected',true).trigger('change');
+        $.get(url)
+            .done((response) => {
+                $('#modal_edit_detail [name=id_detail]').val(response.id_detail);
+                $('#modal_edit_detail [name=id_produksi]').val(response.id_produksi);
+                $('#modal_edit_detail [name=jumlah]').val(response.jumlah);
+                $('#modal_edit_detail [name=id_bahan] option[value="'+response.id_bahan+'"]').attr("selected", true);
+                $('#modal_edit_detail [name=id_bahan]').trigger('change');
+            })
+        .fail((errors) => {
+            alert(errors.responseJSON ?? 'Tidak dapat menampilkan data');
+            return;
+        });
     }
 
     function deleteData(url) {

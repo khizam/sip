@@ -12,53 +12,85 @@
 @section('content')
  <div class="row">
     <div class="col-md-12">
-        @if ($notifications->isEmpty())
-            <h4 style="display: flex; justify-content: center">Belum ada Notifikasi</h4>
-        @endif
-        <!-- The time line -->
-        <ul class="timeline">
-        @foreach ($notifications as $notification)
-        <!-- /.timeline-label -->
-        <!-- timeline item -->
-        @php
-        $bg_color = '';
-        if (is_null($notification->read_at)) {
-            $bg_color = 'bg-blue';
-        } else {
-            $bg_color = 'bg-secondary';
-        }
-        $read_at = $notification->read_at;
-        $title = explode('\\',$notification->type)[2];
-        $data = json_decode($notification->data);
-        $keys = array_keys((array) $data->attributes);
-        $values = array_values((array) $data->attributes);
-        @endphp
-        <li>
-            <i class="fa fa-circle {{ $bg_color }}"></i>
-
-            <div class="timeline-item">
-            <span class="time"><i class="fa fa-clock-o"></i> {{ $notification->created_at }}</span>
-
-            <h3 class="timeline-header"><a href="#">{{ $title }}</a> - {!! is_null($read_at) ? '<i class="bg-primary" style="border-radius: 25% 10%; padding: 3px 5px">belum dibaca</i>' : '<i>sudah dibaca</i>' !!}</h3>
-
-            <div class="timeline-body">
-                Notification {{ $title }} dengan keterangan <br>
-                @foreach ($keys as $i => $key)
-                    {{ $key.' dengan nilai = '.$values[$i] }} <br>
-                @endforeach
+        <!-- Custom Tabs -->
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab_unread" data-url="{{ route('notifications.show',['read_at'=>'unread']) }}">Belum dibaca</a></li>
+                <li><a href="#tab_read" data-url="{{ route('notifications.show',['read_at'=>'read']) }}">Sudah dibaca</a></li>
+                <li><a href="#tab_all" data-url="{{ route('notifications.show',['read_at'=>'all']) }}">Semua</a></li>
+            </ul>
+            <div class="tab-content" style="position: relative;">
+                <div id="spinner"><div></div><div></div></div>
+                <div class="tab-pane active" id="tab_all">
+                    @include('notification.load_content')
+                </div>
+                <!-- /.tab-pane -->
+                <div class="tab-pane" id="tab_read">
+                    <!-- /.tab-pane body -->
+                </div>
+                <!-- /.tab-pane -->
+                <div class="tab-pane" id="tab_unread">
+                </div>
+            <!-- /.tab-pane -->
             </div>
-            <div class="timeline-footer">
-            @if (is_null($read_at))
-                <a class="btn btn-primary btn-xs" href="{{ route('notifications.markAsRead', $notification) }}">mark as read</a>
-                @endif
-                <a class="btn btn-success btn-xs">cek notification</a>
-            </div>
-            </div>
-        </li>
-        @endforeach
-        </ul>
-    </div>
+            <!-- /.tab-content -->
+        </div>
+        <!-- nav-tabs-custom -->
+        </div>
     <!-- /.col -->
 </div>
-{{ $notifications->links() }}
 @endsection
+
+@push('scripts')
+<script type="text/javascript">
+$(document).ready(function () {
+
+    // Load HTML ketika klik pagination
+    $('body').on('click', '.pagination a', function(e) {
+        e.preventDefault();
+
+        $('#spinner').addClass('lds-ripple')
+        let url = $(this).attr('href');
+        let element = $(this).closest('.tab-pane.active');
+        element.attr('style', 'visibility: hidden')
+        getNotification(
+            url,
+            function (data) {
+                $(element).html(data);
+                $('#spinner').removeClass('lds-ripple')
+                $(element).attr('style', 'visibility: visible')
+            }
+        );
+        window.history.pushState("", "", url);
+    });
+
+    // Pindah tab pane
+    $('.nav-tabs li a').click(function (e) {
+        e.preventDefault();
+        let element = $(this).attr('href'); // ambil id dari href link yang diklik
+        let url = $(this).attr('data-url'); // ambil data url dari link yang diklik
+        $(this).tab('show'); //tampilkan body tab
+
+        let tab_pane = $(this).closest('.tab-pane.active');
+        tab_pane.attr('style', 'visibility: hidden')
+        $('#spinner').addClass('lds-ripple')
+        getNotification(
+            url,
+            function (data) {
+                $(element).html(data);
+                $('#spinner').removeClass('lds-ripple')
+                $(tab_pane).attr('style', 'visibility: visible')
+            }
+        );
+    });
+});
+function getNotification(url, callback) {
+    $.ajax({
+        url : url
+    }).done(callback)
+    .fail(function () {
+        alert('Notification gagal diload.');
+    });
+}
+</script>
+@endpush

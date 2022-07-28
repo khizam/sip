@@ -51,55 +51,79 @@ Route::middleware([
 });
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/kategori/data', [KategoriController::class, 'data'])->name('kategori.data');
+    Route::get('/kategori/data', [KategoriController::class, 'data'])
+        ->name('kategori.data');
     Route::resource('/kategori', KategoriController::class);
 
-    Route::get('/supplier/data', [SupplierController::class, 'data'])->name('supplier.data');
+    Route::get('/supplier/data', [SupplierController::class, 'data'])
+        ->name('supplier.data');
     Route::resource('/supplier', SupplierController::class);
 
-    Route::get('/bahan/data', [BahanController::class, 'data'])->name('bahan.data');
+    Route::get('/bahan/data', [BahanController::class, 'data'])
+        ->name('bahan.data');
     Route::resource('/bahan', BahanController::class);
 
-    Route::get('/produk/data', [ProdukController::class, 'data'])->name('produk.data');
+    Route::get('/produk/data', [ProdukController::class, 'data'])
+        ->name('produk.data');
     Route::resource('/produk', ProdukController::class);
 
-    Route::get('/barangmasuk/data', [BarangmasukController::class, 'data'])->name('barangmasuk.data');
+    Route::get('/barangmasuk/data', [BarangmasukController::class, 'data'])
+        ->name('barangmasuk.data');
     Route::resource('/barangmasuk', BarangmasukController::class);
 
-    Route::get('/lab/data', [LabController::class, 'data'])->name('lab.data');
-    Route::get('/lab/edit-lab/{id}', [LabController::class, 'editLab'])->name('lab.editLab');
-    Route::put('/lab/update-lab/{id}', [LabController::class, 'updateLab'])->name('lab.updateLab');
-    Route::put('/lab/check-status/{id}', [LabController::class, 'checkStatus'])->name('lab.checkStatus');
+    Route::get('/lab/data', [LabController::class, 'data'])
+        ->name('lab.data');
+    Route::get('/lab/edit-lab/{id}', [LabController::class, 'editLab'])
+        ->name('lab.editLab');
+    Route::put('/lab/update-lab/{id}', [LabController::class, 'updateLab'])
+        ->name('lab.updateLab');
+    Route::put('/lab/check-status/{id}', [LabController::class, 'checkStatus'])
+        ->name('lab.checkStatus');
     Route::get('/lab/cetak_pdf', [LabController::class, 'printPdfLab']);
     Route::resource('/lab', LabController::class);
 
-    Route::get('/gudang/data', [GudangController::class, 'data'])->name('gudang.data');
-    Route::get('/gudang/edit-gudang/{id}', [GudangController::class, 'editGudang'])->name('gudang.editGudang');
+    Route::get('/gudang/data', [GudangController::class, 'data'])
+        ->name('gudang.data');
+    Route::get('/gudang/edit-gudang/{id}', [GudangController::class, 'editGudang'])
+        ->name('gudang.editGudang');
     Route::resource('/gudang', GudangController::class);
 
     // Route User
-    Route::get('/user/data',[UserController::class,'data'])->name('user.data');
+    Route::get('/user/data', [UserController::class, 'data'])
+        ->name('user.data');
     Route::resource('/user', UserController::class);
 
-    Route::get('/owner/data',[OwnerController::class,'data'])->name('owner.data');
+    Route::get('/owner/data', [OwnerController::class, 'data'])
+        ->name('owner.data');
     Route::resource('/owner', OwnerController::class);
 
-    Route::get('/detailProduksi/data/{id_produksi}',[DetailProduksiController::class,'data'])->name('detailProduksi.data');
-    Route::get('/detailProduksi/edit-detail/{id}', [DetailProduksiController::class,'editDetail'])->name('detailProduksi.editDetail');
-    Route::put('/detailProduksi/update-detail/{id}', [DetailProduksiController::class,'updateDetail'])->name('detailProduksi.updateDetail');
-    Route::resource('/detailProduksi', DetailProduksiController::class)->except('showbahan');
-    // Route::get('/detailProduksi/{id_produksi}',[DetailProduksiController::class,'showbahan'])->name('detailProduksi.showbahan');
-    Route::get('/detailProduksi', [DetailProduksiController::class, 'showbahan'])->name('detailProduksi.showbahan');
+    Route::resource('/detailProduksi', DetailProduksiController::class)
+        ->except('index')
+        ->names('detailProduksi');
+    Route::get('/detailProduksi/index/{id_produksi?}', [DetailProduksiController::class, 'index'])
+        ->name('detailProduksi.index');
+    Route::get('/detailProduksi/data/{id_produksi}', [DetailProduksiController::class, 'data'])
+        ->name('detailProduksi.data');
+    Route::put('/detailProduksi/update-detail/{id}', [DetailProduksiController::class, 'updateDetail'])
+        ->name('detailProduksi.updateDetail');
 
-    Route::get('/produksibarang/data', [ProduksiBarangController::class,'data'])->name('produksibarang.data');
-    Route::put('/produksi/check-status/{id}', [detailProduksiController::class, 'data'])->name('produksi.checkStatus');
+    Route::get('/produksibarang/data', [ProduksiBarangController::class, 'data'])
+        ->name('produksibarang.data');
+    Route::put('/produksi/check-status/{id}', [detailProduksiController::class, 'data'])
+        ->name('produksi.checkStatus');
     Route::resource('/produksi', ProduksiBarangController::class);
 
-    Route::get('logs',[LogActivityController::class, 'index'])->name('log.activity_user');
-    Route::get('logs/data',[LogActivityController::class, 'data'])->name('log.activity_data');
-    Route::get('logs/delete/all',[LogActivityController::class, 'delete'])->name('log.delete_all');
+    Route::get('logs', [LogActivityController::class, 'index'])
+        ->name('log.activity_user');
+    Route::get('logs/data', [LogActivityController::class, 'data'])
+        ->name('log.activity_data');
+    Route::get('logs/delete/all', [LogActivityController::class, 'delete'])
+        ->name('log.delete_all');
 
-    Route::get('notifications/user', [NotificationController::class,'index'])->name('notifications.index');
-    Route::get('/notifications',[NotificationController::class, 'show'])->name('notifications.show');
-    Route::get('/notifications/mark-as-read/{notifications}/{redirect?}',[NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+    Route::get('notifications/user', [NotificationController::class, 'index'])
+        ->name('notifications.index');
+    Route::get('/notifications/{read_at?}', [NotificationController::class, 'show'])
+        ->name('notifications.show');
+    Route::get('/notifications/mark-as-read/{notifications}/{redirect?}', [NotificationController::class, 'markAsRead'])
+        ->name('notifications.markAsRead');
 });

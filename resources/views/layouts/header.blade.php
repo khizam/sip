@@ -28,7 +28,7 @@
                           {{-- // Menu Notification --}}
                       </ul>
                     </li>
-                    <li class="footer"><a href="{{ route('notifications.show') }}">View all</a></li>
+                    <li class="footer"><a href="{{ route('notifications.show',['read_at'=>'unread']) }}">View all</a></li>
                   </ul>
                 </li>
 
