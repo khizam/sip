@@ -2,18 +2,20 @@
 
 namespace App\Events;
 
+use App\Models\Enums\RolesEnum;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\InteractsWithBroadcasting;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class OwnerProductRequestEvent implements ShouldBroadcastNow
+class PushNotificationEvent implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels, InteractsWithBroadcasting;
 
     public $data;
-
     /**
      * Create a new event instance.
      *
@@ -21,6 +23,7 @@ class OwnerProductRequestEvent implements ShouldBroadcastNow
      */
     public function __construct($data)
     {
+        $this->broadcastVia('pusher');
         $this->data = $data;
     }
 
@@ -31,11 +34,16 @@ class OwnerProductRequestEvent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new Channel('owner_product_request');
+        return new PrivateChannel('pushNotification.'.RolesEnum::Produksi);
     }
 
     public function broadcastAs()
     {
-        return 'owner_product_request';
+        return 'push.notification';
     }
+
+    public function handle(PushNotificationEvent $event){
+        $uid = $event->transaction->user_id;
+    }
+
 }

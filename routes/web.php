@@ -1,4 +1,7 @@
 <?php
+
+use App\Events\OwnerProductRequestEvent;
+use App\Events\Testing;
 use App\Http\Controllers\{
     KategoriController,
     SupplierController,
@@ -14,6 +17,9 @@ use App\Http\Controllers\{
     OwnerController,
     ProduksiBarangController,
 };
+use App\Models\Enums\StatusProduksiEnum;
+use App\Models\ProduksiBarang;
+use Illuminate\Support\Facades\Auth;
 use App\Models\DetailProduksi;
 use App\Models\User;
 use Illuminate\Support\Facades\Request;
@@ -78,8 +84,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/owner/data',[OwnerController::class,'data'])->name('owner.data');
     Route::resource('/owner', OwnerController::class);
 
-    Route::get('/detailProduksi/data',[DetailProduksiController::class,'data'])->name('detailProduksi.data');
-    Route::resource('/detailProduksi', DetailProduksiController::class);
+    Route::get('/detailProduksi/data/{id_produksi}',[DetailProduksiController::class,'data'])->name('detailProduksi.data');
+    Route::get('/detailProduksi/edit-detail/{id}', [DetailProduksiController::class,'editDetail'])->name('detailProduksi.editDetail');
+    Route::put('/detailProduksi/update-detail/{id}', [DetailProduksiController::class,'updateDetail'])->name('detailProduksi.updateDetail');
+    Route::resource('/detailProduksi', DetailProduksiController::class)->except('showbahan');
+    // Route::get('/detailProduksi/{id_produksi}',[DetailProduksiController::class,'showbahan'])->name('detailProduksi.showbahan');
+    Route::get('/detailProduksi', [DetailProduksiController::class, 'showbahan'])->name('detailProduksi.showbahan');
 
     Route::get('/produksibarang/data', [ProduksiBarangController::class,'data'])->name('produksibarang.data');
     Route::put('/produksi/check-status/{id}', [detailProduksiController::class, 'data'])->name('produksi.checkStatus');
@@ -91,3 +101,4 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('notifications/user', [NotificationController::class,'index'])->name('notifications.index');
 });
+

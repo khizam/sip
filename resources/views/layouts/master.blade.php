@@ -7,9 +7,9 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
 <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  
+
   {{-- <link rel="icon" href="{{ url($setting->path_logo) }}" type="image/png"> --}}
-  
+
   <!-- Select2 -->
   <link rel="stylesheet" href="{{ asset('template/bower_components/select2/dist/css/select2.min.css')}}">
   <!-- Bootstrap 3.3.7 -->
@@ -59,12 +59,12 @@
 
     <!-- Main content -->
     <section class="content">
-      
+
       <!-- /.row -->
       @yield('content')
       <!-- Main row -->
-      
-     
+
+
     </section>
     <!-- /.content -->
   </div>
@@ -72,11 +72,11 @@
  @includeIf('layouts.footer')
 
   <!-- Control Sidebar -->
- 
+
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
-  
+
 </div>
 <!-- ./wrapper -->
 
@@ -100,6 +100,54 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('template/dist/js/pages/dashboard2.js')}}"></script>
 
+<script src="{{ asset('js/app.js') }}"></script>
+{{-- <script src="{{ asset('js/pusher_channel.js') }}"></script> --}}
+<script>
+    console.log('data before echo')
+    let url_notification = "{{ route('notifications.index') }}";
+
+    let role = {{ Auth::user()->roles->pluck('id')[0] }}
+
+    if (role == {{ \App\Models\Enums\RolesEnum::Produksi }}) {
+        Echo.private(`pushNotification.${role}`)
+            .listen('.push.notification', (response) => {
+                emptyElement();
+                addElement(response.data);
+            });
+    }
+
+    $(function () {
+        $.get(url_notification)
+        .done(function (data) {
+            addElement(data);
+        });
+    });
+
+    function addElement(data) {
+        let element = `<span class="label label-warning" >${data.totalUnread}</span>`;
+        let menu_element = '';
+        data.unread.forEach(result => {
+            let object_key = Object.keys(result.data.attributes)
+            let object_val = Object.values(result.data.attributes)
+            menu_element += `
+                <li>
+                    <a href="${result.data.links}">
+                        <i class="fa fa-warning text-yellow"></i>${object_key[0]} - ${object_val[0]},${object_key[1]} - ${object_val[1]},${object_key[2]} - ${object_val[2]}
+                    </a>
+                </li>`
+        });
+        $('#notification_user').after(element);
+        $('.header_notification').text(`Kamu punya ${data.totalUnread} notification`);
+        $('.menu_notification').append(menu_element);
+    }
+
+    function emptyElement() {
+        $('.menu_notification').empty();
+        $('#notification_user').next('span').remove();
+        $('.header_notification').empty();
+     }
+
+</script>
 @stack('scripts')
 </body>
 </html>

@@ -71,28 +71,3 @@
 <form action="{{ route('logout') }}" method="post" id="logout-form" style="display: none;">
     @csrf
 </form>
-@push('scripts')
-<script>
-    let url_notification = "{{ route('notifications.index') }}";
-    $(function () {
-       $.get(url_notification)
-        .done(function (data) {
-            let element = `<span class="label label-warning" >${data.totalUnread}</span>`;
-            let menu_element = ''
-            data.unread.forEach(result => {
-                let object_key = Object.keys(result.data)
-                menu_element += `
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-warning text-yellow"></i>${object_key[0]} - ${result.data.produk},${object_key[1]} - ${result.data.jumlah},${object_key[2]} - ${result.data.user}
-                        </a>
-                    </li>`
-            });
-            $('#notification_user').after(element);
-            $('.header_notification').text(`Kamu punya ${data.totalUnread} notification`);
-            $('.menu_notification').append(menu_element);
-            console.log(data)
-        });
-    });
-</script>
-@endpush

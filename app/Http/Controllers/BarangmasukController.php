@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BarangmasukIntoLabEvent;
 use App\Models\Bahan;
 use App\Models\Kategori;
 use App\Models\Supplier;
@@ -119,18 +120,16 @@ class BarangmasukController extends Controller
             $lab = Lab::latest()->first() ?? new Lab();
             $kode_lab = (int) $lab->kode_lab +1;
 
-            $lab = new lab();
-            $lab->kode_lab = tambah_nol_didepan($kode_lab, 6);
-
             $barangmasuk->id_bahan = $request->id_bahan;
             $barangmasuk->id_kategori = $request->id_kategori;
             $barangmasuk->id_supplier = $request->id_supplier;
             $barangmasuk->jumlah_bahan = $request->jumlah_bahan;
             $barangmasuk->save();
 
+            $insertLab = null;
             if ($barangmasuk) {
-                Lab::create([
-                    'kode_lab' => $lab->kode_lab,
+                $insertLab = Lab::create([
+                    'kode_lab' => tambah_nol_didepan($kode_lab, 6),
                     'id_barangmasuk'=> $barangmasuk->id_barangmasuk,
                     'satuan' => 'kg',
                     'bahan_layak' => 0,
@@ -139,6 +138,7 @@ class BarangmasukController extends Controller
             }
 
             DB::commit();
+            event(new BarangmasukIntoLabEvent($insertLab));
             return response()->json('Data berhasil disimpan', 200);
         } catch (AuthorizationException $th) {
             return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
