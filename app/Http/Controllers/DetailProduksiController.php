@@ -132,6 +132,7 @@ class DetailProduksiController extends Controller
     public function editDetail($id)
     {
         try {
+
             $detailproduksi = DetailProduksi::with('detail.bahan', 'detail.produk')->find($id);
             if($detailproduksi == null) {
                 throw new NotFoundHttpException("Detail barang tidak ditemukan");
@@ -185,6 +186,7 @@ class DetailProduksiController extends Controller
      */
     public function destroy($id)
     {
-        //
+
     }
+
 }
