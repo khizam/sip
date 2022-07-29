@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Gudang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 
 
 class GudangController extends Controller
