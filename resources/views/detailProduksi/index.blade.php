@@ -110,7 +110,7 @@
             // {data: 'select_all'},
             {data: 'nama_bahan'},
             {data: 'jumlah'},
-            {data: "permintaan_bahan"},
+            {data: 'permintaan_bahan'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });

@@ -14,8 +14,8 @@ class NotificationController extends Controller
 
     public function show($read_at='')
     {
-        $role = Auth::user()->roles->pluck('id');
-        $notifications = Notifications::where('notifiable_id', $role)
+        $user_id = Auth::user()->id;
+        $notifications = Notifications::where('notifiable_id', $user_id)
                             ->when($read_at == 'read',function ($query){
                                 $query->whereNotNull('read_at');
                             })
@@ -24,7 +24,9 @@ class NotificationController extends Controller
                             })
                             ->orderBy('created_at','DESC')
                             ->paginate(10);
+
         if (request()->ajax()) {
+
             return view('notification.load_content', compact('notifications'));
         }
         return view('notification.index', compact('notifications'));

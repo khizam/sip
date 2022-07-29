@@ -46,8 +46,13 @@ class DetailProduksiController extends Controller
             })
 
             ->addColumn('permintaan_bahan', function ($detailproduksi) {
-                return 'masih dikosongin zam';
+                return '
+                <div class="">
+                    <a href=' . route('detailProduksi.index', $detailproduksi->id_detail) . ' class="btn btn-xs btn-success btn-flat"> permintaan Bahan </a>
+                </div>
+                ';
             })
+
 
             // 1. buat migration request
             // 2. join detail_produksi dan permintaan_bahan yang dijoinkan id_detail dengan detail_bahan_produksi
@@ -60,7 +65,7 @@ class DetailProduksiController extends Controller
                     <button onclick="deleteData(`' . route('detailProduksi.destroy', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                     </div>';
             })
-            ->rawColumns(['aksi'])
+            ->rawColumns(['aksi', 'jumlah', 'permintaan_bahan'])
             ->make(true);
     }
 

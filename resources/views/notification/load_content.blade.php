@@ -39,7 +39,7 @@
             @if (is_null($read_at))
                 <a class="btn btn-primary btn-xs" href="{{ route('notifications.markAsRead', $notification) }}">mark as read</a>
                 @endif
-                <a class="btn btn-success btn-xs">cek notification</a>
+                <a class="btn btn-success btn-xs" href="{{ route('notifications.markAsRead', ['notifications' => $notification, 'redirect' => true]) }}">cek notification</a>
             </div>
             </div>
         </li>

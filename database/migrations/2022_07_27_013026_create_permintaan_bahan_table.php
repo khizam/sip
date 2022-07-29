@@ -15,23 +15,23 @@ class CreatePermintaanBahanTable extends Migration
     {
         Schema::create('permintaan_bahan', function (Blueprint $table) {
             $table->increments('id_request');
-            $table->integer('detail_produksi');
-            $table->foreign('detail_bahan_produksi')->nullable()
+            $table->unsignedInteger('detail_bahan_produksi');
+            $table->foreign('detail_bahan_produksi')
                     ->references('id_detail')
                     ->on('detail_produksi')
                     ->onUpdate('restrict')
                     ->onDelete('restrict');
             $table->integer('jumlah_bahan');
             $table->text('keterangan');
-            $table->bigInteger('user_produksi');
-            $table->foreign('id_user')
-                    ->references('id_user')
+            $table->unsignedBigInteger('user_produksi');
+            $table->foreign('user_produksi')
+                    ->references('id')
                     ->on('users')
                     ->onUpdate('restrict')
                     ->onDelete('restrict');
-            $table->bigInteger('user_gudang');
-            $table->foreign('id_user')
-                    ->references('id_user')
+            $table->unsignedBigInteger('user_gudang');
+            $table->foreign('user_gudang')
+                    ->references('id')
                     ->on('users')
                     ->onUpdate('restrict')
                     ->onDelete('restrict');

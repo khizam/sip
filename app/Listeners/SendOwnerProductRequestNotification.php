@@ -34,7 +34,7 @@ class SendOwnerProductRequestNotification
     public function handle(OwnerProductRequestEvent $event)
     {
         $users = User::whereHas('roles', function (Builder $query) {
-            $query->where('id', RolesEnum::Produksi);
+            $query->where('id',3);
         })->get();
         Notification::send($users, new OwnerProductRequestNotification($event->data));
 
