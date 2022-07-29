@@ -42,4 +42,9 @@ class DetailProduksi extends Model
     {
         return $this->belongsTo(ProduksiBarang::class, 'id_produksi');
     }
+
+    public function permintaanBahan()
+    {
+        return $this->hasMany(PermintaanBahan::class, 'id_detail_bahan');
+    }
 }

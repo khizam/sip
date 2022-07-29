@@ -14,27 +14,27 @@ class CreatePermintaanBahanTable extends Migration
     public function up()
     {
         Schema::create('permintaan_bahan', function (Blueprint $table) {
-            $table->increments('id_request');
-            $table->unsignedInteger('detail_bahan_produksi');
-            $table->foreign('detail_bahan_produksi')
-                    ->references('id_detail')
-                    ->on('detail_produksi')
-                    ->onUpdate('restrict')
-                    ->onDelete('restrict');
-            $table->integer('jumlah_bahan');
-            $table->text('keterangan');
-            $table->unsignedBigInteger('user_produksi');
-            $table->foreign('user_produksi')
-                    ->references('id')
-                    ->on('users')
-                    ->onUpdate('restrict')
-                    ->onDelete('restrict');
-            $table->unsignedBigInteger('user_gudang');
-            $table->foreign('user_gudang')
-                    ->references('id')
-                    ->on('users')
-                    ->onUpdate('restrict')
-                    ->onDelete('restrict');
+            $table->id('id_request');
+            $table->unsignedInteger('id_detail_produksi');
+            $table->foreign('id_detail_produksi')->nullable()
+                ->references('id_detail')
+                ->on('detail_produksi')
+                ->onUpdate('restrict')
+                ->onDelete('restrict');
+            $table->integer('jumlah_bahan')->nullable();
+            $table->text('keterangan')->nullable();
+            $table->unsignedBigInteger('id_user_produksi')->nullable();
+            $table->foreign('id_user_produksi')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('restrict')
+                ->onDelete('restrict');
+            $table->unsignedBigInteger('id_user_gudang')->nullable();
+            $table->foreign('id_user_gudang')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('restrict')
+                ->onDelete('restrict');
             $table->timestamps();
         });
     }
