@@ -15,6 +15,7 @@ use App\Http\Controllers\{
     NotificationController,
     UserController,
     OwnerController,
+    PermintaanBahanController,
     ProduksiBarangController,
 };
 use App\Models\Enums\StatusProduksiEnum;
@@ -126,4 +127,7 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('notifications.show');
     Route::get('/notifications/mark-as-read/{notifications}/{redirect?}', [NotificationController::class, 'markAsRead'])
         ->name('notifications.markAsRead');
+
+    Route::post('/permintaan-bahan/{id_detail_produksi}', [PermintaanBahanController::class, 'insertIntoPermintaanBahan'])
+        ->name('permintaan_bahan.insert');
 });

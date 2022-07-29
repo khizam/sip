@@ -176,5 +176,20 @@
         });
       }
     }
+
+    function permintaanKeGudang(url) {
+      if (confirm('Permintaan ke gudang ?')) {
+        $.post(url, {
+          '_token': $('[name=csrf-token]').attr('content'),
+        })
+        .done((response) => {
+          table.ajax.reload();
+        })
+        .fail((errors) => {
+          alert(errors);
+          return;
+        });
+      }
+    }
 </script>
 @endpush

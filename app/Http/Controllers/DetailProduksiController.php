@@ -31,8 +31,9 @@ class DetailProduksiController extends Controller
 
     public function data($id_produksi)
     {
-        $detailproduksi = DetailProduksi::leftJoin('bahan', 'bahan.id_bahan', '=', 'detail_produksi.id_bahan')
-            ->select('detail_produksi.*', 'bahan.nama_bahan')
+        $detailproduksi = DetailProduksi::leftJoin('permintaan_bahan', 'permintaan_bahan.id_detail_produksi', '=', 'detail_produksi.id_detail')
+            ->leftJoin('bahan', 'bahan.id_bahan', '=', 'detail_produksi.id_bahan')
+            ->select('detail_produksi.*', 'bahan.nama_bahan', 'permintaan_bahan.*')
             ->orderBy('id_detail', 'asc')
             ->where('id_produksi', $id_produksi)
             ->get();
@@ -45,8 +46,8 @@ class DetailProduksiController extends Controller
                 return format_uang($detailproduksi->jumlah);
             })
 
-            ->addColumn('permintaan_bahan', function ($detailproduksi) {
-                return 'masih dikosongin zam';
+            ->addColumn('permintaan_bahan', function ($detailProduksi) {
+                return $this->generatePermintaanBahan($detailProduksi);
             })
 
             // 1. buat migration request
@@ -54,14 +55,27 @@ class DetailProduksiController extends Controller
             // 3. permintaan bahan yg dicek id_request jika null muncul tombol jika ada id_request munculkan nama default
 
             ->addColumn('aksi', function ($detailproduksi) {
-                return '
-                    <div class="">
-                    <button onclick="editDetailForm(`' . route('detailProduksi.show', $detailproduksi->id_detail) . '` , `' . route('detailProduksi.update', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-pencil"></i></button>
-                    <button onclick="deleteData(`' . route('detailProduksi.destroy', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                $html = '<div class="">';
+                if (is_null($detailproduksi->id_request)) {
+                    $html .= '<button onclick="editDetailForm(`' . route('detailProduksi.show', $detailproduksi->id_detail) . '` , `' . route('detailProduksi.update', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-pencil"></i></button>';
+                }
+                $html .= '<button onclick="deleteData(`' . route('detailProduksi.destroy', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                     </div>';
+                return $html;
             })
-            ->rawColumns(['aksi'])
+            ->rawColumns(['aksi', 'permintaan_bahan'])
             ->make(true);
+    }
+
+    public function generatePermintaanBahan($detailProduksi)
+    {
+        $html = '';
+        if (is_null($detailProduksi->id_request)) {
+            $html = '<button onclick="permintaanKeGudang(`' . route('permintaan_bahan.insert', $detailProduksi->id_detail) . '`)" class="btn btn-xs btn-primary btn-flat">request bahan ke gudang</button>';
+        } elseif (!is_null($detailProduksi->id_request) && is_null($detailProduksi->id_user_gudang)) {
+            $html = '<i style="padding: 2px"><b>Menunggu Konfirmasi dari Gudang</b></i>';
+        }
+        return $html;
     }
 
     public function create()

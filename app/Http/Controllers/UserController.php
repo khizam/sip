@@ -32,7 +32,7 @@ class UserController extends Controller
             return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
         }
         $user = User::all();
-        $user = $user->map(function($user){
+        $user = $user->map(function ($user) {
             $user->getRoleNames();
             return $user;
         });
@@ -44,7 +44,7 @@ class UserController extends Controller
             ->addColumn('aksi', function ($user) {
                 return '
                 <div class="btn-group">
-                    <button onclick="editForm(`'. route('user.update', $user->id) .'`, `'.route('user.edit', $user->id).'`)" class="btn btn-xs btn-info btn-flat btn_user_edit"><i class="fa fa-pencil"></i></button>
+                    <button onclick="editForm(`' . route('user.update', $user->id) . '`, `' . route('user.edit', $user->id) . '`)" class="btn btn-xs btn-info btn-flat btn_user_edit"><i class="fa fa-pencil"></i></button>
                 </div>
                 ';
             })
@@ -61,7 +61,7 @@ class UserController extends Controller
     {
         try {
             $this->authorize('user_create');
-            $role = Role::orderBy('id')->get(['id','name']);
+            $role = Role::orderBy('id')->get(['id', 'name']);
             if ($role == null) {
                 throw new NotFoundHttpException("Role tidak ditemukan");
             }
@@ -86,15 +86,17 @@ class UserController extends Controller
         try {
             DB::beginTransaction();
             $user = User::create(
-                $request->only(['name','email','password'])
+                $request->only(['name', 'email', 'password'])
             );
 
             $user->assignRole($request->role);
             DB::commit();
             return jsonResponse($user);
         } catch (AuthorizationException $th) {
+            DB::rollback();
             return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
         } catch (\Throwable $th) {
+            DB::rollback();
             return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -107,7 +109,6 @@ class UserController extends Controller
      */
     public function show($id)
     {
-
     }
 
     /**
@@ -121,8 +122,8 @@ class UserController extends Controller
         $data = [];
         try {
             $this->authorize('user_edit');
-            $user = User::where('id',$id)->get();
-            $user->map(function($user){
+            $user = User::where('id', $id)->get();
+            $user->map(function ($user) {
                 $user->getRoleNames();
             })->collect();
             $role = Role::all();
