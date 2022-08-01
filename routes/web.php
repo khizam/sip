@@ -17,6 +17,7 @@ use App\Http\Controllers\{
     OwnerController,
     PermintaanBahanController,
     ProduksiBarangController,
+    GudangRequestController,
 };
 use App\Models\Enums\StatusProduksiEnum;
 use App\Models\ProduksiBarang;
@@ -89,6 +90,10 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('gudang.editGudang');
     Route::resource('/gudang', GudangController::class);
 
+    Route::get('/gudang_request/data', [GudangRequestController::class, 'data'])
+        ->name('gudang_request.data');
+    Route::resource('/gudang_request', GudangRequestController::class);
+
     // Route User
     Route::get('/user/data', [UserController::class, 'data'])
         ->name('user.data');
@@ -130,4 +135,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/permintaan-bahan/{id_detail_produksi}', [PermintaanBahanController::class, 'insertIntoPermintaanBahan'])
         ->name('permintaan_bahan.insert');
+
+
+
 });

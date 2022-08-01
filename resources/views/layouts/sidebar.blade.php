@@ -92,7 +92,7 @@
             </a>
             <ul class="treeview-menu">
               <li class="active"><a href="{{ route('gudang.index') }}"><i class="fa fa-circle-o"></i>Gudang Bahan</a></li>
-              <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Produk Jadi</a></li>
+              <li class="active"><a href="{{ route('gudang_request.index') }}"><i class="fa fa-circle-o"></i>Permintaan Bahan</a></li>
               <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Produk Gagal Jadi</a></li>
               <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Evaluasi Code</a></li>
             </ul>

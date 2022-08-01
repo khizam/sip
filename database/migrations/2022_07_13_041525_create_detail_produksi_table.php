@@ -20,13 +20,13 @@ class CreateDetailProduksiTable extends Migration
                   ->references('id_bahan')
                   ->on('bahan')
                   ->onUpdate('restrict')
-                  ->onDelete('restrict');
+                  ->onDelete('cascade');
             $table->unsignedInteger('id_produksi');
             $table->foreign('id_produksi')
                   ->references('id_produksi')
                   ->on('produksi_barang')
                   ->onUpdate('restrict')
-                  ->onDelete('restrict');
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }

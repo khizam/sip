@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+
 class DetailProduksiController extends Controller
 {
     /**
@@ -38,6 +39,7 @@ class DetailProduksiController extends Controller
             ->where('id_produksi', $id_produksi)
             ->get();
 
+
         return datatables()
             ->of($detailproduksi)
             ->addIndexColumn()
@@ -52,14 +54,11 @@ class DetailProduksiController extends Controller
             //         <a href=' . route('detailProduksi.index', $detailproduksi->id_detail) . ' class="btn btn-xs btn-success btn-flat"> permintaan Bahan </a>
             //     </div>
             //     ';
+            // })
+
             ->addColumn('permintaan_bahan', function ($detailProduksi) {
                 return $this->generatePermintaanBahan($detailProduksi);
             })
-
-
-            // 1. buat migration request
-            // 2. join detail_produksi dan permintaan_bahan yang dijoinkan id_detail dengan detail_bahan_produksi
-            // 3. permintaan bahan yg dicek id_request jika null muncul tombol jika ada id_request munculkan nama default
 
             ->addColumn('aksi', function ($detailproduksi) {
                 $html = '<div class="">';
@@ -70,11 +69,7 @@ class DetailProduksiController extends Controller
                     </div>';
                 return $html;
             })
-<<<<<<< HEAD
-            ->rawColumns(['aksi', 'jumlah', 'permintaan_bahan'])
-=======
             ->rawColumns(['aksi', 'permintaan_bahan'])
->>>>>>> 662fc8ed07bf5a87b4bacf1da5b51f0bee205839
             ->make(true);
     }
 
@@ -89,9 +84,6 @@ class DetailProduksiController extends Controller
         return $html;
     }
 
-    public function create()
-    {
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -128,8 +120,9 @@ class DetailProduksiController extends Controller
         try {
             $detailproduksi = DetailProduksi::with('bahan')->find($id);
             if ($detailproduksi == null) {
-                throw new NotFoundHttpException('detail produksi tidak ditemukan');
+                throw new NotFoundHttpException('detail tidak ditemukan');
             }
+
             return jsonResponse($detailproduksi);
         } catch (AuthorizationException $th) {
             return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
