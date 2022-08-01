@@ -4,14 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Bahan;
-use App\Models\DetailProduksi;
+use App\Models\Enums\StatusPermintaanBahanEnum;
+use App\Models\PermintaanBahan;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GudangRequestController extends Controller
@@ -28,43 +25,58 @@ class GudangRequestController extends Controller
 
     public function data()
     {
-        $detailproduksi = DetailProduksi::leftJoin('permintaan_bahan', 'permintaan_bahan.id_detail_produksi', '=', 'detail_produksi.id_detail')
-        ->leftJoin('bahan', 'bahan.id_bahan', '=', 'detail_produksi.id_bahan')
-        ->select('detail_produksi.*', 'bahan.nama_bahan', 'permintaan_bahan.*')
-        ->orderBy('id_detail', 'asc')
-        // ->where('id_produksi')
-        ->get();
+        $permintaanBahan = PermintaanBahan::leftJoin('detail_produksi', 'permintaan_bahan.id_detail_produksi', '=', 'detail_produksi.id_detail')
+            ->leftJoin('bahan', 'bahan.id_bahan', '=', 'detail_produksi.id_bahan')
+            ->select('detail_produksi.*', 'bahan.nama_bahan', 'permintaan_bahan.*')
+            ->orderBy('id_detail', 'asc')
+            // ->where('id_produksi')
+            ->get();
 
         return datatables()
-            ->of($detailproduksi)
+            ->of($permintaanBahan)
             ->addIndexColumn()
 
-            ->addColumn('jumlah', function ($detailproduksi) {
-                return format_uang($detailproduksi->jumlah);
+            ->addColumn('jumlah', function ($permintaanBahan) {
+                return format_uang($permintaanBahan->jumlah);
             })
 
-            ->addColumn('aksi', function ($detailproduksi) {
+            ->addColumn('aksi', function ($permintaanBahan) {
                 $html = '<div class="">';
-                if (is_null($detailproduksi->id_request)) {
-                    $html .= '<button onclick="editDetailForm(`' . route('detailProduksi.show', $detailproduksi->id_detail) . '` , `' . route('detailProduksi.update', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-pencil"></i></button>';
+                if (
+                    is_null($permintaanBahan->id_user_gudang) &&
+                    $permintaanBahan->status == StatusPermintaanBahanEnum::Proses
+                ) {
+                    $html .= '<button onclick="terimaPermintaanKeGudang(`' . route('gudang_request.terima_permintaan', $permintaanBahan->id_request) . '` , `' . route('detailProduksi.update', $permintaanBahan->id_request) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-check"></i></button>
+                    <button onclick="tolakPermintaanKeGudang(`' . route('gudang_request.tolak_permintaan', $permintaanBahan->id_request) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-ban"></i></button>';
+                } else {
+                    $html .= 'Permintaan bahan di' . $permintaanBahan->status;
                 }
-                $html .= '<button onclick="deleteData(`' . route('detailProduksi.destroy', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
-                    </div>';
+                $html .= '</div>';
                 return $html;
             })
             ->rawColumns(['aksi'])
             ->make(true);
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function terimaPermintaanBahan($id_request)
     {
-
+        try {
+            $id_user = Auth::user();
+            $permintaanBahan = PermintaanBahan::find($id_request);
+            if ($permintaanBahan->count() == 0) {
+                throw new NotFoundHttpException("Permintaan Bahan tidak ditemukan");
+            }
+            $permintaanBahan->update([
+                'id_user_gudang' => $id_user->id,
+                'status' => StatusPermintaanBahanEnum::Terima,
+                'keterangan' => 'bahan sesuai dengan permintaan'
+            ]);
+            return jsonResponse($permintaanBahan);
+        } catch (NotFoundHttpException $th) {
+            return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -73,9 +85,25 @@ class GudangRequestController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function tolakPermintaanBahan($id_request)
     {
-
+        try {
+            $id_user = Auth::user();
+            $permintaanBahan = PermintaanBahan::find($id_request);
+            if ($permintaanBahan->count() == 0) {
+                throw new NotFoundHttpException("Permintaan Bahan tidak ditemukan");
+            }
+            $permintaanBahan->update([
+                'id_user_gudang' => $id_user->id,
+                'status' => StatusPermintaanBahanEnum::Tolak,
+                'keterangan' => 'bahan belum mencukupi permintaan'
+            ]);
+            return jsonResponse($permintaanBahan);
+        } catch (NotFoundHttpException $th) {
+            return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -86,20 +114,7 @@ class GudangRequestController extends Controller
      */
     public function show($id)
     {
-        try {
-            $detailproduksi = DetailProduksi::with('bahan')->find($id);
-            if($detailproduksi == null) {
-                throw new NotFoundHttpException('request tidak ditemukan');
-            }
 
-            return jsonResponse($detailproduksi);
-        } catch (AuthorizationException $th) {
-            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
-        } catch (NotFoundHttpException $th) {
-            return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
-        } catch (\Throwable $th) {
-            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
     }
 
     /**

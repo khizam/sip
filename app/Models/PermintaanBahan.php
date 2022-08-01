@@ -17,8 +17,8 @@ class PermintaanBahan extends Model
         'id_detail_produksi',
         'jumlah_bahan',
         'keterangan',
-        'user_produksi',
-        'user_gudang',
+        'id_user_produksi',
+        'id_user_gudang',
     ];
 
     /**

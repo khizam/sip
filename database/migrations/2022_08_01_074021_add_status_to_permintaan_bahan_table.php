@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePermintaanBahansTable extends Migration
+class AddStatusToPermintaanBahanTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreatePermintaanBahansTable extends Migration
      */
     public function up()
     {
-        Schema::create('permintaan__bahans', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('permintaan_bahan', function (Blueprint $table) {
+            $table->enum('status', ['proses', 'terima', 'tolak'])->nullable()->default('proses');
         });
     }
 
@@ -26,6 +25,8 @@ class CreatePermintaanBahansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permintaan__bahans');
+        Schema::table('permintaan_bahan', function (Blueprint $table) {
+            $table->dropColumn('status');
+        });
     }
 }

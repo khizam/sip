@@ -5,15 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateDetailRequest;
 use App\Models\DetailProduksi;
 use App\Models\Bahan;
-use App\Models\ProduksiBarang;
+use App\Models\Enums\StatusPermintaanBahanEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
@@ -48,14 +43,6 @@ class DetailProduksiController extends Controller
                 return format_uang($detailproduksi->jumlah);
             })
 
-            // ->addColumn('permintaan_bahan', function ($detailproduksi) {
-            //     return '
-            //     <div class="">
-            //         <a href=' . route('detailProduksi.index', $detailproduksi->id_detail) . ' class="btn btn-xs btn-success btn-flat"> permintaan Bahan </a>
-            //     </div>
-            //     ';
-            // })
-
             ->addColumn('permintaan_bahan', function ($detailProduksi) {
                 return $this->generatePermintaanBahan($detailProduksi);
             })
@@ -78,8 +65,16 @@ class DetailProduksiController extends Controller
         $html = '';
         if (is_null($detailProduksi->id_request)) {
             $html = '<button onclick="permintaanKeGudang(`' . route('permintaan_bahan.insert', $detailProduksi->id_detail) . '`)" class="btn btn-xs btn-primary btn-flat">request bahan ke gudang</button>';
-        } elseif (!is_null($detailProduksi->id_request) && is_null($detailProduksi->id_user_gudang)) {
+        } elseif (
+            (!is_null($detailProduksi->id_request)) &&
+            is_null($detailProduksi->id_user_gudang)
+        ) {
             $html = '<i style="padding: 2px"><b>Menunggu Konfirmasi dari Gudang</b></i>';
+        } elseif (
+            $detailProduksi->status != StatusPermintaanBahanEnum::Proses &&
+            $detailProduksi->id_user_gudang != null
+        ) {
+            $html = '<i style="padding: 2px"><b> Permintaan di' . $detailProduksi->status . '</b></i>';
         }
         return $html;
     }
@@ -173,5 +168,4 @@ class DetailProduksiController extends Controller
             return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
 }
