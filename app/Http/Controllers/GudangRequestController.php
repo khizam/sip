@@ -23,7 +23,6 @@ class GudangRequestController extends Controller
      */
     public function index()
     {
-        $bahan = Bahan::all(['nama_bahan', 'id_bahan']);
         return view('gudang_request.index');
     }
 
@@ -65,7 +64,7 @@ class GudangRequestController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -76,7 +75,7 @@ class GudangRequestController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -87,7 +86,20 @@ class GudangRequestController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $detailproduksi = DetailProduksi::with('bahan')->find($id);
+            if($detailproduksi == null) {
+                throw new NotFoundHttpException('request tidak ditemukan');
+            }
+
+            return jsonResponse($detailproduksi);
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
+        } catch (NotFoundHttpException $th) {
+            return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -110,7 +122,7 @@ class GudangRequestController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**

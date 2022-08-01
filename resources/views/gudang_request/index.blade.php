@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('title')
-       Request Bahan Produksi
+       Gudang Request Bahan Produksi
 @endsection
 
 @section('breadcrumb')
 @parent
-<li class="active"> Request Bahan Produksi</li>
+<li class="active"> Gudang Request Bahan Produksi</li>
 @endsection
 
 @section('content')
