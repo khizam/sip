@@ -24,7 +24,7 @@
                 <th width="5%">No</th>
                 <th>Nama Bahan</th>
                 <th>Jumlah</th>
-                {{-- <th>Status</th> --}}
+                <th>Keterangan</th>
                 <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
               <tbody>
@@ -61,7 +61,8 @@
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
             {data: 'nama_bahan'},
-            {data: 'jumlah'},
+            {data: 'jumlah_bahan'},
+            {data: 'keterangan'},
             // {data: 'Status'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
@@ -215,6 +216,46 @@
         })
         .fail((errors) => {
           alert('Tidak dapat menghapus data');
+          return;
+        });
+      }
+    }
+
+    function terimaPermintaanKeGudang(url) {
+      if (confirm('Terima Permintaan bahan produksi ?')) {
+        $.ajax({
+            type: "PUT",
+            url: url,
+            data: {
+                '_token': $('[name=csrf-token]').attr('content')
+            },
+            dataType: "json"
+        })
+        .done((response)=>{
+          table.ajax.reload();
+        })
+        .fail((errors) => {
+          alert(errors);
+          return;
+        });
+      }
+    }
+
+    function tolakPermintaanKeGudang(url) {
+      if (confirm('Tolak Permintaan bahan produksi ?')) {
+        $.ajax({
+            type: "PUT",
+            url: url,
+            data: {
+                '_token': $('[name=csrf-token]').attr('content')
+            },
+            dataType: "json"
+        })
+        .done((response)=>{
+          table.ajax.reload();
+        })
+        .fail((errors) => {
+          alert(errors);
           return;
         });
       }

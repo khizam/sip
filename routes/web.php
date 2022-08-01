@@ -92,7 +92,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/gudang_request/data', [GudangRequestController::class, 'data'])
         ->name('gudang_request.data');
-    Route::resource('/gudang_request', GudangRequestController::class);
+    Route::get('/gudang_request', [GudangRequestController::class, 'index'])
+        ->name('gudang_request.index');
+    Route::put('/gudang_request/terima/{id_request}', [GudangRequestController::class, 'terimaPermintaanBahan'])
+        ->name('gudang_request.terima_permintaan');
+    Route::put('/gudang_request/tolak/{id_request}', [GudangRequestController::class, 'tolakPermintaanBahan'])
+        ->name('gudang_request.tolak_permintaan');
 
     // Route User
     Route::get('/user/data', [UserController::class, 'data'])
@@ -135,7 +140,4 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/permintaan-bahan/{id_detail_produksi}', [PermintaanBahanController::class, 'insertIntoPermintaanBahan'])
         ->name('permintaan_bahan.insert');
-
-
-
 });
