@@ -94,7 +94,8 @@
               <li class="active"><a href="{{ route('gudang.index') }}"><i class="fa fa-circle-o"></i>Gudang Bahan</a></li>
               <li class="active"><a href="{{ route('gudang_request.index') }}"><i class="fa fa-circle-o"></i>Permintaan Bahan</a></li>
               <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Produk Gagal Jadi</a></li>
-              <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Evaluasi Code</a></li>
+              {{-- <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Evaluasi Code</a></li> --}}
+              <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Produk Jadi</a></li>
             </ul>
           </li>
           @endcan
@@ -111,7 +112,8 @@
             <ul class="treeview-menu">
               <li class="active"><a href="{{ route('produksi.index') }}"><i class="fa fa-check"></i>Produksi Barang</a></li>
               {{-- <li class="active"><a href="{{ route('detailProduksi.index') }}"><i class="fa fa-circle-o"></i>Detail Produksi</a></li> --}}
-              <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Request Permintaan Kegudang</a></li>
+              <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Permintaan Kegudang</a></li>
+              <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Permintaan ke produksi</a></li>
             </ul>
           </li>
           @endcan

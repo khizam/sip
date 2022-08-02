@@ -8,6 +8,7 @@ use App\Models\Enums\StatusPermintaanBahanEnum;
 use App\Models\PermintaanBahan;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GudangRequestController extends Controller
@@ -19,7 +20,6 @@ class GudangRequestController extends Controller
      */
     public function index()
     {
-        $bahan = Bahan::all(['nama_bahan', 'id_bahan']);
         return view('gudang_request.index');
     }
 
@@ -114,7 +114,7 @@ class GudangRequestController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -137,7 +137,7 @@ class GudangRequestController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
