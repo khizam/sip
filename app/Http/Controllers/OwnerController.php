@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\OwnerProductRequestEvent;
-use App\Events\RequestProductionEvent;
-use App\Models\Enums\RolesEnum;
+use App\Events\PermintaanProduksiEvent;
 use App\Models\Enums\StatusProduksiEnum;
 use App\Models\StatusProduksi;
 use App\Models\ProduksiBarang;
 use App\Models\Produk;
 use App\Models\Satuan;
 use App\Models\User;
-use App\Notifications\RequestProductionNotification;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -38,35 +34,35 @@ class OwnerController extends Controller
     public function data()
     {
         $produksibarang = ProduksiBarang::leftJoin('produk', 'produk.id_produk', '=', 'produksi_barang.id_produk')
-        ->leftJoin('status_produksi', 'status_produksi.id_status', '=', 'produksi_barang.id_status')
-        ->leftJoin('users', 'users.id', '=', 'produksi_barang.id_user')
-        ->leftJoin('satuan', 'satuan.id_satuan', '=', 'produksi_barang.id_satuan')
-        ->select('produksi_barang.*', 'produk.nama_produk', 'status_produksi.status', 'users.id', 'satuan.satuan')
-        ->orderBy('id_produksi', 'asc')
-        ->get();
+            ->leftJoin('status_produksi', 'status_produksi.id_status', '=', 'produksi_barang.id_status')
+            ->leftJoin('users', 'users.id', '=', 'produksi_barang.id_user')
+            ->leftJoin('satuan', 'satuan.id_satuan', '=', 'produksi_barang.id_satuan')
+            ->select('produksi_barang.*', 'produk.nama_produk', 'status_produksi.status', 'users.id', 'satuan.satuan')
+            ->orderBy('id_produksi', 'asc')
+            ->get();
 
         return datatables()
-        ->of($produksibarang)
-        ->addIndexColumn()
+            ->of($produksibarang)
+            ->addIndexColumn()
 
-        ->addColumn('kode_produksi', function ($produksibarang) {
-            return '<span class="label label-success">'. $produksibarang->kode_produksi .'</span>';
-        })
+            ->addColumn('kode_produksi', function ($produksibarang) {
+                return '<span class="label label-success">' . $produksibarang->kode_produksi . '</span>';
+            })
 
-        ->addColumn('jumlah', function ($produksibarang) {
-            return format_uang($produksibarang->jumlah);
-        })
+            ->addColumn('jumlah', function ($produksibarang) {
+                return format_uang($produksibarang->jumlah);
+            })
 
-        ->addColumn('aksi', function ($produksibarang) {
-            return '
+            ->addColumn('aksi', function ($produksibarang) {
+                return '
             <div class="">
-                <button onclick="editForm(`'. route('owner.update', $produksibarang->id_produksi) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                <button onclick="deleteData(`'. route('owner.destroy', $produksibarang->id_produksi) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                <button onclick="editForm(`' . route('owner.update', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                <button onclick="deleteData(`' . route('owner.destroy', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
             </div>
             ';
-        })
-        ->rawColumns(['aksi', 'jumlah', 'kode_produksi'])
-        ->make(true);
+            })
+            ->rawColumns(['aksi', 'jumlah', 'kode_produksi'])
+            ->make(true);
     }
 
 
@@ -91,7 +87,7 @@ class OwnerController extends Controller
         try {
             DB::beginTransaction();
             $produksibarang = ProduksiBarang::latest()->first() ?? new ProduksiBarang();
-            $kode_produksi = (int) $produksibarang->kode_produksi +1;
+            $kode_produksi = (int) $produksibarang->kode_produksi + 1;
 
             $produksibarang = new produksibarang();
             $produksibarang->kode_produksi = tambah_nol_didepan($kode_produksi, 6);
@@ -103,13 +99,13 @@ class OwnerController extends Controller
             $produksibarang->save();
 
             DB::commit();
-            $data = $produksibarang->load('produk','user');
-            event(new OwnerProductRequestEvent($data));
+            $data = $produksibarang->load('produk', 'user');
+            event(new PermintaanProduksiEvent($data));
             return response()->json('Data berhasil disimpan', 200);
         } catch (\Throwable $th) {
             DB::rollback();
-            Log::error("tambah request produksi".$th);
-            return response()->json('gagal disimpan'.$th->getMessage(), 500);
+            Log::error("tambah request produksi" . $th);
+            return response()->json('gagal disimpan' . $th->getMessage(), 500);
         }
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\BarangmasukIntoLabEvent;
+use App\Events\BarangmasukLabEvent;
 use App\Models\Bahan;
 use App\Models\Kategori;
 use App\Models\Supplier;
@@ -30,7 +30,7 @@ class BarangmasukController extends Controller
         $kategori = Kategori::all()->pluck('nama_kategori', 'id_kategori');
         $supplier = Supplier::all()->pluck('nama_supplier', 'id_supplier');
 
-        return view('barangmasuk.index', compact('bahan','kategori','supplier'));
+        return view('barangmasuk.index', compact('bahan', 'kategori', 'supplier'));
     }
 
     public function data()
@@ -39,33 +39,33 @@ class BarangmasukController extends Controller
             return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
         }
         $barangmasuk = Barangmasuk::leftJoin('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
-        ->leftJoin('kategori', 'kategori.id_kategori', '=', 'barangmasuk.id_kategori')
-        ->leftJoin('supplier', 'supplier.id_supplier', '=', 'barangmasuk.id_supplier')
-        ->join('lab', 'lab.id_barangmasuk', '=', 'barangmasuk.id_barangmasuk')
-        ->select('barangmasuk.*', 'nama_bahan', 'nama_kategori', 'nama_supplier', 'lab.status')
-        ->orderBy('kode_barangmasuk', 'asc')
-        ->get();
+            ->leftJoin('kategori', 'kategori.id_kategori', '=', 'barangmasuk.id_kategori')
+            ->leftJoin('supplier', 'supplier.id_supplier', '=', 'barangmasuk.id_supplier')
+            ->join('lab', 'lab.id_barangmasuk', '=', 'barangmasuk.id_barangmasuk')
+            ->select('barangmasuk.*', 'nama_bahan', 'nama_kategori', 'nama_supplier', 'lab.status')
+            ->orderBy('kode_barangmasuk', 'asc')
+            ->get();
 
         return datatables()
-        ->of($barangmasuk)
-        ->addIndexColumn()
-        ->addColumn('kode_barangmasuk', function ($barangmasuk) {
-            return '<span class="label label-success">'. $barangmasuk->kode_barangmasuk .'</span>';
-        })
-        ->addColumn('jumlah_bahan', function ($barangmasuk) {
-            return format_uang($barangmasuk->jumlah_bahan);
-        })
-        ->addColumn('aksi', function ($barangmasuk) {
-            return '
+            ->of($barangmasuk)
+            ->addIndexColumn()
+            ->addColumn('kode_barangmasuk', function ($barangmasuk) {
+                return '<span class="label label-success">' . $barangmasuk->kode_barangmasuk . '</span>';
+            })
+            ->addColumn('jumlah_bahan', function ($barangmasuk) {
+                return format_uang($barangmasuk->jumlah_bahan);
+            })
+            ->addColumn('aksi', function ($barangmasuk) {
+                return '
             <div class="">
-                <button onclick="editForm(`'. route('barangmasuk.update', $barangmasuk->id_barangmasuk) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                <button onclick="deleteData(`'. route('barangmasuk.destroy', $barangmasuk->id_barangmasuk) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                <button onclick="editForm(`' . route('barangmasuk.update', $barangmasuk->id_barangmasuk) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                <button onclick="deleteData(`' . route('barangmasuk.destroy', $barangmasuk->id_barangmasuk) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                 <button onclick="alert(`belum ada fungsi :(`)" class="btn btn-xs btn-primary btn-flat">Lab <i class="fa fa-flask"></i></button>
             </div>
             ';
-        })
-        ->rawColumns(['aksi', 'kode_barangmasuk'])
-        ->make(true);
+            })
+            ->rawColumns(['aksi', 'kode_barangmasuk'])
+            ->make(true);
     }
 
     /**
@@ -112,13 +112,13 @@ class BarangmasukController extends Controller
             $this->authorize('barangmasuk_create');
             DB::beginTransaction();
             $barangmasuk = Barangmasuk::latest()->first() ?? new Barangmasuk();
-            $kode_barangmasuk = (int) $barangmasuk->kode_barangmasuk +1;
+            $kode_barangmasuk = (int) $barangmasuk->kode_barangmasuk + 1;
 
             $barangmasuk = new barangmasuk();
             $barangmasuk->kode_barangmasuk = tambah_nol_didepan($kode_barangmasuk, 6);
             // $request['kode_barangmasuk'] = 'P'. tambah_nol_didepan((int)$barangmasuk->id_barangmasuk +1, 6);
             $lab = Lab::latest()->first() ?? new Lab();
-            $kode_lab = (int) $lab->kode_lab +1;
+            $kode_lab = (int) $lab->kode_lab + 1;
 
             $barangmasuk->id_bahan = $request->id_bahan;
             $barangmasuk->id_kategori = $request->id_kategori;
@@ -130,7 +130,7 @@ class BarangmasukController extends Controller
             if ($barangmasuk) {
                 $insertLab = Lab::create([
                     'kode_lab' => tambah_nol_didepan($kode_lab, 6),
-                    'id_barangmasuk'=> $barangmasuk->id_barangmasuk,
+                    'id_barangmasuk' => $barangmasuk->id_barangmasuk,
                     'satuan' => 'kg',
                     'bahan_layak' => 0,
                     'bahan_tidak_layak' => 0,
@@ -138,14 +138,14 @@ class BarangmasukController extends Controller
             }
 
             DB::commit();
-            event(new BarangmasukIntoLabEvent($insertLab));
+            event(new BarangmasukLabEvent($insertLab));
             return response()->json('Data berhasil disimpan', 200);
         } catch (AuthorizationException $th) {
             return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
-        }  catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             DB::rollback();
-            Log::error("tambah barang masuk".$th);
-            return response()->json('gagal disimpan'.$th->getMessage(), 500);
+            Log::error("tambah barang masuk" . $th);
+            return response()->json('gagal disimpan' . $th->getMessage(), 500);
         }
     }
 
@@ -181,7 +181,6 @@ class BarangmasukController extends Controller
      */
     public function edit($id)
     {
-
     }
 
     /**
