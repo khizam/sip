@@ -38,7 +38,7 @@ class OwnerController extends Controller
             ->leftJoin('users', 'users.id', '=', 'produksi_barang.id_user')
             ->leftJoin('satuan', 'satuan.id_satuan', '=', 'produksi_barang.id_satuan')
             ->select('produksi_barang.*', 'produk.nama_produk', 'status_produksi.status', 'users.id', 'satuan.satuan')
-            ->orderBy('id_produksi', 'asc')
+            ->orderBy('created_at', 'DESC')
             ->get();
 
         return datatables()
@@ -98,9 +98,10 @@ class OwnerController extends Controller
             $produksibarang->id_user = Auth::id();
             $produksibarang->save();
 
-            DB::commit();
+            // Notification to Produksi User
             $data = $produksibarang->load('produk', 'user');
             event(new PermintaanProduksiEvent($data));
+            DB::commit();
             return response()->json('Data berhasil disimpan', 200);
         } catch (\Throwable $th) {
             DB::rollback();

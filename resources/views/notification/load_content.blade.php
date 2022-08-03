@@ -18,7 +18,7 @@
         $read_at = $notification->read_at;
         $title = explode('\\',$notification->type)[2];
         $data = json_decode($notification->data);
-        $arrData = (array) $data->attributes[0];
+        $arrData = json_decode(json_encode($data->attributes[0]), true);
         @endphp
         <li>
             <i class="fa fa-circle {{ $bg_color }}"></i>
@@ -30,8 +30,10 @@
 
             <div class="timeline-body">
                 Notification {{ $title }} dengan keterangan <br>
-                @foreach ($arrData as $i => $v)
-                    {{ $i.' dengan nilai = '.$v }} <br>
+                @foreach ($arrData as $key => $value)
+                    @if (!is_array($value))
+                    {{ $key.' dengan nilai = '.$value }} <br>
+                    @endif
                 @endforeach
             </div>
             <div class="timeline-footer">

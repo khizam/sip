@@ -60,15 +60,14 @@
   <div class="col-md-12">
     <div class="box">
       <div class="box-header with-border">
-
+        <h4>Bahan Produksi - @isset($statusProduksi)
+            <i class="bg-primary" style="border-radius: 25% 10%; padding: 3px 5px">{{ $statusProduksi->status->status }}</i>
+        @endisset</h4>
       </div>
       <div class="box-body table-responsive">
         <table class="table table-striped table-bordered">
           <thead>
             <th width="5%">No</th>
-            {{-- <th>
-              <input type="checkbox" name="select_all" id="select_all">
-            </th> --}}
             <th>Nama Bahan</th>
             <th>Jumlah</th>
             <th>Permintaan Bahan</th>
@@ -82,8 +81,16 @@
   </div>
 </div>
 
-{{-- @includeIf('detailProduksi.form') --}}
-{{-- @includeIf('detailProduksi.form') --}}
+@isset($statusProduksi)
+    @if ((!is_null($statusProduksi)) && $statusProduksi->id_status == \App\Models\Enums\StatusProduksiEnum::Belum)
+    <div class="row" style="margin-bottom: 1rem">
+        <div class="col-md-12" style="display: flex; flex-direction: column">
+            <button type="button" class="btn btn-success" onclick="canProsesProduksi('{{ route('produksi.proses_produksi') }}')" id="proses_produksi" data-proses="{{ request()->segment(3) }}">Proses Produksi</button>
+        </div>
+    </div>
+@endisset
+@endif
+
 @includeIf('detailProduksi.form_edit')
 @endsection
 
@@ -107,7 +114,6 @@
           },
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
-            // {data: 'select_all'},
             {data: 'nama_bahan'},
             {data: 'jumlah'},
             {data: 'permintaan_bahan'},
@@ -192,6 +198,32 @@
       }
     }
 
+    function canProsesProduksi(url) {
+        if (confirm('Apakah mau proses produksi ?')) {
+
+            let id_produksi = $('#proses_produksi').attr('data-proses')
+            let token =  $('[name=csrf-token]').attr('content')
+            let data = {
+                '_token': $('[name=csrf-token]').attr('content'),
+                'id_produksi': id_produksi
+            }
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                dataType: 'json'
+            })
+            .done((response) => {
+                console.log(response)
+                window.location.href = response
+            })
+            .fail((errors) => {
+                alert(errors);
+                return;
+            });
+        }
+    }
 
 </script>
 @endpush

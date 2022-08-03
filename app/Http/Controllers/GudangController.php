@@ -41,35 +41,35 @@ class GudangController extends Controller
         if (Gate::denies('gudang_index')) {
             return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
         }
-        $gudang = Gudang::with('status_gudang')
-        ->join('lab','lab.id_lab','=','gudang.id_lab')
-        ->join('barangmasuk', 'barangmasuk.id_barangmasuk','=','lab.id_barangmasuk')
-        ->join('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
-        ->get();
+        $gudang = Gudang::join('lab', 'lab.id_lab', '=', 'gudang.id_lab')
+            ->join('barangmasuk', 'barangmasuk.id_barangmasuk', '=', 'lab.id_barangmasuk')
+            ->join('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
+            ->get();
 
         return datatables()
-        ->of($gudang)
-        ->addIndexColumn()
+            ->of($gudang)
+            ->addIndexColumn()
 
-        ->addColumn('id_gudang', function ($gudang) {
-            return '<span class="label label-success">'. $gudang->id_gudang .'</span>';
-        })
+            ->addColumn('id_gudang', function ($gudang) {
+                return '<span class="label label-success">' . $gudang->id_gudang . '</span>';
+            })
 
-        ->addColumn('bahan_layak', function ($lab) {
-            return format_uang($lab->bahan_layak);
-        })
+            ->addColumn('bahan_layak', function ($lab) {
+                return format_uang($lab->bahan_layak);
+            })
 
-        ->addColumn('aksi', function ($gudang) {
-            return '
-            <div class="">
-                <button onclick="deleteData(`'. route('gudang.destroy', $gudang->id_gudang) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
-                <button onclick="editStok(`'. route('gudang.edit', $gudang->id_gudang) .'`, `'.route('gudang.update', $gudang->id_gudang).'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-            </div>
-            ';
-        })
+            ->addColumn('aksi', function ($gudang) {
+                return '';
+                //     return '
+                // <div class="">
+                //     <button onclick="deleteData(`' . route('gudang.destroy', $gudang->id_gudang) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                //     <button onclick="editStok(`' . route('gudang.edit', $gudang->id_gudang) . '`, `' . route('gudang.update', $gudang->id_gudang) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                // </div>
+                // ';
+            })
 
-        ->rawColumns(['aksi', 'id_gudang', 'bahan_layak'])
-        ->make(true);
+            ->rawColumns(['aksi', 'id_gudang', 'bahan_layak'])
+            ->make(true);
     }
 
     /**

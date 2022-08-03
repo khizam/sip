@@ -17,7 +17,7 @@ class Gudang extends Model
 
     protected $fillable = [
         'id_lab',
-        'id_status_gudang',
+        'stok',
     ];
 
     /**
@@ -37,11 +37,8 @@ class Gudang extends Model
         'updated_at' => 'datetime:Y-m-d',
     ];
 
-    public function lab() {
-        return $this->hasOne(Lab::class,'id_lab','id_lab');
-    }
-
-    public function status_gudang() {
-        return $this->belongsTo(StatusGudang::class,'id_status_gudang','id_status');
+    public function lab()
+    {
+        return $this->hasOne(Lab::class, 'id_lab', 'id_lab');
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Requests\UpdateDetailRequest;
 use App\Models\DetailProduksi;
 use App\Models\Bahan;
 use App\Models\Enums\StatusPermintaanBahanEnum;
+use App\Models\ProduksiBarang;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -24,7 +25,16 @@ class DetailProduksiController extends Controller
     public function index($id_produksi = null)
     {
         $bahan = Bahan::all(['nama_bahan', 'id_bahan']);
-        return view('detailProduksi.index', compact('bahan'));
+        $data = [
+            'bahan' => $bahan
+        ];
+        if (!is_null($id_produksi)) {
+            $statusProduksi = ProduksiBarang::with('status')->findOrFail($id_produksi, ['id_status']);
+            $data += [
+                'statusProduksi' => $statusProduksi,
+            ];
+        }
+        return view('detailProduksi.index', $data);
     }
 
     public function data($id_produksi)
@@ -54,8 +64,13 @@ class DetailProduksiController extends Controller
                 if (is_null($detailproduksi->id_request)) {
                     $html .= '<button onclick="editDetailForm(`' . route('detailProduksi.show', $detailproduksi->id_detail) . '` , `' . route('detailProduksi.update', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-pencil"></i></button>';
                 }
-                $html .= '<button onclick="deleteData(`' . route('detailProduksi.destroy', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
-                    </div>';
+                if (
+                    $detailproduksi->status == StatusPermintaanBahanEnum::Proses &&
+                    is_null($detailproduksi->id_request)
+                ) {
+                    $html .= '<button onclick="deleteData(`' . route('detailProduksi.destroy', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>';
+                }
+                $html = '</div>';
                 return $html;
             })
             ->rawColumns(['aksi', 'permintaan_bahan'])

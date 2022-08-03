@@ -46,11 +46,13 @@ class Lab extends Model
         'updated_at' => 'datetime:Y-m-d',
     ];
 
-    public function barang_masuk() {
-        return $this->hasOne(Barangmasuk::class,'id_barangmasuk','id_barangmasuk');
+    public function barang_masuk()
+    {
+        return $this->hasOne(Barangmasuk::class, 'id_barangmasuk', 'id_barangmasuk');
     }
 
-    public function status_gudang() {
-        return $this->belongsTo(StatusGudang::class,'id_status_gudang','id_status');
+    public function status_gudang()
+    {
+        return $this->belongsTo(StatusGudang::class, 'id_status_gudang', 'id_status');
     }
 }
