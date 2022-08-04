@@ -16,7 +16,7 @@ class StatusGudangSeeder extends Seeder
     {
         $data = [
             [
-                'id_status'=>1,
+                'id_status'=> 1,
                 'status'=>'belum di gudang',
             ],
             [

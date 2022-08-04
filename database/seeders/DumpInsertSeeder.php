@@ -64,8 +64,8 @@ class DumpInsertSeeder extends Seeder
         Kategori::firstOrCreate([
             'nama_kategori'=>'sepatu',
         ]);
-        Bahan::firstOrCreate([
-            'nama_bahan'=>'kain',
-        ]);
+        // Bahan::firstOrCreate([
+        //     'nama_bahan'=>'kain',
+        // ]);
     }
 }

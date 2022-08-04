@@ -21,7 +21,7 @@ class CreateProduksiBarangTable extends Migration
                   ->on('produk')
                   ->onUpdate('restrict')
                   ->onDelete('restrict');
-            $table->unsignedInteger('id_status');
+            $table->unsignedInteger('id_status')->nullable();
             $table->foreign('id_status')
                   ->references('id_status')
                   ->on('status_produksi')

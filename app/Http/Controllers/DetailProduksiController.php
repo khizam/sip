@@ -93,6 +93,7 @@ class DetailProduksiController extends Controller
         ) {
             $html = '<i style="padding: 2px"><b> Permintaan di' . $detailProduksi->status . '</b></i>';
         }
+
         return $html;
     }
 

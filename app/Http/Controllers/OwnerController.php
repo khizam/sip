@@ -94,7 +94,7 @@ class OwnerController extends Controller
             $produksibarang->id_produk = $request->id_produk;
             $produksibarang->jumlah = $request->jumlah;
             $produksibarang->id_satuan = $request->id_satuan;
-            $produksibarang->id_status = StatusProduksiEnum::Belum;
+            $produksibarang->id_status = StatusProduksiEnum::Terima;
             $produksibarang->id_user = Auth::id();
             $produksibarang->save();
 

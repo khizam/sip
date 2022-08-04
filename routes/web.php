@@ -118,6 +118,14 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/produksibarang/data', [ProduksiBarangController::class, 'data'])
         ->name('produksibarang.data');
+
+    Route::put('/produksibarang/terima/{id_produksi}', [ProduksiBarangController::class, 'terima_produksi'])
+        ->name('produksibarang.terima_produksi');
+    Route::put('/produksibarang/tolak/{id_produksi}', [ProduksiBarangController::class, 'tolak_produksi'])
+        ->name('produksibarang.tolak_produksi');
+
+
+
     Route::put('/produksi/check-status/{id}', [detailProduksiController::class, 'data'])
         ->name('produksi.checkStatus');
     Route::resource('/produksi', ProduksiBarangController::class);

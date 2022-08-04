@@ -82,7 +82,7 @@
 </div>
 
 @isset($statusProduksi)
-    @if ((!is_null($statusProduksi)) && $statusProduksi->id_status == \App\Models\Enums\StatusProduksiEnum::Belum)
+    @if ((!is_null($statusProduksi)) && $statusProduksi->id_status == \App\Models\Enums\StatusProduksiEnum::Terima)
     <div class="row" style="margin-bottom: 1rem">
         <div class="col-md-12" style="display: flex; flex-direction: column">
             <button type="button" class="btn btn-success" onclick="canProsesProduksi('{{ route('produksi.proses_produksi') }}')" id="proses_produksi" data-proses="{{ request()->segment(3) }}">Proses Produksi</button>
@@ -199,7 +199,7 @@
     }
 
     function canProsesProduksi(url) {
-        if (confirm('Apakah mau proses produksi ?')) {
+        if (confirm('Apakah akan dilanjutkan ke proses produksi ?')) {
 
             let id_produksi = $('#proses_produksi').attr('data-proses')
             let token =  $('[name=csrf-token]').attr('content')
