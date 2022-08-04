@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
-use App\Events\BarangmasukIntoLabEvent;
-use App\Events\OwnerProductRequestEvent;
-use App\Listeners\BarangmasukIntoLabNotification;
-use App\Listeners\SendOwnerProductRequestNotification;
+use App\Events\BarangmasukLabEvent;
+use App\Events\PermintaanBahanEvent;
+use App\Events\PermintaanProduksiEvent;
+use App\Listeners\BarangmasukLabNotification;
+use App\Listeners\PermintaanBahanNotification;
+use App\Listeners\PermintaanProduksiNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -21,12 +23,15 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        OwnerProductRequestEvent::class => [
-            SendOwnerProductRequestNotification::class,
+        BarangmasukLabEvent::class => [
+            BarangmasukLabNotification::class,
         ],
-        BarangmasukIntoLabEvent::class => [
-            BarangmasukIntoLabNotification::class,
-        ]
+        PermintaanProduksiEvent::class => [
+            PermintaanProduksiNotification::class,
+        ],
+        PermintaanBahanEvent::class => [
+            PermintaanBahanNotification::class,
+        ],
     ];
 
     /**

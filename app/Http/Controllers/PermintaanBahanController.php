@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PermintaanBahanEvent;
+use App\Events\RequestBahanToGudangEvent;
 use App\Models\DetailProduksi;
 use App\Models\Enums\StatusPermintaanBahanEnum;
 use App\Models\PermintaanBahan;
@@ -19,6 +21,7 @@ class PermintaanBahanController extends Controller
                 'status' => StatusPermintaanBahanEnum::Proses,
             ];
             $permintaan = PermintaanBahan::create($data);
+            event(new PermintaanBahanEvent($permintaan));
             return jsonResponse($permintaan, Response::HTTP_CREATED);
         } catch (\Throwable $th) {
             return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);

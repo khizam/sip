@@ -38,35 +38,33 @@ class LabController extends Controller
         if (Gate::denies('lab_index')) {
             return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
         }
-        $lab = Lab::with('status_gudang')
-        ->join('barangmasuk','barangmasuk.id_barangmasuk','=','lab.id_barangmasuk')
-        ->join('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
-        ->orderBy('kode_barangmasuk', 'asc')
-        ->get();
+        $lab = Lab::join('status_gudang as sg', 'sg.id_status', '=', 'lab.id_status_gudang')
+            ->join('barangmasuk', 'barangmasuk.id_barangmasuk', '=', 'lab.id_barangmasuk')
+            ->join('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
+            ->orderBy('lab.created_at', 'DESC')
+            ->get(['lab.id_lab', 'lab.kode_lab', 'lab.updated_at', 'bahan.nama_bahan', 'barangmasuk.jumlah_bahan', 'lab.bahan_layak', 'lab.satuan', 'lab.status', 'sg.status as status_gudang']);
 
         return datatables()
-        ->of($lab)
-        ->addIndexColumn()
-
-        ->addColumn('kode_lab', function ($lab) {
-            return '<span class="label label-success">'. $lab->kode_lab .'</span>';
-        })
-
-        ->addColumn('id_lab', function ($lab) {
-            return '<span class="label label-success">'. $lab->id_lab .'</span>';
-        })
-
-        ->addColumn('aksi', function ($lab) {
-            return '
-            <div class="">
-                <button onclick="editLabForm(`'. route('lab.editLab', $lab->id_lab) .'` , `'.route('lab.updateLab', $lab->id_lab).'`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-plus"></i></button>
-                <button onclick="editForm(`'. route('lab.edit', $lab->id_lab) .'` , `'.route('lab.update', $lab->id_lab).'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                <button onclick="check(`'. route('lab.edit', $lab->id_lab) .'` , `'.route('lab.checkStatus', $lab->id_lab).'`)" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-check"></i></button>
-            </div>
-            ';
-        })
-        ->rawColumns(['aksi', 'id_lab', 'kode_lab'])
-        ->make(true);
+            ->of($lab)
+            ->addIndexColumn()
+            ->addColumn('kode_lab', function ($lab) {
+                return '<span class="label label-success">' . $lab->kode_lab . '</span>';
+            })
+            ->addColumn('id_lab', function ($lab) {
+                return '<span class="label label-success">' . $lab->id_lab . '</span>';
+            })
+            ->addColumn('aksi', function ($lab) {
+                $html = '<div class="">
+                            <button onclick="editLabForm(`' . route('lab.editLab', $lab->id_lab) . '` , `' . route('lab.updateLab', $lab->id_lab) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-pencil"></i></button>';
+                if ($lab->status != StatusLabEnum::Accept) {
+                    $html .= '<button onclick="editForm(`' . route('lab.edit', $lab->id_lab) . '` , `' . route('lab.update', $lab->id_lab) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-plus"></i></button>
+                    <button onclick="check(`' . route('lab.edit', $lab->id_lab) . '` , `' . route('lab.checkStatus', $lab->id_lab) . '`)" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-check"></i></button>';
+                }
+                $html .= '</div>';
+                return $html;
+            })
+            ->rawColumns(['aksi', 'id_lab', 'kode_lab'])
+            ->make(true);
     }
 
     /**
@@ -105,8 +103,8 @@ class LabController extends Controller
     {
         try {
             $this->authorize('lab_edit');
-            $barangMasuk = Lab::with('barang_masuk.bahan','barang_masuk.kategori','barang_masuk.supplier')->find($id);
-            if($barangMasuk == null) {
+            $barangMasuk = Lab::with('barang_masuk.bahan', 'barang_masuk.kategori', 'barang_masuk.supplier')->find($id);
+            if ($barangMasuk == null) {
                 throw new NotFoundHttpException("barang tidak ditemukan");
             }
             return jsonResponse($barangMasuk, 200);
@@ -115,7 +113,7 @@ class LabController extends Controller
         } catch (NotFoundHttpException $th) {
             return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
         } catch (\Throwable $th) {
-            return jsonResponse("Terjadi kesalahan ".$th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return jsonResponse("Terjadi kesalahan " . $th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -137,17 +135,17 @@ class LabController extends Controller
             $jumlahBahanBrgMsk = $barangMasuk->barang_masuk->jumlah_bahan;
             if ($bahanLayak <= $jumlahBahanBrgMsk || $bahanTidakLayak <= $jumlahBahanBrgMsk) {
                 $totalBahanLab = $bahanLayak + $bahanTidakLayak;
-                if($totalBahanLab <= $jumlahBahanBrgMsk) {
+                if ($totalBahanLab <= $jumlahBahanBrgMsk) {
                     $barangMasuk->update($request->only(['bahan_layak', 'bahan_tidak_layak', 'status']));
                     DB::commit();
                     return jsonResponse('Data berhasil disimpan', 200);
                 } else {
                     DB::rollback();
-                    return jsonResponse('Jumlah bahan layak dan tidak, tidak boleh lebih dari '.$jumlahBahanBrgMsk, Response::HTTP_NOT_ACCEPTABLE);
+                    return jsonResponse('Jumlah bahan layak, tidak boleh lebih dari ' . $jumlahBahanBrgMsk, Response::HTTP_NOT_ACCEPTABLE);
                 }
             } else {
                 DB::rollback();
-                return jsonResponse('Jumlah bahan layak dan tidak, tidak boleh lebih dari '.$jumlahBahanBrgMsk, Response::HTTP_NOT_ACCEPTABLE);
+                return jsonResponse('Jumlah bahan layak, tidak boleh lebih dari ' . $jumlahBahanBrgMsk, Response::HTTP_NOT_ACCEPTABLE);
             }
         } catch (AuthorizationException $th) {
             return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
@@ -186,7 +184,6 @@ class LabController extends Controller
             }
             $lab->update($request->validated());
             return jsonResponse($lab);
-
         } catch (AuthorizationException $th) {
             return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
         } catch (NotFoundHttpException $th) {
@@ -230,21 +227,24 @@ class LabController extends Controller
             if ($lab == null) {
                 throw new NotFoundHttpException("Barang tidak ditemukan");
             }
-            if($request->status == StatusLabEnum::Accept) {
+            if ($request->status == StatusLabEnum::Accept) {
                 $jumlahHasilLab = $lab->bahan_layak + $lab->bahan_tidak_layak;
                 $jumlahBahanBrgMsk = $lab->barang_masuk->jumlah_bahan;
-                if($jumlahBahanBrgMsk != $jumlahHasilLab){
+                if ($jumlahBahanBrgMsk != $jumlahHasilLab) {
                     throw new HttpException(Response::HTTP_NOT_ACCEPTABLE, "Bahan yang diverifikasi {$jumlahHasilLab} dari {$jumlahBahanBrgMsk}");
                 }
             }
 
+            // Update Lab id_status_gudang
             $request->merge([
                 'id_status_gudang' => StatusGudangEnum::Sudah
             ]);
-
             $lab->update($request->all());
+
+            // Save To Gudang
             $gudang = new Gudang();
-            $gudang->id_lab = $request->id_lab;
+            $gudang->id_lab = $lab->id_lab;
+            $gudang->stok = $lab->bahan_layak;
             $gudang->save();
             DB::commit();
             return jsonResponse('Data berhasil disimpan', 200);
@@ -259,8 +259,7 @@ class LabController extends Controller
     {
         $this->authorize('lab_edit');
         $labs = Lab::with('barang_masuk.bahan')->get();
-        $pdf = Pdf::loadview('lab.lab_pdf',compact('labs'));
+        $pdf = Pdf::loadview('lab.lab_pdf', compact('labs'));
         return $pdf->download('laporan-lab.pdf');
     }
-
 }

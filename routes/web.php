@@ -1,7 +1,5 @@
 <?php
 
-use App\Events\OwnerProductRequestEvent;
-use App\Events\Testing;
 use App\Http\Controllers\{
     KategoriController,
     SupplierController,
@@ -20,12 +18,6 @@ use App\Http\Controllers\{
     GudangRequestController,
     SatuanController,
 };
-use App\Models\Enums\StatusProduksiEnum;
-use App\Models\ProduksiBarang;
-use Illuminate\Support\Facades\Auth;
-use App\Models\DetailProduksi;
-use App\Models\User;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -146,4 +138,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/permintaan-bahan/{id_detail_produksi}', [PermintaanBahanController::class, 'insertIntoPermintaanBahan'])
         ->name('permintaan_bahan.insert');
+
+    Route::post('/produksi/proses-produksi', [ProduksiBarangController::class, 'prosesProduksi'])->name('produksi.proses_produksi');
 });

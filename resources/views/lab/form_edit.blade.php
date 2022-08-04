@@ -39,7 +39,7 @@
                             <div class="col-md-12">
                                 <label for="parameter" class="col-md-2 col-md-offset-1 control-label">Parameter</label>
                                 <div class="col-md-8">
-                                    <textarea type="text" name="parameter" id="parameter" cols="10" rows="10" class="form-control"></textarea>
+                                    <textarea name="parameter" id="parameter" cols="3" rows="3" class="form-control"></textarea>
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>
@@ -48,7 +48,7 @@
                             <div class="col-md-12">
                                 <label for="hasil" class="col-md-2 col-md-offset-1 control-label">Hasil</label>
                                 <div class="col-md-8">
-                                    <textarea type="text" name="hasil" id="hasil" cols="10" rows="10" class="form-control"></textarea>
+                                    <textarea name="hasil" id="hasil" cols="3" rows="3" class="form-control"></textarea>
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>
@@ -57,7 +57,7 @@
                             <div class="col-md-12">
                                 <label for="kesimpulan" class="col-md-2 col-md-offset-1 control-label">Kesimpulan</label>
                                 <div class="col-md-8">
-                                    <input type="kesimpulan" name="kesimpulan" id="kesimpulan" class="form-control" />
+                                    <textarea name="kesimpulan" id="kesimpulan" class="form-control" ></textarea>
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>
@@ -66,7 +66,7 @@
                             <div class="col-md-12">
                                 <label for="grid" class="col-md-2 col-md-offset-1 control-label">Grid</label>
                                 <div class="col-md-8">
-                                    <input type="grid" name="grid" id="bahan_layak" class="form-control" />
+                                    <textarea name="grid" id="bahan_layak" class="form-control" ></textarea>
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>

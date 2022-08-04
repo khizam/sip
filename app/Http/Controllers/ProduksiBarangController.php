@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\Testing;
 use App\Models\Enums\StatusProduksiEnum;
 use App\Models\StatusProduksi;
 use App\Models\Satuan;
@@ -10,11 +9,7 @@ use App\Models\User;
 use App\Models\Produk;
 use App\Models\ProduksiBarang;
 use Illuminate\Http\Request;
-use Illuminate\Facades\Auth;
-use Illuminate\Facedes\DB;
-use Illuminate\Facedes\Log;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Http\Response;
 
 class ProduksiBarangController extends Controller
 {
@@ -64,24 +59,18 @@ class ProduksiBarangController extends Controller
             ->make(true);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function prosesProduksi(Request $request)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
+        try {
+            $produksi = ProduksiBarang::findOrFail($request->id_produksi);
+            $produksi->update([
+                'id_status' => StatusProduksiEnum::Proses,
+            ]);
+            $response = route('detailProduksi.index', $request->id_produksi);
+            return jsonResponse($response);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -95,17 +84,6 @@ class ProduksiBarangController extends Controller
         $produksibarang = ProduksiBarang::find($id);
 
         return response()->json($produksibarang);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**

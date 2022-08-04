@@ -18,6 +18,10 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('pushNotification.{roleUser}', function($user,$roleUser){
-    return $roleUser == RolesEnum::Produksi;
+Broadcast::channel('pushNotification.{roleUser}', function ($user, $roleUser) {
+    $access = [
+        RolesEnum::Produksi,
+        RolesEnum::Gudang,
+    ];
+    return in_array($roleUser, $access);
 });

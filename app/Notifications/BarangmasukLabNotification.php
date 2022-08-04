@@ -2,24 +2,24 @@
 
 namespace App\Notifications;
 
-use App\Models\ProduksiBarang;
+use App\Models\Lab;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
-class OwnerProductRequestNotification extends Notification
+class BarangmasukLabNotification extends Notification
 {
     use Queueable;
 
-    public $produksiBarang;
+    public $lab;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(ProduksiBarang $produksiBarang)
+    public function __construct(Lab $lab)
     {
-        $this->produksiBarang = $produksiBarang;
+        $this->lab = $lab;
     }
 
     /**
@@ -33,6 +33,7 @@ class OwnerProductRequestNotification extends Notification
         return ['database'];
     }
 
+
     /**
      * Get the array representation of the notification.
      *
@@ -43,11 +44,9 @@ class OwnerProductRequestNotification extends Notification
     {
         return [
             'attributes' => [
-                'produk'=>$this->produksiBarang->produk->nama_produk,
-                'jumlah'=>$this->produksiBarang->jumlah,
-                'user'=>$this->produksiBarang->user->name,
+                $this->lab->toArray(),
             ],
-            'links' => route('owner.index')
+            'links' => route('lab.index')
         ];
     }
 }
