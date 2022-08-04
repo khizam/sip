@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Bahan extends Model
@@ -30,4 +31,8 @@ class Bahan extends Model
     protected static $logName = 'bahan';
     protected $guarded = [];
 
+    public function satuan(): BelongsTo
+    {
+        return $this->belongsTo(Satuan::class, 'id_satuan');
+    }
 }

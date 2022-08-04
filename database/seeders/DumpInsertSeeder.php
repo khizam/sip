@@ -22,28 +22,28 @@ class DumpInsertSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         $owner = User::firstOrCreate([
             'name' => 'owner',
-            'email'=>'owner@gmail.com',
-            'password'=> bcrypt('123')
+            'email' => 'owner@gmail.com',
+            'password' => bcrypt('123')
         ]);
         $lab = User::firstOrCreate([
             'name' => 'lab',
-            'email'=>'lab@gmail.com',
-            'password'=> bcrypt('123')
+            'email' => 'lab@gmail.com',
+            'password' => bcrypt('123')
         ]);
         $produksi = User::firstOrCreate([
             'name' => 'produksi',
-            'email'=>'produksi@gmail.com',
-            'password'=> bcrypt('123')
+            'email' => 'produksi@gmail.com',
+            'password' => bcrypt('123')
         ]);
         $gudang = User::firstOrCreate([
             'name' => 'gudang',
-            'email'=>'gudang@gmail.com',
-            'password'=> bcrypt('123')
+            'email' => 'gudang@gmail.com',
+            'password' => bcrypt('123')
         ]);
         $inventoryAlat = User::firstOrCreate([
             'name' => 'Inventory alat',
-            'email'=>'inventoryalat@gmail.com',
-            'password'=> bcrypt('123')
+            'email' => 'inventoryalat@gmail.com',
+            'password' => bcrypt('123')
         ]);
         // Assign Role
         $owner->assignRole(RolesEnum::Owner);
@@ -53,19 +53,20 @@ class DumpInsertSeeder extends Seeder
         $inventoryAlat->assignRole(RolesEnum::InventoryAlat);
 
         Produk::firstOrCreate([
-            'nama_produk'=>'nike'
+            'nama_produk' => 'nike'
         ]);
         Supplier::firstOrCreate([
-            'nama_supplier'=>'PT BENKA NUSANTARA',
-            'alamat'=>'jl samudra surabaya',
-            'telepon'=> '0221098664',
+            'nama_supplier' => 'PT BENKA NUSANTARA',
+            'alamat' => 'jl samudra surabaya',
+            'telepon' => '0221098664',
             'contact_person' => '082234554330'
         ]);
         Kategori::firstOrCreate([
-            'nama_kategori'=>'sepatu',
+            'nama_kategori' => 'sepatu',
         ]);
-        // Bahan::firstOrCreate([
-        //     'nama_bahan'=>'kain',
-        // ]);
+        Bahan::firstOrCreate([
+            'nama_bahan' => 'kain',
+            'id_satuan' => 1
+        ]);
     }
 }

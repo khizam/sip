@@ -159,7 +159,7 @@ class LabController extends Controller
     {
         try {
             $this->authorize('lab_edit');
-            $lab = Lab::with('barang_masuk')->find($id);
+            $lab = Lab::with('barang_masuk', 'barang_masuk.bahan.satuan')->find($id);
             if ($lab == null) {
                 throw new NotFoundHttpException("barang tidak ditemukan");
             }

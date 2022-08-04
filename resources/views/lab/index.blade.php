@@ -201,7 +201,8 @@
         .done((response) => {
           $('#modal-form-edit-lab [name=id_lab]').val(response.id_barangmasuk);
           $('#modal-form-edit-lab [name=kd_barangmasuk]').val(response.barang_masuk.kode_barangmasuk);
-          $('#modal-form-edit-lab [name=satuan] option[value="'+response.satuan+'"]').attr("selected", "selected");
+          $('#modal-form-edit-lab [name=bahan]').val(response.barang_masuk.bahan.nama_bahan);
+          $('#modal-form-edit-lab [name=satuan]').val(response.barang_masuk.bahan.satuan.satuan);
           $('#modal-form-edit-lab [name=parameter]').val(response.parameter);
           $('#modal-form-edit-lab [name=hasil]').val(response.hasil);
           $('#modal-form-edit-lab [name=kesimpulan]').val(response.kesimpulan);

@@ -50,6 +50,12 @@
   let table;
 
     $(function () {
+        $('#id_bahan').on('change', function (e) {
+            e.preventDefault();
+            let satuan = $('option:selected', this).attr('data-satuan');
+            $('#satuan_bahan').val(satuan);
+        });
+
         table = $('.table').DataTable({
           processing: true,
           autoWidth: false,
@@ -94,10 +100,6 @@
       $('#modal-form [name=id_bahan]').focus();
     }
 
-    $('select').on('change', function() {
-        alert( this.value );
-    });
-
     function editForm(url) {
       $('#modal-form').modal('show');
       $('#modal-form .modal-title').text('Edit Barangmasuk');
@@ -117,7 +119,7 @@
           $('#modal-form [name=id_kategori]').val(response.id_kategori);
           $('#modal-form [name=id_supplier]').val(response.id_supplier);
           $('#modal-form [name=jumlah_bahan]').val(response.jumlah_bahan);
-          
+
         })
       .fail((errors) => {
           alert('Tidak dapat menampilkan data');
