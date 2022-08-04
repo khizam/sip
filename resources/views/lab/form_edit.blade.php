@@ -25,12 +25,18 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
+                                <label for="satuan" class="col-md-2 col-md-offset-1 control-label">Nama Bahan</label>
+                                <div class="col-md-8">
+                                    <input name="bahan" id="bahan" class="form-control" readonly>
+                                    <span class="help-block with-errors"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
                                 <label for="satuan" class="col-md-2 col-md-offset-1 control-label">Satuan</label>
                                 <div class="col-md-8">
-                                    <select name="satuan" id="satuan" class="form-control">
-                                        <option value="kg">KG</option>
-                                        <option value="liter">liter</option>
-                                    </select>
+                                    <input name="satuan" id="satuan" class="form-control" readonly>
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>

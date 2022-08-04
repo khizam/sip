@@ -27,12 +27,12 @@ class BarangmasukController extends Controller
     public function index()
     {
         $this->authorize('barangmasuk_index');
-        $bahan = Bahan::all()->pluck('nama_bahan', 'id_satuan', 'id_bahan');
-        $kategori = Kategori::all()->pluck('nama_kategori', 'id_kategori');
-        $supplier = Supplier::all()->pluck('nama_supplier', 'id_supplier');
-        $satuan = Satuan::all()->pluck('satuan', 'id_satuan');
+        $bahan = Bahan::with('satuan')->get(['nama_bahan', 'id_satuan', 'id_bahan']);
+        $kategori = Kategori::all(['nama_kategori', 'id_kategori']);
+        $supplier = Supplier::all(['nama_supplier', 'id_supplier']);
+        $satuans = Satuan::all(['satuan', 'id_satuan']);
 
-        return view('barangmasuk.index', compact('bahan', 'kategori', 'supplier'));
+        return view('barangmasuk.index', compact('bahan', 'kategori', 'supplier', 'satuans'));
     }
 
     public function data()
@@ -41,13 +41,13 @@ class BarangmasukController extends Controller
             return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
         }
         $barangmasuk = Barangmasuk::join('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
-        ->leftJoin('kategori', 'kategori.id_kategori', '=', 'barangmasuk.id_kategori')
-        ->leftJoin('supplier', 'supplier.id_supplier', '=', 'barangmasuk.id_supplier')
-        // ->leftJoin('satuan', 'satuan.id_satuan', '=', 'barangmasuk.id_satuan')
-        ->join('lab', 'lab.id_barangmasuk', '=', 'barangmasuk.id_barangmasuk')
-        ->select('barangmasuk.*', 'nama_bahan', 'id_satuan', 'nama_kategori', 'nama_supplier', 'lab.status', 'satuan')
-        ->orderBy('kode_barangmasuk', 'asc')
-        ->get();
+            ->leftJoin('kategori', 'kategori.id_kategori', '=', 'barangmasuk.id_kategori')
+            ->leftJoin('supplier', 'supplier.id_supplier', '=', 'barangmasuk.id_supplier')
+            // ->leftJoin('satuan', 'satuan.id_satuan', '=', 'barangmasuk.id_satuan')
+            ->join('lab', 'lab.id_barangmasuk', '=', 'barangmasuk.id_barangmasuk')
+            ->select('barangmasuk.*', 'nama_bahan', 'id_satuan', 'nama_kategori', 'nama_supplier', 'lab.status', 'satuan')
+            ->orderBy('kode_barangmasuk', 'asc')
+            ->get();
 
 
         return datatables()
@@ -134,13 +134,8 @@ class BarangmasukController extends Controller
             if ($barangmasuk) {
                 $insertLab = Lab::create([
                     'kode_lab' => tambah_nol_didepan($kode_lab, 6),
-<<<<<<< HEAD
-                    'id_barangmasuk'=> $barangmasuk->id_barangmasuk,
-                    'satuan' => $barangmasuk->id_satuan,
-=======
                     'id_barangmasuk' => $barangmasuk->id_barangmasuk,
-                    'satuan' => 'kg',
->>>>>>> ee9bef46c77d626374e09c9a8e84a368c01adcac
+                    'satuan' => $barangmasuk->id_satuan,
                     'bahan_layak' => 0,
                     'bahan_tidak_layak' => 0,
                 ]);
