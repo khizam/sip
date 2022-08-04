@@ -45,9 +45,11 @@ class GudangRequestController extends Controller
                 if (
                     is_null($permintaanBahan->id_user_gudang) &&
                     $permintaanBahan->status == StatusPermintaanBahanEnum::Proses
-                ) {
-                    $html .= '<button onclick="terimaPermintaanKeGudang(`' . route('gudang_request.terima_permintaan', $permintaanBahan->id_request) . '` , `' . route('detailProduksi.update', $permintaanBahan->id_request) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-check"></i></button>
-                    <button onclick="tolakPermintaanKeGudang(`' . route('gudang_request.tolak_permintaan', $permintaanBahan->id_request) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-ban"></i></button>';
+                ){
+                    $html .= '<button onclick="terimaPermintaanKeGudang(`' . route('gudang_request.terima_permintaan', $permintaanBahan->id_request) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-check"></i></button>
+
+                    <button onclick="tolakPermintaanKeGudang(`' . route('gudang_request.tolak_permintaan', $permintaanBahan->id_request) . '` )" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-ban"></i></button>';
+
                 } else {
                     $html .= 'Permintaan bahan di' . $permintaanBahan->status;
                 }
@@ -57,6 +59,7 @@ class GudangRequestController extends Controller
             ->rawColumns(['aksi'])
             ->make(true);
     }
+
 
     public function terimaPermintaanBahan($id_request)
     {
@@ -70,6 +73,8 @@ class GudangRequestController extends Controller
                 'id_user_gudang' => $id_user->id,
                 'status' => StatusPermintaanBahanEnum::Terima,
                 'keterangan' => 'bahan sesuai dengan permintaan'
+                // 'satuan' => $
+
             ]);
             return jsonResponse($permintaanBahan);
         } catch (NotFoundHttpException $th) {
@@ -85,7 +90,7 @@ class GudangRequestController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function tolakPermintaanBahan($id_request)
+    public function tolakPermintaanBahan(Request $request, $id_request)
     {
         try {
             $id_user = Auth::user();
@@ -96,7 +101,7 @@ class GudangRequestController extends Controller
             $permintaanBahan->update([
                 'id_user_gudang' => $id_user->id,
                 'status' => StatusPermintaanBahanEnum::Tolak,
-                'keterangan' => 'bahan belum mencukupi permintaan'
+                'keterangan' => $request->keterangan,
             ]);
             return jsonResponse($permintaanBahan);
         } catch (NotFoundHttpException $th) {
@@ -112,7 +117,7 @@ class GudangRequestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
 
     }

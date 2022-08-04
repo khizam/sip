@@ -46,6 +46,9 @@
               @can('user_index')
               <li class="active"><a href="{{ route('user.index') }}"><i class="fa fa-user"></i>User</a></li>
               @endcan
+              @can('user_index')
+              <li class="active"><a href="{{ route('satuan.index') }}"><i class="fa fa-cube"></i>Satuan</a></li>
+              @endcan
             </ul>
           </li>
           @endcan
@@ -113,7 +116,7 @@
               <li class="active"><a href="{{ route('produksi.index') }}"><i class="fa fa-check"></i>Produksi Barang</a></li>
               {{-- <li class="active"><a href="{{ route('detailProduksi.index') }}"><i class="fa fa-circle-o"></i>Detail Produksi</a></li> --}}
               <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Permintaan Kegudang</a></li>
-              <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Permintaan ke produksi</a></li>
+              <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Produk Jadi</a></li>
             </ul>
           </li>
           @endcan

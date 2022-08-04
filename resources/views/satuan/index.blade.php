@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('title')
-      Barang Masuk / Mentah
+      Satuan
 @endsection
 
 @section('breadcrumb')
 @parent
-<li class="active">Barang Masuk / Mentah</li>
+<li class="active">Satuan</li>
 @endsection
 
 @section('content')
@@ -16,24 +16,17 @@
       <div class="col-md-12">
         <div class="box">
           <div class="box-header with-border">
-            <button onclick="addForm('{{ route('barangmasuk.store') }}')" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
+            <button onclick="addForm('{{ route('satuan.store') }}')" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
           </div>
           <div class="box-body table-responsive">
             <table class="table table-striped table-bordered">
               <thead>
                 <th width="5%">No</th>
-                {{-- <th>
-                  <input type="checkbox" name="select_all" id="select_all">
-                </th> --}}
-                <th>Kode_Bahan</th>
-                <th>Bahan</th>
-                <th>Kategori</th>
-                <th>Supplier</th>
-                <th>Jumlah Bahan</th>
-                <th>Status</th>
+                <th>Satuan</th>
                 <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
               <tbody>
+
               </tbody>
             </table>
           </div>
@@ -41,12 +34,11 @@
       </div>
 </div>
 
-@includeIf('barangmasuk.form')
+@includeIf('satuan.form')
 @endsection
 
 @push('scripts')
 <script>
-
   let table;
 
     $(function () {
@@ -54,17 +46,11 @@
           processing: true,
           autoWidth: false,
           ajax: {
-            url: '{{ route('barangmasuk.data') }}',
+            url: '{{ route('satuan.data') }}',
           },
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
-            // {data: 'select_all'},
-            {data: 'kode_barangmasuk'},
-            {data: 'nama_bahan'},
-            {data: 'nama_kategori'},
-            {data: 'nama_supplier'},
-            {data: 'jumlah_bahan'},
-            {data: 'status'},
+            {data: 'satuan'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });
@@ -86,38 +72,26 @@
 
     function addForm(url) {
       $('#modal-form').modal('show');
-      $('#modal-form .modal-title').text('Tambah Barangmasuk');
+      $('#modal-form .modal-title').text('Tambah Satuan');
 
       $('#modal-form form')[0].reset();
       $('#modal-form form').attr('action', url);
       $('#modal-form [name=_method]').val('post');
-      $('#modal-form [name=id_bahan]').focus();
+      $('#modal-form [name=satuan]').focus();
     }
-
-    $('select').on('change', function() {
-        alert( this.value );
-    });
 
     function editForm(url) {
       $('#modal-form').modal('show');
-      $('#modal-form .modal-title').text('Edit Barangmasuk');
+      $('#modal-form .modal-title').text('Edit Satuan');
 
       $('#modal-form form')[0].reset();
       $('#modal-form form').attr('action',url);
       $('#modal-form [name=_method]').val('put');
-      $('#modal-form [name=id_bahan]').focus();
-      $('#modal-form [name=id_bahan]').focus();
-
-    //$('#modal-form [name=satuan]').val(response.satuan.id_satuan);
+      $('#modal-form [name=satuan]').focus();
 
       $.get(url)
         .done((response) => {
-          $('#modal-form [name=kode_barangmasuk]').val(response.kode_barangmasuk);
-          $('#modal-form [name=id_bahan]').val(response.id_bahan);
-          $('#modal-form [name=id_kategori]').val(response.id_kategori);
-          $('#modal-form [name=id_supplier]').val(response.id_supplier);
-          $('#modal-form [name=jumlah_bahan]').val(response.jumlah_bahan);
-          
+          $('#modal-form [name=satuan]').val(response.satuan);
         })
       .fail((errors) => {
           alert('Tidak dapat menampilkan data');

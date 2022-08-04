@@ -17,5 +17,7 @@ class Satuan extends Model
         'satuan'
     ];
 
+    protected static $logFillable = true;
+
     protected $casts = ['created_at','updated_at'];
 }

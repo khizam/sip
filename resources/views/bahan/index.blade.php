@@ -23,6 +23,7 @@
               <thead>
                 <th width="5%">No</th>
                 <th>Bahan</th>
+                <th>Satuan</th>
                 <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
               <tbody>
@@ -51,6 +52,7 @@
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
             {data: 'nama_bahan'},
+            {data: 'satuan'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });
@@ -88,6 +90,7 @@
       $('#modal-form form').attr('action',url);
       $('#modal-form [name=_method]').val('put');
       $('#modal-form [name=nama_bahan]').focus();
+      $('#modal-form [name=satuan]').focus();
 
       $.get(url)
         .done((response) => {

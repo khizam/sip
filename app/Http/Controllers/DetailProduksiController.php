@@ -9,6 +9,8 @@ use App\Models\Enums\StatusPermintaanBahanEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
@@ -96,7 +98,7 @@ class DetailProduksiController extends Controller
             $detailproduksi->id_produksi = $request->id_produksi;
             $detailproduksi->save();
             DB::commit();
-            return redirect()->route('detailProduksi.show', $request->id_produksi);
+            return redirect()->route('detailProduksi.index', $request->id_produksi);
         } catch (\Throwable $th) {
             DB::rollback();
             Log::error("tambah request detail produksi" . $th);

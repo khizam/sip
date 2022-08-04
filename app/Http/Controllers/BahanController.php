@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\Bahan;
+use App\Models\Satuan;
 use Illuminate\Support\Facades\Gate;
 
 class BahanController extends Controller
@@ -16,7 +18,8 @@ class BahanController extends Controller
     public function index()
     {
         $this->authorize('bahan_index');
-        return view('bahan.index');
+        $satuan = Satuan::all()->pluck('satuan', 'id_satuan');
+        return view('bahan.index', compact('satuan'));
     }
 
     public function data()
@@ -24,7 +27,11 @@ class BahanController extends Controller
         if (Gate::denies('bahan_index')) {
             return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
         }
-        $bahan = Bahan::orderBy('id_bahan', 'desc')->get();
+        $bahan = Bahan::leftJoin('satuan', 'satuan.id_satuan', '=', 'bahan.id_satuan')
+        ->select('bahan.*', 'satuan')
+        ->orderBy('satuan', 'asc')
+        ->get();
+        // dd($bahan);
 
         return datatables()
         ->of($bahan)
@@ -60,8 +67,10 @@ class BahanController extends Controller
     public function store(Request $request)
     {
         $this->authorize('bahan_create');
-        $bahan = Bahan::latest()->first();
-        $bahan = Bahan::create($request->all());
+        $bahan = new bahan();
+        $bahan->nama_bahan = $request->nama_bahan;
+        $bahan->id_satuan = $request->id_satuan;
+        $bahan->save();
         return response()->json('Data Berhasil Disimpan', 200);
     }
 

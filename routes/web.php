@@ -18,6 +18,7 @@ use App\Http\Controllers\{
     PermintaanBahanController,
     ProduksiBarangController,
     GudangRequestController,
+    SatuanController,
 };
 use App\Models\Enums\StatusProduksiEnum;
 use App\Models\ProduksiBarang;
@@ -69,6 +70,10 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('produk.data');
     Route::resource('/produk', ProdukController::class);
 
+    Route::get('/satuan/data', [SatuanController::class, 'data'])
+        ->name('satuan.data');
+    Route::resource('/satuan', SatuanController::class);
+
     Route::get('/barangmasuk/data', [BarangmasukController::class, 'data'])
         ->name('barangmasuk.data');
     Route::resource('/barangmasuk', BarangmasukController::class);
@@ -98,6 +103,7 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('gudang_request.terima_permintaan');
     Route::put('/gudang_request/tolak/{id_request}', [GudangRequestController::class, 'tolakPermintaanBahan'])
         ->name('gudang_request.tolak_permintaan');
+
 
     // Route User
     Route::get('/user/data', [UserController::class, 'data'])

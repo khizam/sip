@@ -7,6 +7,7 @@ use App\Models\Bahan;
 use App\Models\Kategori;
 use App\Models\Supplier;
 use App\Models\Barangmasuk;
+use App\Models\Satuan;
 use App\Models\Lab;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
@@ -26,9 +27,10 @@ class BarangmasukController extends Controller
     public function index()
     {
         $this->authorize('barangmasuk_index');
-        $bahan = Bahan::all()->pluck('nama_bahan', 'id_bahan');
+        $bahan = Bahan::all()->pluck('nama_bahan', 'id_satuan', 'id_bahan');
         $kategori = Kategori::all()->pluck('nama_kategori', 'id_kategori');
         $supplier = Supplier::all()->pluck('nama_supplier', 'id_supplier');
+        $satuan = Satuan::all()->pluck('satuan', 'id_satuan');
 
         return view('barangmasuk.index', compact('bahan','kategori','supplier'));
     }
@@ -38,13 +40,15 @@ class BarangmasukController extends Controller
         if (Gate::denies('barangmasuk_index')) {
             return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
         }
-        $barangmasuk = Barangmasuk::leftJoin('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
+        $barangmasuk = Barangmasuk::join('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
         ->leftJoin('kategori', 'kategori.id_kategori', '=', 'barangmasuk.id_kategori')
         ->leftJoin('supplier', 'supplier.id_supplier', '=', 'barangmasuk.id_supplier')
+        // ->leftJoin('satuan', 'satuan.id_satuan', '=', 'barangmasuk.id_satuan')
         ->join('lab', 'lab.id_barangmasuk', '=', 'barangmasuk.id_barangmasuk')
-        ->select('barangmasuk.*', 'nama_bahan', 'nama_kategori', 'nama_supplier', 'lab.status')
+        ->select('barangmasuk.*', 'nama_bahan', 'id_satuan', 'nama_kategori', 'nama_supplier', 'lab.status', 'satuan')
         ->orderBy('kode_barangmasuk', 'asc')
         ->get();
+
 
         return datatables()
         ->of($barangmasuk)
@@ -131,7 +135,7 @@ class BarangmasukController extends Controller
                 $insertLab = Lab::create([
                     'kode_lab' => tambah_nol_didepan($kode_lab, 6),
                     'id_barangmasuk'=> $barangmasuk->id_barangmasuk,
-                    'satuan' => 'kg',
+                    'satuan' => $barangmasuk->id_satuan,
                     'bahan_layak' => 0,
                     'bahan_tidak_layak' => 0,
                 ]);

@@ -21,6 +21,17 @@
                     </select>
                     <span class="help-block with-errors"></span>
                 </div>
+
+                <label for="satuan" class="col-md-2 col-md-offset-1 control-label">Satuan</label>
+                    <div class="col-md-8">
+                        <select onchange="getval(this);">
+                            <option value="1">Kg</option>
+                            <option value="2">Pcs</option>
+                            <option value="3">Liter</option>
+                        </select>
+                        <span class="help-block with-errors"></span>
+                    </div>
+
                 <label for="id_kategori" class="col-md-2 col-md-offset-1 control-label">Kategori</label>
                 <div class="col-md-8">
                   <select name="id_kategori" id="id_kategori" class="form-control" required>
@@ -34,7 +45,7 @@
                 <label for="id_supplier" class="col-md-2 col-md-offset-1 control-label">Supplier</label>
                 <div class="col-md-8">
                   <select name="id_supplier" id="id_supplier" class="form-control" required>
-                    <option value="">Piluh Supplier</option>
+                    <option value="">Pilih Supplier</option>
                     @foreach ($supplier as $key => $item)
                         <option value="{{ $key }}">{{ $item }}</option>
                     @endforeach
@@ -49,9 +60,10 @@
                     <span class="help-block with-errors"></span>
                 </div>
               </div>
+
             </div>
             <div class="modal-footer">
-              <button class="btn btn-sm btn-flat btn-primary">Simpan</button>
+              <button class="btn btn-sm btn-flat btn-primary" id="tambah">Simpan</button>
               <button type="button" class="btn btn-sm btn-flat btn-default" data-dismiss="modal">Batal</button>
             </div>
           </div>
