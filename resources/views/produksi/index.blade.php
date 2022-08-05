@@ -54,7 +54,6 @@
           autoWidth: false,
           ajax: {
             url: '{{ route('produksibarang.data') }}',
-            dataSrc: (result) => {}
           },
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
