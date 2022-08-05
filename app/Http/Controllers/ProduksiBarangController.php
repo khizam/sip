@@ -58,24 +58,21 @@ class ProduksiBarangController extends Controller
 
             ->addColumn('aksi', function ($produksibarang) {
                 $html = '<div class="">';
-            if (is_null($produksibarang->id_status)) {
-                $html .= '<button onclick="terimaProduksiBarang(`' . route('produksi.terima_produksi', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-check"></i></button>
-
-                <button onclick="tolakProduksiBarang"(`' .route('produksi.tolak_produksi', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-ban"></i></button>';
-
-            } else {
-                $html .=
-                '<button onclick="editForm(`' . route('produksi.update', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-
-                <button onclick="deleteData(`' . route('produksi.destroy', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
-
-                <a href=' . route('detailProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">detail produksi</a>';
-            }
-            $html .= '</div>';
-            return $html;
-        })
-        ->rawColumns(['aksi', 'jumlah', 'kode_produksi'])
-        ->make(true);
+                if (is_null($produksibarang->id_status)) {
+                    $html .= '<button onclick="terimaProduksiBarang(`' . route('produksi.terima_produksi', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-check"></i></button>
+                    <button onclick="tolakProduksiBarang(`' . route('produksi.tolak_produksi', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-ban"></i></button>';
+                } elseif ($produksibarang->id_status == StatusProduksiEnum::Tolak) {
+                    $html .= '<b><i>Produksi ditolak</i></b>';
+                } else {
+                    $html .= '<button onclick="editForm(`' . route('produksi.update', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                    <button onclick="deleteData(`' . route('produksi.destroy', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                    <a href=' . route('detailProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">detail produksi</a>';
+                }
+                $html .= '</div>';
+                return $html;
+            })
+            ->rawColumns(['aksi', 'jumlah', 'kode_produksi'])
+            ->make(true);
     }
 
     public function prosesProduksi(Request $request)
@@ -95,19 +92,18 @@ class ProduksiBarangController extends Controller
     public function tolakProduksiBahan(Request $request, $id_produksi)
     {
         try {
-            $id_user = Auth::user();
             $produksibarang = ProduksiBarang::find($id_produksi);
             if ($produksibarang->count() == 0) {
                 throw new NotFoundHttpException("Permintaan produksi tidak ditemukan");
             }
             $produksibarang->update([
                 'keterangan' => $request->keterangan,
-                'id_user_produksi' => $id_user->id,
+                'id_status' => StatusProduksiEnum::Tolak,
             ]);
             return jsonResponse($produksibarang);
         } catch (NotFoundHttpException $th) {
             return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
-        }catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
