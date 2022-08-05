@@ -53,6 +53,14 @@ class OwnerController extends Controller
                 return format_uang($produksibarang->jumlah);
             })
 
+
+            ->addColumn('status', function ($produksibarang) {
+                if (is_null($produksibarang->id_status)) {
+                    return  'masi menunggu konfirmasi';
+                }
+                return $produksibarang->status;
+            })
+
             ->addColumn('aksi', function ($produksibarang) {
                 return '
             <div class="">
@@ -94,7 +102,7 @@ class OwnerController extends Controller
             $produksibarang->id_produk = $request->id_produk;
             $produksibarang->jumlah = $request->jumlah;
             $produksibarang->id_satuan = $request->id_satuan;
-            $produksibarang->id_status = StatusProduksiEnum::Terima;
+            $produksibarang->id_status = null;
             $produksibarang->id_user = Auth::id();
             $produksibarang->save();
 

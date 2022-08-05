@@ -10,6 +10,9 @@ use App\Models\Produk;
 use App\Models\ProduksiBarang;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProduksiBarangController extends Controller
 {
@@ -46,16 +49,20 @@ class ProduksiBarangController extends Controller
                 return format_uang($produksibarang->jumlah);
             })
 
+            ->addColumn('status', function ($produksibarang) {
+                if (is_null($produksibarang->id_status)) {
+                    return 'masi menunggu persetujuan';
+                }
+                return $produksibarang->status;
+            })
+
             ->addColumn('aksi', function ($produksibarang) {
                 $html = '<div class="">';
-            if (
-                is_null($produksibarang->id_produksi) &&
-                    $produksibarang->status == StatusProduksiEnum::Terima
-                ){
-
+            if (is_null($produksibarang->id_status)) {
                 $html .= '<button onclick="terimaProduksiBarang(`' . route('produksi.terima_produksi', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-check"></i></button>
 
                 <button onclick="tolakProduksiBarang"(`' .route('produksi.tolak_produksi', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-ban"></i></button>';
+
             } else {
                 $html .=
                 '<button onclick="editForm(`' . route('produksi.update', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
@@ -63,7 +70,6 @@ class ProduksiBarangController extends Controller
                 <button onclick="deleteData(`' . route('produksi.destroy', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
 
                 <a href=' . route('detailProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">detail produksi</a>';
-
             }
             $html .= '</div>';
             return $html;
@@ -82,6 +88,26 @@ class ProduksiBarangController extends Controller
             $response = route('detailProduksi.index', $request->id_produksi);
             return jsonResponse($response);
         } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function tolakProduksiBahan(Request $request, $id_produksi)
+    {
+        try {
+            $id_user = Auth::user();
+            $produksibarang = ProduksiBarang::find($id_produksi);
+            if ($produksibarang->count() == 0) {
+                throw new NotFoundHttpException("Permintaan produksi tidak ditemukan");
+            }
+            $produksibarang->update([
+                'keterangan' => $request->keterangan,
+                'id_user_produksi' => $id_user->id,
+            ]);
+            return jsonResponse($produksibarang);
+        } catch (NotFoundHttpException $th) {
+            return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        }catch (\Throwable $th) {
             return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

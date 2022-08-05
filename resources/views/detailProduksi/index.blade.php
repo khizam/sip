@@ -82,7 +82,7 @@
 </div>
 
 @isset($statusProduksi)
-    @if ((!is_null($statusProduksi)) && $statusProduksi->id_status == \App\Models\Enums\StatusProduksiEnum::Terima)
+    @if ((!is_null($statusProduksi)) && $statusProduksi->id_status == \App\Models\Enums\StatusProduksiEnum::Belum)
     <div class="row" style="margin-bottom: 1rem">
         <div class="col-md-12" style="display: flex; flex-direction: column">
             <button type="button" class="btn btn-success" onclick="canProsesProduksi('{{ route('produksi.proses_produksi') }}')" id="proses_produksi" data-proses="{{ request()->segment(3) }}">Proses Produksi</button>

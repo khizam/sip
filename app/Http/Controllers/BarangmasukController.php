@@ -134,11 +134,7 @@ class BarangmasukController extends Controller
             if ($barangmasuk) {
                 $insertLab = Lab::create([
                     'kode_lab' => tambah_nol_didepan($kode_lab, 6),
-<<<<<<< HEAD
-                    'id_barangmasuk'=> $barangmasuk->id_barangmasuk,
-=======
                     'id_barangmasuk' => $barangmasuk->id_barangmasuk,
->>>>>>> f1a8f182258dbf19485d1dee9bc0d18ee5400992
                     'satuan' => $barangmasuk->id_satuan,
                     'bahan_layak' => 0,
                     'bahan_tidak_layak' => 0,

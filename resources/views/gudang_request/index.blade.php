@@ -122,7 +122,6 @@
         $('#modal_form_ket form').attr('action',url);
         $('#modal_form_ket [name=_method]').val('put');
         $('#modal_form_ket [name=keterangan]').focus();
-
     }
 
 

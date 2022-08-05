@@ -27,7 +27,7 @@
                 <th>Nama bahan</th>
                 <th>Jumlah bahan</th>
                 <th>Bahan Layak</th>
-                <th>Satuan</th>
+                {{-- <th>Satuan</th> --}}
                 <th>Status</th>
                 <th>Status Gudang</th>
                 <th width="15%"><i class="fa fa-cog"></i></th>
@@ -70,7 +70,7 @@
             {data: 'nama_bahan'},
             {data: 'jumlah_bahan'},
             {data: 'bahan_layak'},
-            {data: 'satuan'},
+            // {data: 'satuan'},
             {data: 'status'},
             {data: 'status_gudang'},
             {data: 'aksi', searchable: false, sortable: false},

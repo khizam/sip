@@ -119,10 +119,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/produksibarang/data', [ProduksiBarangController::class, 'data'])
         ->name('produksibarang.data');
 
-    Route::put('/produksibarang/terima/{id_produksi}', [ProduksiBarangController::class, 'terima_produksi'])
-        ->name('produksibarang.terima_produksi');
-    Route::put('/produksibarang/tolak/{id_produksi}', [ProduksiBarangController::class, 'tolak_produksi'])
-        ->name('produksibarang.tolak_produksi');
+    Route::put('/produksi/terima/{id_produksi}', [ProduksiBarangController::class, 'terima_produksi'])
+        ->name('produksi.terima_produksi');
+    Route::put('/produksi/tolak/{id_produksi}', [ProduksiBarangController::class, 'tolakProduksiBahan'])
+        ->name('produksi.tolak_produksi');
 
 
 

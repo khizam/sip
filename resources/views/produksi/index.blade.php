@@ -41,7 +41,7 @@
       </div>
 </div>
 
-@includeIf('produksi.form')
+@includeIf('produksi.form_ket')
 @endsection
 
 @push('scripts')
@@ -54,6 +54,7 @@
           autoWidth: false,
           ajax: {
             url: '{{ route('produksibarang.data') }}',
+            dataSrc: (result) => {}
           },
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
@@ -68,20 +69,52 @@
           ]
         });
 
-        $('#modal-form').validator().on('submit', function (e) {
+        // $('#modal-form').validator().on('submit', function (e) {
+        //     if (! e.preventDefault()) {
+        //       $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
+        //       .done((response) => {
+        //         $('#modal-form').modal('hide');
+        //         table.ajax.reload();
+        //       })
+        //       .fail((errors) => {
+        //         alert('Tidak dapat menyimpan data');
+        //         return;
+        //       });
+        //     }
+        // })
+
+        $('#modal_form_ket form').validator().on('submit', function (e) {
             if (! e.preventDefault()) {
-              $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
+              $.ajax({
+                  url: $('#modal_form_ket form').attr('action'),
+                  method: $('#modal_form_ket [name=_method]').val() ?? 'PUT',
+                  data: $('#modal_form_ket form').serialize(),
+                  dataType: "json"
+              })
               .done((response) => {
-                $('#modal-form').modal('hide');
+                $('#modal_form_ket').modal('hide');
                 table.ajax.reload();
               })
               .fail((errors) => {
-                alert('Tidak dapat menyimpan data');
+                errors.responseJSON !== '' ? alert(errors.responseJSON) : alert('Tidak dapat menyimpan data');
                 return;
               });
             }
         })
+
     });
+
+
+    function tolakProduksiBarang(url) {
+        $('#modal_form_ket').modal('show');
+        $('#modal_form_ket .modal-title').text('keterangan di tolak');
+
+        $('#modal_form_ket form')[0].reset();
+        $('#modal_form_ket form').attr('action',url);
+        $('#modal_form_ket [name=_method]').val('put');
+        $('#modal_form_ket [name=keterangan]').focus();
+
+    }
 
     function addForm(url) {
       $('#modal-form').modal('show');
@@ -130,5 +163,7 @@
         });
       }
     }
+
+
 </script>
 @endpush

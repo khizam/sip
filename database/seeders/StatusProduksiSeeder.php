@@ -16,7 +16,7 @@ class StatusProduksiSeeder extends Seeder
     {
         $data = [
             [
-                'id_status'=>1,
+                'id_status'=> 1,
                 'status'=>'terima produksi',
 
             ],
