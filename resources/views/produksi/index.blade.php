@@ -31,6 +31,7 @@
                 <th>Satuan</th>
                 <th>Status</th>
                 <th>Keterangan</th>
+
                 <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
               <tbody>
@@ -45,15 +46,23 @@
 @endsection
 
 @push('scripts')
+
 <script>
   let table;
 
-    $(function () {
+  $(function () {
         table = $('.table').DataTable({
           processing: true,
           autoWidth: false,
           ajax: {
             url: '{{ route('produksibarang.data') }}',
+            dataSrc: (result) => {
+              return result.data.map((result) => {
+                  result.satuan = result.satuan ?? 'Data kosong'
+                  return result
+                }
+              )
+            }
           },
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
@@ -64,6 +73,7 @@
             {data: 'satuan'},
             {data: 'status'},
             {data: 'keterangan'},
+            // {data: 'keterangan_bahan'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });
@@ -103,16 +113,14 @@
 
     });
 
-
     function tolakProduksiBarang(url) {
         $('#modal_form_ket').modal('show');
-        $('#modal_form_ket .modal-title').text('keterangan di tolak');
+        $('#modal_form_ket .modal-title').text('Keterangan di tolak');
 
         $('#modal_form_ket form')[0].reset();
         $('#modal_form_ket form').attr('action',url);
         $('#modal_form_ket [name=_method]').val('put');
         $('#modal_form_ket [name=keterangan]').focus();
-
     }
 
     function addForm(url) {

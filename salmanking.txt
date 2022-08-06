@@ -1,0 +1,26 @@
+produksibarang
+jumlah_hasil_produksi
+
+grade_lab_produksi
+-id_grlab
+-id_lab_produksi
+-id_grade
+-jumlah_produk
+-stok
+
+grade
+-id_grade
+-grade
+
+lab_produksi  
+- id_lab_produksi
+- id_produksi
+- jumlah_produksi
+- Lost
+
+gudang_produk
+id_gudang
+
+	
+	
+	
