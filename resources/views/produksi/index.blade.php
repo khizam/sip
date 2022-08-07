@@ -123,6 +123,26 @@
         $('#modal_form_ket [name=keterangan]').focus();
     }
 
+    function terimaProduksiBarang(url) {
+        if (confirm('Terima Produksi Barang ?')) {
+            $.ajax({
+                type: "PUT",
+                url: url,
+                data: {
+                    '_token': $('[name=csrf-token]').attr('content')
+                },
+                dataType: "json"
+            })
+            .done((response)=>{
+                table.ajax.reload();
+            })
+            .fail((errors)=>{
+                alert(errors);
+                return;
+            });
+        }
+    }
+
     function addForm(url) {
       $('#modal-form').modal('show');
       $('#modal-form .modal-title').text('Tambah Produksi Barang');

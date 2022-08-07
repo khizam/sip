@@ -49,6 +49,9 @@
               @can('user_index')
               <li class="active"><a href="{{ route('satuan.index') }}"><i class="fa fa-cube"></i>Satuan</a></li>
               @endcan
+              @can('user_index')
+              <li class="active"><a href="{{ route('grade.index') }}"><i class="fa fa-sort-amount-asc"></i>Grade</a></li>
+              @endcan
             </ul>
           </li>
           @endcan

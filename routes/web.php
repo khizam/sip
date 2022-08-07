@@ -17,6 +17,7 @@ use App\Http\Controllers\{
     ProduksiBarangController,
     GudangRequestController,
     SatuanController,
+    GradeController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -119,12 +120,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/produksibarang/data', [ProduksiBarangController::class, 'data'])
         ->name('produksibarang.data');
 
-    Route::put('/produksi/terima/{id_produksi}', [ProduksiBarangController::class, 'terima_produksi'])
+    Route::put('/produksi/terima/{id_produksi}', [ProduksiBarangController::class, 'terimaProduksiBahan'])
         ->name('produksi.terima_produksi');
     Route::put('/produksi/tolak/{id_produksi}', [ProduksiBarangController::class, 'tolakProduksiBahan'])
         ->name('produksi.tolak_produksi');
-
-
 
     Route::put('/produksi/check-status/{id}', [detailProduksiController::class, 'data'])
         ->name('produksi.checkStatus');
@@ -148,4 +147,10 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('permintaan_bahan.insert');
 
     Route::post('/produksi/proses-produksi', [ProduksiBarangController::class, 'prosesProduksi'])->name('produksi.proses_produksi');
+
+    Route::get('/grade/data', [GradeController::class, 'data'])
+        ->name('grade.data');
+    Route::resource('/grade', GradeController::class);
+
+
 });

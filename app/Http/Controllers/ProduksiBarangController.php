@@ -63,11 +63,13 @@ class ProduksiBarangController extends Controller
                     <button onclick="tolakProduksiBarang(`' . route('produksi.tolak_produksi', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-ban"></i></button>';
                 } elseif ($produksibarang->id_status == StatusProduksiEnum::Tolak) {
                     $html .= '<b><i>Produksi ditolak</i></b>';
-                } else {
+                } elseif ($produksibarang->id_status == StatusProduksiEnum::Terima) {
                     $html .= '<button onclick="editForm(`' . route('produksi.update', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
                     <button onclick="deleteData(`' . route('produksi.destroy', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                     <a href=' . route('detailProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">detail produksi</a>';
                 }
+
+
                 $html .= '</div>';
                 return $html;
             })
@@ -99,6 +101,25 @@ class ProduksiBarangController extends Controller
             $produksibarang->update([
                 'keterangan' => $request->keterangan,
                 'id_status' => StatusProduksiEnum::Tolak,
+            ]);
+            return jsonResponse($produksibarang);
+        } catch (NotFoundHttpException $th) {
+            return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function terimaProduksiBahan(Request $request, $id_produksi)
+    {
+        try {
+            $produksibarang = ProduksiBarang::find($id_produksi);
+            if ($produksibarang->count() == 0) {
+                throw new NotFoundHttpException("Permintaan produksi tidak ditemukan");
+            }
+            $produksibarang->update([
+                'keterangan' => 'bahan sesuai dengan permintaan lanjut proses produksi',
+                'id_status' => StatusProduksiEnum::Terima,
             ]);
             return jsonResponse($produksibarang);
         } catch (NotFoundHttpException $th) {
