@@ -18,6 +18,7 @@ use App\Http\Controllers\{
     GudangRequestController,
     SatuanController,
     GradeController,
+    PeralatanKerjaController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -152,5 +153,8 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('grade.data');
     Route::resource('grade', GradeController::class);
 
+    Route::get('/peralatan_kerja/data', [PeralatanKerjaController::class, 'data'])
+        ->name('peralatan_kerja.data');
+    Route::resource('peralatan_kerja', PeralatanKerjaController::class);
 
 });

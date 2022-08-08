@@ -59,6 +59,10 @@ class DetailProduksiController extends Controller
                 return $this->generatePermintaanBahan($detailProduksi);
             })
 
+            // ->addColumn('proses', function($detailProduksi) {
+            //     return $this->detail($detailProduksi);
+            // })
+
             ->addColumn('aksi', function ($detailproduksi) {
                 $html = '<div class="">';
                 if (is_null($detailproduksi->id_request)) {
@@ -67,9 +71,11 @@ class DetailProduksiController extends Controller
                 if (
                     $detailproduksi->status == StatusPermintaanBahanEnum::Proses &&
                     is_null($detailproduksi->id_request)
-                ) {
+                ){
                     $html .= '<button onclick="deleteData(`' . route('detailProduksi.destroy', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>';
                 }
+
+                
 
                 $html = '</div>';
                 return $html;
@@ -97,6 +103,26 @@ class DetailProduksiController extends Controller
 
         return $html;
     }
+
+    public function proses($detailProduksi)
+    {
+        $html = '';
+        if (is_null($detailProduksi->id_request)) {
+            $html = '<button onclick="proses(`' . route('permintaan_bahan.detail', $detailProduksi->id_detail) . '`)" class="btn btn-xs btn-primary btn-flat">detail produksi</button>';
+        } elseif (
+            (!is_null($detailProduksi->id_request)) &&
+            is_null($detailProduksi->id_user_gudang)
+    ) {
+        $html = '<i style="padding: 2px"><b>Menunggu konfirmasi dari gudang</b></i>';
+    } elseif (
+        $detailProduksi->status != StatusPermintaanBahanEnum::Proses &&
+        $detailProduksi->id_user_gudang != null
+    ) {
+        $html = '<i style="padding: 2px"><b>permintaan di' .$detailProduksi->status . '</b></i>';
+    }
+
+    return $html;
+}
 
 
     /**

@@ -135,7 +135,7 @@
 
           <li class="header">Peralatan</li>
           <li>
-            <a href="">
+            <a href="{{ route('peralatan_kerja.index') }}">
               <i class="fa fa-th"></i> <span>Peralatan Kerja</span>
               <span class="pull-right-container">
               </span>
