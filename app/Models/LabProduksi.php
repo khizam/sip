@@ -16,8 +16,9 @@ class LabProduksi extends Model
     protected $primaryKey = "id_labproduksi";
 
     protected $fillable = [
-        'id_status',
-        'stok'
+        'id_produksi',
+        'jumlah_produksi',
+        'lost',
     ];
 
     /**
