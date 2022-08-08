@@ -150,7 +150,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/grade/data', [GradeController::class, 'data'])
         ->name('grade.data');
-    Route::resource('/grade', GradeController::class);
+    Route::resource('grade', GradeController::class);
 
 
 });

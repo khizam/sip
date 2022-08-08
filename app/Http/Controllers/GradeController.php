@@ -29,7 +29,7 @@ class GradeController extends Controller
         ->addColumn('aksi', function ($grade) {
             return '
             <div class="btn-group">
-                <button onClick="editForm(`'. route('grade.update', $grade->id_grade) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                <button onClick="editForm(`'. route('grade.update', $grade->id_grade) .'`, `'. route('grade.show', $grade->id_grade) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
                 <button onClick="deleteData(`'. route('grade.destroy', $grade->id_grade) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
             </div>
             ';
@@ -96,8 +96,8 @@ class GradeController extends Controller
     public function update(Request $request, $id)
     {
         $grade = Grade::find($id);
-        $grade->grade = $request->grade;
-        $grade->update();
+        $grade->nama_grade = $request->nama_grade;
+        $grade->save();
 
         return response()->json('Data berhasil disimpan', 200);
     }

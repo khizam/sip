@@ -80,7 +80,7 @@
       $('#modal-form [name=nama_grade]').focus();
     }
 
-    function editForm(url) {
+    function editForm(url, url_show) {
       $('#modal-form').modal('show');
       $('#modal-form .modal-title').text('Edit Grade');
 
@@ -88,8 +88,7 @@
       $('#modal-form form').attr('action',url);
       $('#modal-form [name=_method]').val('put');
       $('#modal-form [name=nama_grade]').focus();
-
-      $.get(url)
+      $.get(url_show)
         .done((response) => {
           $('#modal-form [name=nama_grade]').val(response.nama_grade);
         })

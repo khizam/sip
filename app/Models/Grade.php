@@ -11,7 +11,7 @@ class Grade extends Model
 
     protected $table = 'grade';
 
-    protected $primarykey = "id_grade";
+    protected $primaryKey = "id_grade";
 
     protected $fillable = [
         'nama_grade'
