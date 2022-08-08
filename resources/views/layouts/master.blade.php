@@ -107,8 +107,6 @@
     let url_notification = "{{ route('notifications.index') }}";
 
     let role = {{ Auth::user()->roles->pluck('id')[0] }}
-    console.log('role')
-    console.log(role)
 
     if (role == {{ \App\Models\Enums\RolesEnum::Produksi }} || role == {{ \App\Models\Enums\RolesEnum::Gudang }}) {
         Echo.private(`pushNotification.${role}`)

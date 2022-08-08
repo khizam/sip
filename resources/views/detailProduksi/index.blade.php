@@ -13,47 +13,69 @@
 
 
 <div class="box box-default">
-  <div class="box-header with-border">
-    {{-- <h3 class="box-title">Select2</h3> --}}
-    <a href="{{ route('produksi.index') }}" class="btn btn-sm btn-flat btn-info">Back</a>
-
-    <div class="box-tools pull-right">
-      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-      <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
-    </div>
-  </div>
-  <!-- /.box-header -->
-  <div class="box-body">
-    <div class="row">
-      <form action="{{ route('detailProduksi.store') }}" method="post">
-        @csrf
-        @method('post')
-        <input type="hidden" name="id_produksi" value="{{ request()->route('id_produksi') }}">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Bahan</label>
-                <select class="form-control select2" style="width: 100%;" name="id_bahan" id="id_bahan">
-                    <option selected="selected" >Pilih Bahan</option>
-                    @foreach ($bahan as $item)
-                    <option value="{{ $item->id_bahan }}">{{ $item->nama_bahan }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <!-- /.form-group -->
-            <div class="form-group">
-                <label for="jumlah">Jumlah Bahan</label>
-                    <input type="number" name="jumlah" id="jumlah" class="form-control" value="0">
-                    <span class="help-block with-errors"></span>
-                </div>
-
-                <button class="btn btn-sm btn-flat btn-primary">Simpan</button>
+    <div class="box-header with-border">
+        <a href="{{ route('produksi.index') }}" class="btn btn-sm btn-flat btn-info">Back</a>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
         </div>
-        </form>
     </div>
-    <!-- /.row -->
-  </div>
-  <!-- /.box-body -->
+    <!-- /.box-header -->
+    <div class="box-body">
+        <div class="row">
+            <form action="{{ route('detailProduksi.store') }}" method="post">
+            @csrf
+            @method('post')
+                <input type="hidden" name="id_produksi" value="{{ request()->route('id_produksi') }}">
+                <div class="col-md-6">
+                    @error('id_produksi')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                    <div class="form-group @error('id_bahan') has-error @enderror">
+                        <label>Bahan</label>
+                        <select class="form-control select2" style="width: 100%;" name="id_bahan" id="id_bahan">
+                            <option value="">Pilih Bahan</option>
+                            @foreach ($bahan as $item)
+                            <option value="{{ $item->id_bahan }}">{{ $item->nama_bahan }}</option>
+                            @endforeach
+                        </select>
+                        @error('id_bahan')
+                        <span class="help-block">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <!-- /.form-group -->
+                    <div class="form-group @error('jumlah') has-error @enderror">
+                        <label for="jumlah">Jumlah Bahan</label>
+                        <input type="number" name="jumlah" id="jumlah" class="form-control">
+                        @error('jumlah')
+                        <span class="help-block">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-sm btn-flat btn-primary">Simpan</button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    @if (session()->has('errors'))
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                        {{ session()->get('errors-throw') }}
+                    </div>
+                    @endif
 
+                    @if (session()->has('success'))
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                        {{ session()->get('success') }}
+                    </div>
+                    @endif
+                </div>
+            </form>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.box-body -->
 </div>
 
 <div class="row">
@@ -100,9 +122,7 @@
 <script src="{{asset('template/bower_components/select2/dist/js/select2.full.min.js')}}"></script>
 <!-- wajib jquery  -->
 <script>
-
     let table;
-
     $(function () {
         $('.select2').select2()
         let url = '{{ route("detailProduksi.data", request()->route("id_produksi")) }}'
@@ -219,7 +239,7 @@
                 window.location.href = response
             })
             .fail((errors) => {
-                alert(errors);
+                alert(errors.responseJSON);
                 return;
             });
         }
