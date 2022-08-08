@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreDetailProduksiRequest;
 use App\Http\Requests\UpdateDetailRequest;
 use App\Models\DetailProduksi;
 use App\Models\Bahan;
@@ -62,15 +63,12 @@ class DetailProduksiController extends Controller
             ->addColumn('aksi', function ($detailproduksi) {
                 $html = '<div class="">';
                 if (is_null($detailproduksi->id_request)) {
-                    $html .= '<button onclick="editDetailForm(`' . route('detailProduksi.show', $detailproduksi->id_detail) . '` , `' . route('detailProduksi.update', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-pencil"></i></button>';
-                }
-                if (
-                    $detailproduksi->status == StatusPermintaanBahanEnum::Proses &&
-                    is_null($detailproduksi->id_request)
-                ) {
+                    $html .= '<button onclick="editDetailForm(`' . route('detailProduksi.show', $detailproduksi->id_detail) . '` , `' . route('detailProduksi.update', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-pencil"></i></button>
+                    <button onclick="deleteData(`' . route('detailProduksi.destroy', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>';
+                } elseif ($detailproduksi->status == StatusPermintaanBahanEnum::Proses) {
                     $html .= '<button onclick="deleteData(`' . route('detailProduksi.destroy', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>';
                 }
-                $html = '</div>';
+                $html .= '</div>';
                 return $html;
             })
             ->rawColumns(['aksi', 'permintaan_bahan'])
@@ -104,21 +102,21 @@ class DetailProduksiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreDetailProduksiRequest $request)
     {
         try {
             DB::beginTransaction();
-            $detailproduksi = new DetailProduksi();
-            $detailproduksi->id_bahan = $request->id_bahan;
-            $detailproduksi->jumlah = $request->jumlah;
-            $detailproduksi->id_produksi = $request->id_produksi;
-            $detailproduksi->save();
+            DetailProduksi::create($request->validated());
             DB::commit();
-            return redirect()->route('detailProduksi.index', $request->id_produksi);
+            return redirect()
+                ->route('detailProduksi.index', $request->id_produksi)
+                ->with('success', 'berhasil diproses');
         } catch (\Throwable $th) {
             DB::rollback();
             Log::error("tambah request detail produksi" . $th);
-            return response()->json('gagal disimpan' . $th->getMessage(), 500);
+            return redirect()
+                ->route('detailProduksi.index', $request->id_produksi)
+                ->with('errors-throw', $th->getMessage());
         }
     }
 

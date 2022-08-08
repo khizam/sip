@@ -45,6 +45,6 @@ class DetailProduksi extends Model
 
     public function permintaanBahan()
     {
-        return $this->hasMany(PermintaanBahan::class, 'id_detail_bahan');
+        return $this->hasOne(PermintaanBahan::class, 'id_detail_produksi');
     }
 }

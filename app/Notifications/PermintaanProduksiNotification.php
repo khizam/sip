@@ -45,7 +45,7 @@ class PermintaanProduksiNotification extends Notification
             'attributes' => [
                 $this->produksiBarang->toArray(),
             ],
-            'links' => route('owner.index')
+            'links' => route('produksi.index')
         ];
     }
 }

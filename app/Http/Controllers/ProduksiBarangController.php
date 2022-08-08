@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetailProduksi;
+use App\Models\Enums\StatusPermintaanBahanEnum;
 use App\Models\Enums\StatusProduksiEnum;
 use App\Models\StatusProduksi;
 use App\Models\Satuan;
@@ -10,8 +12,7 @@ use App\Models\Produk;
 use App\Models\ProduksiBarang;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProduksiBarangController extends Controller
@@ -67,6 +68,8 @@ class ProduksiBarangController extends Controller
                     $html .= '<button onclick="editForm(`' . route('produksi.update', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
                     <button onclick="deleteData(`' . route('produksi.destroy', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                     <a href=' . route('detailProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">detail produksi</a>';
+                } elseif ($produksibarang->id_status == StatusProduksiEnum::Proses) {
+                    $html .= '<a href=' . route('detailProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">detail produksi</a>';
                 }
 
 
@@ -80,6 +83,21 @@ class ProduksiBarangController extends Controller
     public function prosesProduksi(Request $request)
     {
         try {
+            // Cek Bahan di detail produksi
+            $bahan = DetailProduksi::where('id_produksi', $request->id_produksi)->get();
+            if ($bahan->isEmpty()) {
+                throw new NotFoundHttpException("Bahan produksi belum dimasukkan");
+            }
+            // Cek Apakah ada request bahan
+            $bahan->load('permintaanBahan')->each(function ($item) {
+                if (is_null($item->permintaanBahan)) {
+                    throw new NotFoundHttpException("Selesaikan permintaan bahan ke gudang");
+                } else {
+                    if ($item->permintaanBahan->status == StatusPermintaanBahanEnum::Proses) {
+                        throw new NotFoundHttpException("Permintaan bahan menunggu persetujuan gudang");
+                    }
+                }
+            });
             $produksi = ProduksiBarang::findOrFail($request->id_produksi);
             $produksi->update([
                 'id_status' => StatusProduksiEnum::Proses,
@@ -118,7 +136,7 @@ class ProduksiBarangController extends Controller
                 throw new NotFoundHttpException("Permintaan produksi tidak ditemukan");
             }
             $produksibarang->update([
-                'keterangan' => 'bahan sesuai dengan permintaan lanjut proses produksi',
+                'keterangan' => 'Proses produksi',
                 'id_status' => StatusProduksiEnum::Terima,
             ]);
             return jsonResponse($produksibarang);
