@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Models\Grade;
 use Illuminate\Http\Request;
 
-
-class GradeController extends Controller
+class PeralatanKerjaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,27 +13,7 @@ class GradeController extends Controller
      */
     public function index()
     {
-        return view('grade.index');
-    }
-
-    public function data()
-    {
-        $grade = Grade::orderBy('id_grade', 'asc')->get();
-
-        return datatables()
-        ->of($grade)
-        ->addIndexColumn()
-        ->addColumn('aksi', function ($grade) {
-            return '
-            <div class="btn-group">
-                <button onClick="editForm(`'. route('grade.update', $grade->id_grade) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                <button onClick="deleteData(`'. route('grade.destroy', $grade->id_grade) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
-            </div>
-            ';
-
-        })
-        ->rawColumns(['aksi'])
-        ->make(true);
+        return view('peralatan_kerja.index');
     }
 
     /**
@@ -57,10 +34,7 @@ class GradeController extends Controller
      */
     public function store(Request $request)
     {
-        $grade = Grade::latest()->first();
-        $grade = Grade::create($request->all());
-
-        return response()->json('Data berhasil disimpan', 200);
+        //
     }
 
     /**
@@ -71,9 +45,7 @@ class GradeController extends Controller
      */
     public function show($id)
     {
-        $grade = Grade::find($id);
-
-        return response()->json($grade);
+        //
     }
 
     /**
@@ -96,11 +68,7 @@ class GradeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $grade = Grade::find($id);
-        $grade->grade = $request->grade;
-        $grade->update();
-
-        return response()->json('Data berhasil disimpan', 200);
+        //
     }
 
     /**
@@ -111,9 +79,6 @@ class GradeController extends Controller
      */
     public function destroy($id)
     {
-        $grade = Grade::find($id);
-        $grade->delete();
-
-        return response(null, 204);
+        //
     }
 }
