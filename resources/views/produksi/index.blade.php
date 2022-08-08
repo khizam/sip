@@ -42,6 +42,7 @@
       </div>
 </div>
 
+@includeIf('produksi.form')
 @includeIf('produksi.form_ket')
 @endsection
 
@@ -150,7 +151,7 @@
       $('#modal-form form')[0].reset();
       $('#modal-form form').attr('action', url);
       $('#modal-form [name=_method]').val('post');
-      $('#modal-form [name=id_produk]').focus();
+      $('#modal-form [name=id_produksi]').focus();
     }
 
     function editForm(url) {
@@ -160,13 +161,14 @@
       $('#modal-form form')[0].reset();
       $('#modal-form form').attr('action',url);
       $('#modal-form [name=_method]').val('put');
-      $('#modal-form [name=id_produk]').focus();
+      $('#modal-form [name=id_produksi]').focus();
 
       $.get(url)
         .done((response) => {
           $('#modal-form [name=id_produk]').val(response.id_produk);
           $('#modal-form [name=jumlah]').val(response.jumlah);
-          $('#modal-form [name=status]').val(response.status);
+          $('#modal-form [name=id_satuan]').val(response.id_satuan);
+          $('#modal-form [name=keterangan]').val(response.keterangan);
         })
       .fail((errors) => {
           alert('Tidak dapat menampilkan data');

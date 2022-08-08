@@ -29,6 +29,25 @@
                     <span class="help-block with-errors"></span>
                 </div>
               </div>
+              <div class="form-group row">
+                <label for="id_satuan" class="col-md-2 col-md-offset-1 control-label">Satuan</label>
+                <div class="col-md-8">
+                    <select name="id_satuan" id="id_satuan" class="form-control" required>
+                      <option value="">Pilih Satuan</option>
+                      @foreach ($satuan as $key => $item)
+                          <option value="{{ $key }}">{{ $item }}</option>
+                      @endforeach
+                    </select>
+                    <span class="help-block with-errors"></span>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="keterangan" class="col-md-2 col-md-offset-1 control-label">Keterangan</label>
+                <div class="col-md-8">
+                    <textarea type="text" name="keterangan" id="keterangan" cols="3" rows="3" class="form-control"></textarea>
+                    <span class="help-block with-errors"></span>
+                </div>
+              </div>
             </div>
             <div class="modal-footer">
               <button class="btn btn-sm btn-flat btn-primary">Simpan</button>

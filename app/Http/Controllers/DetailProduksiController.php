@@ -70,6 +70,9 @@ class DetailProduksiController extends Controller
                 ) {
                     $html .= '<button onclick="deleteData(`' . route('detailProduksi.destroy', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>';
                 }
+
+
+
                 $html = '</div>';
                 return $html;
             })
