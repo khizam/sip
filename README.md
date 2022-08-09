@@ -61,7 +61,7 @@ Berikut teknologi yang digunakan:
 - [laravel-datatables](https://yajrabox.com/docs/laravel-datatables/master/installation)
 
 ## Template Admin
-- [![Adminlte][adminlte.io.com]][Adminlte-url]
+[![Adminlte][adminlte.io.com]][Adminlte-url]
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
