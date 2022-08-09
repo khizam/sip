@@ -20,6 +20,7 @@ use App\Http\Controllers\{
     GradeController,
     LabProduksiController,
     PeralatanKerjaController,
+    LabProduksiController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -119,6 +120,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/detailProduksi/update-detail/{id}', [DetailProduksiController::class, 'updateDetail'])
         ->name('detailProduksi.updateDetail');
 
+    Route::get('/labProduksi/data', [LabProduksiController::class, 'data'])
+        ->name('labProduksi.data');
+    Route::resource('/labProduksi', LabProduksiController::class);
+
     Route::get('/produksibarang/data', [ProduksiBarangController::class, 'data'])
         ->name('produksibarang.data');
 
@@ -126,6 +131,8 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('produksi.terima_produksi');
     Route::put('/produksi/tolak/{id_produksi}', [ProduksiBarangController::class, 'tolakProduksiBahan'])
         ->name('produksi.tolak_produksi');
+    Route::put('/produksi/selesai/{id_produksi}', [ProduksiBarangController::class, 'selesaiProduksiBahan'])
+        ->name('produksi.selesai_produksi');
 
     Route::put('/produksi/check-status/{id}', [detailProduksiController::class, 'data'])
         ->name('produksi.checkStatus');

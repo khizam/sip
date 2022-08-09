@@ -47,11 +47,6 @@ class LabProduksiController extends Controller
             ->make(true);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
@@ -65,7 +60,6 @@ class LabProduksiController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**

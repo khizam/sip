@@ -31,7 +31,7 @@
                 <th>Satuan</th>
                 <th>Status</th>
                 <th>Keterangan</th>
-
+                <th>Jumlah_hasil_produksi</th>
                 <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
               <tbody>
@@ -44,6 +44,7 @@
 
 @includeIf('produksi.form')
 @includeIf('produksi.form_ket')
+@includeIf('produksi.form_selesai')
 @endsection
 
 @push('scripts')
@@ -74,6 +75,7 @@
             {data: 'satuan'},
             {data: 'status'},
             {data: 'keterangan'},
+            {data: 'jumlah_hasil_produksi'},
             // {data: 'keterangan_bahan'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
@@ -112,6 +114,25 @@
             }
         })
 
+        $('#modal_form_selesai form').validator().on('submit', function (e) {
+            if (! e.preventDefault()) {
+              $.ajax({
+                  url: $('#modal_form_selesai form').attr('action'),
+                  method: $('#modal_form_selesai [name=_method]').val() ?? 'PUT',
+                  data: $('#modal_form_selesai form').serialize(),
+                  dataType: "json"
+              })
+              .done((response) => {
+                $('#modal_form_selesai').modal('hide');
+                table.ajax.reload();
+              })
+              .fail((errors) => {
+                errors.responseJSON !== '' ? alert(errors.responseJSON) : alert('Tidak dapat menyimpan data');
+                return;
+              });
+            }
+        })
+
     });
 
     function tolakProduksiBarang(url) {
@@ -122,6 +143,16 @@
         $('#modal_form_ket form').attr('action',url);
         $('#modal_form_ket [name=_method]').val('put');
         $('#modal_form_ket [name=keterangan]').focus();
+    }
+
+    function selesaiProduksiBarang(url) {
+        $('#modal_form_selesai').modal('show');
+        $('#modal_form_selesai .modal-title').text('jumlah_hasil_produksi');
+
+        $('#modal_form_selesai form')[0].reset();
+        $('#modal_form_selesai form').attr('action',url);
+        $('#modal_form_selesai [name=_method]').val('put');
+        $('#modal_form_selesai [name=jumlah_hasil_produksi]').focus();
     }
 
     function terimaProduksiBarang(url) {
