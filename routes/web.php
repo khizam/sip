@@ -18,7 +18,6 @@ use App\Http\Controllers\{
     GudangRequestController,
     SatuanController,
     GradeController,
-    LabProduksiController,
     PeralatanKerjaController,
     LabProduksiController,
 };
