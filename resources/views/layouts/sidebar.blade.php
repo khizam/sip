@@ -87,6 +87,19 @@
           </li>
           @endcan
 
+          <li class="header">Lab Produksi</li>
+          <li class="active treeview">
+            <a href="#">
+              <i class="fa fa-th"></i> <span>Lab Produksi</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li class="active"><a href="{{ route('lab-produksi.index') }}"><i class="fa fa-flask"></i>Lab</a></li>
+            </ul>
+          </li>
+
           @can('gudang_index')
           <li class="header">Penyimpanan Gudang</li>
           <li class="active treeview">
