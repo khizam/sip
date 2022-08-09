@@ -82,7 +82,7 @@
             </a>
             <ul class="treeview-menu">
               <li class="active"><a href="{{ route('lab.index') }}"><i class="fa fa-flask"></i>Uji Bahan Awal</a></li>
-              <li class="active"><a href="index.html"><i class="fa fa-industry"></i>Uji Produk Jadi</a></li>
+              <li class="active"><a href="{{ route('labProduksi.index') }}"><i class="fa fa-industry"></i>Lab Produksi</a></li>
             </ul>
           </li>
           @endcan
@@ -119,7 +119,7 @@
               <li class="active"><a href="{{ route('produksi.index') }}"><i class="fa fa-check"></i>Produksi Barang</a></li>
               {{-- <li class="active"><a href="{{ route('detailProduksi.index') }}"><i class="fa fa-circle-o"></i>Detail Produksi</a></li> --}}
               <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Permintaan Kegudang</a></li>
-              <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Produk Jadi</a></li>
+              <li class="active"><a href="{{ route('labProduksi.index') }}"><i class="fa fa-circle-o"></i>Insert Hasil ke Lab</a></li>
             </ul>
           </li>
           @endcan

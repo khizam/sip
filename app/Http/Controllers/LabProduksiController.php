@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LabProduksi;
 use Illuminate\Http\Request;
 
 class LabProduksiController extends Controller
@@ -13,7 +14,7 @@ class LabProduksiController extends Controller
      */
     public function index()
     {
-        //
+        return view('labProduksi.index');
     }
 
     /**
@@ -21,6 +22,24 @@ class LabProduksiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function data()
+    {
+        $labProduksi = LabProduksi::leftJoin('produksi_barang', 'produksi_barang.id_produksi', '=', 'lab_produksi.id_produksi')
+            ->select('lab_produksi.*', 'produksi_barang.jumlah_hasil_produksi')
+            ->orderBy('id_produksi', 'asc')
+            ->get();
+
+        return datatables()
+            ->of($labProduksi)
+            ->addIndexColumn()
+
+            ->addColumn('jumlah', function ($labProduksi) {
+
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+    }
     public function create()
     {
         //
@@ -34,7 +53,7 @@ class LabProduksiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**

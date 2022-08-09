@@ -23,6 +23,7 @@ class ProduksiBarang extends Model
         'keterangan',
         'id_user',
         'id_satuan',
+        'jumlah_hasil_produksi'
     ];
 
     /**

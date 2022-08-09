@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use phpDocumentor\Reflection\Types\Nullable;
 
 class AddJumlahHasilProduksiToProduksiBarang extends Migration
 {
@@ -14,7 +15,8 @@ class AddJumlahHasilProduksiToProduksiBarang extends Migration
     public function up()
     {
         Schema::table('produksi_barang', function (Blueprint $table) {
-            $table->integer('jumlah_hasil_produksi');
+            $table->integer('jumlah_hasil_produksi')->nullable();
+
         });
     }
 
