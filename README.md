@@ -52,13 +52,23 @@ php artisan websockets:serve
 Berikut teknologi yang digunakan:
 * [![Laravel 8][Laravel.com]][Laravel-url]
 * [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![Adminlte][adminlte.io.com]][Adminlte-url]
 * [![JQuery][JQuery.com]][JQuery-url]
 
 ### Library Pendukung Laravel
-- [![laravel-websockets][https://beyondco.de/docs/laravel-websockets/getting-started/introduction]]
-- [![laravel-permission][https://spatie.be/docs/laravel-permission/v5/basic-usage/basic-usage]]
-- [![laravel-activitylog][https://spatie.be/docs/laravel-activitylog/v4/introduction]]
-- [![laravel-datatables][https://yajrabox.com/docs/laravel-datatables/master/installation]]
+- [laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction)
+- [laravel-permission](https://spatie.be/docs/laravel-permission/v5/basic-usage/basic-usage)
+- [laravel-activitylog](https://spatie.be/docs/laravel-activitylog/v4/introduction)
+- [laravel-datatables](https://yajrabox.com/docs/laravel-datatables/master/installation)
+- Template Admin[![Adminlte][adminlte.io.com]][Adminlte-url]
 
 
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
+[Laravel-url]: https://laravel.com
+[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
+[Bootstrap-url]: https://getbootstrap.com
+[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
+[JQuery-url]: https://jquery.com 
+[Adminlte.io.com]: https://img.shields.io/badge/Adminlte-0769AD?style=for-the-badge&logo=adminlte&logoColor=white
+[Adminlte-url]: https://adminlte.io.com
