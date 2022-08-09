@@ -59,7 +59,9 @@ Berikut teknologi yang digunakan:
 - [laravel-permission](https://spatie.be/docs/laravel-permission/v5/basic-usage/basic-usage)
 - [laravel-activitylog](https://spatie.be/docs/laravel-activitylog/v4/introduction)
 - [laravel-datatables](https://yajrabox.com/docs/laravel-datatables/master/installation)
-- Template Admin[![Adminlte][adminlte.io.com]][Adminlte-url]
+
+## Template Admin
+- [![Adminlte][adminlte.io.com]][Adminlte-url]
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
