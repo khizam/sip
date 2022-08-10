@@ -21,38 +21,43 @@ class LabProduksiController extends Controller
      */
     public function index()
     {
-        $produksibarang = ProduksiBarang::all(['jumlah_hasil_produksi', 'id_produksi']);
-        return view('labProduksi.index', compact('produksibarang'));
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+        return view('lab_produksi.index');
+
+    }
 
     public function data()
     {
         $labProduksi = LabProduksi::leftJoin('produksi_barang', 'produksi_barang.id_produksi', '=', 'lab_produksi.id_produksi')
-            ->select('lab_produksi.*', 'produksi_barang.jumlah_hasil_produksi')
-            ->orderBy('id_produksi', 'asc')
+            ->leftJoin('produk', 'produk.id_produk', '=', 'produksi_barang.id_produk')
+            ->leftJoin('status_produksi', 'status_produksi.id_status', '=', 'produksi_barang.id_status')
+            ->orderBy('lab_produksi.created_at', 'DESC')
+            ->select(['id_labproduksi', 'produk.nama_produk', 'status_produksi.status', 'lab_produksi.jumlah_produksi', 'lab_produksi.created_at', 'produksi_barang.jumlah'])
             ->get();
 
         return datatables()
             ->of($labProduksi)
             ->addIndexColumn()
 
+            ->addColumn('kode_lab', function ($labProduksi) {
+                return '<span class="label label-success">' . $labProduksi->kode_lab . '</span>';
+            })
             ->addColumn('aksi', function ($labProduksi) {
-                return '
-                    <div class="btn-group">
-                        <button onClick="editForm(`'. route('labProduksi.update', $labProduksi->id_labproduksi) .'`, `'. route('labProduksi.show', $labProduksi->id_labProduksi) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                        <button onClick="deleteData(`'. route('labProduksi.destroy', $labProduksi->id_labproduksi) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
-                    </div>
-                ';
+                $html = '<div class="">
+                    <button onclick="editLabForm(`' . route('lab.editLab', $labProduksi->id_labproduksi) . '` , `' . route('lab.updateLab', $labProduksi->id_labproduksi) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-pencil"></i></button>
+                    <button onclick="editForm(`' . route('lab.edit', $labProduksi->id_labproduksi) . '` , `' . route('lab.update', $labProduksi->id_labproduksi) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-plus"></i></button>
+                    <button onclick="check(`' . route('lab.edit', $labProduksi->id_labproduksi) . '` , `' . route(
+                    'lab.checkStatus',
+                    $labProduksi->id_labproduksi
+                ) . '`)" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-check"></i></button>
+                    </div>';
+                return $html;
+
             })
             ->rawColumns(['aksi'])
             ->make(true);
     }
+
     public function create()
     {
         //
@@ -66,10 +71,12 @@ class LabProduksiController extends Controller
      */
     public function store(Request $request)
     {
+
         $labProduksi = LabProduksi::latest()->first();
         $labProduksi = LabProduksi::create($request->all());
 
         return response()->json('Data berhasil disimpan', 200);
+
     }
 
     /**

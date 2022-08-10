@@ -87,6 +87,19 @@
           </li>
           @endcan
 
+          <li class="header">Lab Produksi</li>
+          <li class="active treeview">
+            <a href="#">
+              <i class="fa fa-th"></i> <span>Lab Produksi</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li class="active"><a href="{{ route('lab-produksi.index') }}"><i class="fa fa-flask"></i>Lab</a></li>
+            </ul>
+          </li>
+
           @can('gudang_index')
           <li class="header">Penyimpanan Gudang</li>
           <li class="active treeview">
@@ -119,7 +132,7 @@
               <li class="active"><a href="{{ route('produksi.index') }}"><i class="fa fa-check"></i>Produksi Barang</a></li>
               {{-- <li class="active"><a href="{{ route('detailProduksi.index') }}"><i class="fa fa-circle-o"></i>Detail Produksi</a></li> --}}
               <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Permintaan Kegudang</a></li>
-              <li class="active"><a href="{{ route('labProduksi.index') }}"><i class="fa fa-circle-o"></i>Insert Hasil ke Lab</a></li>
+              <li class="active"><a href=""><i class="fa fa-circle-o"></i>Insert Hasil ke Lab</a></li>
             </ul>
           </li>
           @endcan
