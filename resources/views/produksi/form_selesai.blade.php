@@ -20,7 +20,14 @@
                                 <input type="number" name="jumlah_hasil_produksi" id="jumlah_hasil_produksi" class="form-control" value="0">
                                 <span class="help-block with-errors"></span>
                             </div>
-                          </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lost" class="col-md-2 col-md-offset-1 control-label">Lost</label>
+                            <div class="col-md-8">
+                                <input type="number" name="lost" id="lost" class="form-control" value="0">
+                                <span class="help-block with-errors"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

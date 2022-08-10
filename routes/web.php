@@ -132,6 +132,8 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('produksi.tolak_produksi');
     Route::put('/produksi/selesai/{id_produksi}', [ProduksiBarangController::class, 'selesaiProduksiBahan'])
         ->name('produksi.selesai_produksi');
+    Route::get('/produksi/jumlah-produksi/{id_produksi}', [ProduksiBarangController::class, 'showJumlahProduksi'])
+        ->name('produksi.showJumlahProduksi');
 
     Route::put('/produksi/check-status/{id}', [detailProduksiController::class, 'data'])
         ->name('produksi.checkStatus');

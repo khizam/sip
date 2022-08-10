@@ -68,7 +68,6 @@
           },
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
-            // {data: 'select_all'},
             {data: 'kode_produksi'},
             {data: 'nama_produk'},
             {data: 'jumlah'},
@@ -76,24 +75,9 @@
             {data: 'status'},
             {data: 'keterangan'},
             {data: 'jumlah_hasil_produksi'},
-            // {data: 'keterangan_bahan'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });
-
-        // $('#modal-form').validator().on('submit', function (e) {
-        //     if (! e.preventDefault()) {
-        //       $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
-        //       .done((response) => {
-        //         $('#modal-form').modal('hide');
-        //         table.ajax.reload();
-        //       })
-        //       .fail((errors) => {
-        //         alert('Tidak dapat menyimpan data');
-        //         return;
-        //       });
-        //     }
-        // })
 
         $('#modal_form_ket form').validator().on('submit', function (e) {
             if (! e.preventDefault()) {
@@ -145,7 +129,7 @@
         $('#modal_form_ket [name=keterangan]').focus();
     }
 
-    function selesaiProduksiBarang(url) {
+    function selesaiProduksiBarang(url, url_show) {
         $('#modal_form_selesai').modal('show');
         $('#modal_form_selesai .modal-title').text('jumlah_hasil_produksi');
 
