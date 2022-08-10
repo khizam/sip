@@ -17,6 +17,20 @@
                     <span class="help-block with-errors"></span>
                 </div>
               </div>
+              <div class="form-group row">
+                <label for="jumalh_produksi" class="col-md-2 col-md-offset-1 control-label">Jumlah produksi</label>
+                <div class="col-md-8">
+                    <input type="text" name="jumalh_produksi" id="jumalh_produksi" class="form-control" required autofocus>
+                    <span class="help-block with-errors"></span>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="lost" class="col-md-2 col-md-offset-1 control-label">Lost</label>
+                <div class="col-md-8">
+                    <input type="text" name="lost" id="lost" class="form-control" required autofocus>
+                    <span class="help-block with-errors"></span>
+                </div>
+              </div>
             </div>
             <div class="modal-footer">
               <button class="btn btn-sm btn-flat btn-primary">Simpan</button>

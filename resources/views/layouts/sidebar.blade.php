@@ -82,7 +82,7 @@
             </a>
             <ul class="treeview-menu">
               <li class="active"><a href="{{ route('lab.index') }}"><i class="fa fa-flask"></i>Uji Bahan Awal</a></li>
-              <li class="active"><a href="{{ route('labProduksi.index') }}"><i class="fa fa-industry"></i>Lab Produksi</a></li>
+              <li class="active"><a href=""><i class="fa fa-industry"></i>Lab Produksi</a></li>
             </ul>
           </li>
           @endcan

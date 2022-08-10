@@ -16,7 +16,7 @@
       <div class="col-md-12">
         <div class="box">
           <div class="box-header with-border">
-            <button onclick="addForm('{{ route('grade.store') }}')" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
+            <button onclick="addForm('{{ route('labProduksi.store') }}')" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
           </div>
           <div class="box-body table-responsive">
             <table class="table table-striped table-bordered">
@@ -76,7 +76,7 @@
 
     function addForm(url) {
       $('#modal-form').modal('show');
-      $('#modal-form .modal-title').text('Tambah Grade');
+      $('#modal-form .modal-title').text('Hasil produksi');
 
       $('#modal-form form')[0].reset();
       $('#modal-form form').attr('action', url);

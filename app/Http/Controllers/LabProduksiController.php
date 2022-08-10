@@ -3,7 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\LabProduksi;
+use App\Models\ProduksiBarang;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 
 class LabProduksiController extends Controller
 {
@@ -14,7 +21,8 @@ class LabProduksiController extends Controller
      */
     public function index()
     {
-        return view('labProduksi.index');
+        $produksibarang = ProduksiBarang::all(['jumlah_hasil_produksi', 'id_produksi']);
+        return view('labProduksi.index', compact('produksibarang'));
     }
 
     /**
@@ -34,8 +42,13 @@ class LabProduksiController extends Controller
             ->of($labProduksi)
             ->addIndexColumn()
 
-            ->addColumn('jumlah', function ($labProduksi) {
-
+            ->addColumn('aksi', function ($labProduksi) {
+                return '
+                    <div class="btn-group">
+                        <button onClick="editForm(`'. route('labProduksi.update', $labProduksi->id_labproduksi) .'`, `'. route('labProduksi.show', $labProduksi->id_labProduksi) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                        <button onClick="deleteData(`'. route('labProduksi.destroy', $labProduksi->id_labproduksi) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                    </div>
+                ';
             })
             ->rawColumns(['aksi'])
             ->make(true);
@@ -53,7 +66,10 @@ class LabProduksiController extends Controller
      */
     public function store(Request $request)
     {
+        $labProduksi = LabProduksi::latest()->first();
+        $labProduksi = LabProduksi::create($request->all());
 
+        return response()->json('Data berhasil disimpan', 200);
     }
 
     /**
@@ -64,7 +80,9 @@ class LabProduksiController extends Controller
      */
     public function show($id)
     {
-        //
+        $labProduksi = LabProduksi::find($id);
+
+        return response()->json($labProduksi);
     }
 
     /**
@@ -87,7 +105,12 @@ class LabProduksiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $labProduksi = LabProduksi::find($id);
+        $labProduksi->jumlah_produksi = $request->jumlah_produksi;
+        $labProduksi->lost = $request->lost;
+        $labProduksi->save();
+
+        return response()->json('Data berhasil disimpan', 200);
     }
 
     /**
@@ -98,6 +121,9 @@ class LabProduksiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $labProduksi = LabProduksi::find($id);
+        $labProduksi->delete();
+
+        return response(null, 204);
     }
 }
