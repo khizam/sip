@@ -47,14 +47,14 @@ class LabProduksiController extends Controller
                     <button onclick="editLabForm(`' . route('lab.editLab', $labProduksi->id_labproduksi) . '` , `' . route('lab.updateLab', $labProduksi->id_labproduksi) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-pencil"></i></button>
                     <button onclick="editForm(`' . route('lab.edit', $labProduksi->id_labproduksi) . '` , `' . route('lab.update', $labProduksi->id_labproduksi) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-plus"></i></button>
                     <button onclick="check(`' . route('lab.edit', $labProduksi->id_labproduksi) . '` , `' . route(
-                    'lab.checkStatus',
-                    $labProduksi->id_labproduksi
-                ) . '`)" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-check"></i></button>
+                    'lab.checkStatus',$labProduksi->id_labproduksi) . '`)" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-check"></i></button>
+                    <a href=' . route('grade-lab-produksi.index', $labProduksi->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">grade produk</a>
                     </div>';
+
                 return $html;
 
             })
-            ->rawColumns(['aksi'])
+            ->rawColumns(['aksi', 'kode_lab'])
             ->make(true);
     }
 
@@ -72,11 +72,16 @@ class LabProduksiController extends Controller
     public function store(Request $request)
     {
 
-        $labProduksi = LabProduksi::latest()->first();
-        $labProduksi = LabProduksi::create($request->all());
+        // $labProduksi = LabProduksi::latest()->first() ?? new LabProduksi();
+        // $labProduksi = (int) $labProduksi->kode_lab + 1;
 
-        return response()->json('Data berhasil disimpan', 200);
+        // $labProduksi = new LabProduksi();
 
+    }
+
+    public function halGrade($grade_lab)
+    {
+        return view('grade_lab_produksi.index');
     }
 
     /**

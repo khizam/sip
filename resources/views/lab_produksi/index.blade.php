@@ -16,7 +16,7 @@
       <div class="col-md-12">
         <div class="box">
           <div class="box-header with-border">
-            <a href="/lab/cetak_pdf" class="btn btn-primary btn-xs" target="_blank">Cetak PDF</a>
+            <a href="/lab/grade/{id_produksi}" class="btn btn-primary btn-xs" target="_blank">Cetak PDF</a>
           </div>
           <div class="box-body table-responsive">
             <table class="table table-striped table-bordered">
@@ -57,7 +57,7 @@
             {data: 'nama_produk'},
             {data: 'jumlah'},
             {data: 'jumlah_produksi'},
-            {data: 'status'},
+
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });

@@ -13,7 +13,7 @@ class GradeLabProduksiController extends Controller
      */
     public function index()
     {
-        //
+        return view('grade_lab_produksi.index');
     }
 
     /**
@@ -24,6 +24,11 @@ class GradeLabProduksiController extends Controller
     public function create()
     {
         //
+    }
+
+    public function data()
+    {
+
     }
 
     /**

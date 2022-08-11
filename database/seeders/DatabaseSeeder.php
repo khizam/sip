@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        
+
         // nambah seeder
         // Hapus cache permission package spatie-permission
         // Artisan::call('php artisan permission:cache-reset');
@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
             SupplierPermissionSeeder::class,
             UserPermissionSeeder::class,
             DumpInsertSeeder::class,
+            LabProduksiSeeder::class,
         ]);
     }
 }

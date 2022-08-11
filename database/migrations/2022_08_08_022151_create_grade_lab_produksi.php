@@ -15,12 +15,18 @@ class CreateGradeLabProduksi extends Migration
     {
         Schema::create('grade_lab_produksi', function (Blueprint $table) {
             $table->increments('id_gradelab');
-            $table->unsignedInteger('id_labproduksi');
-            $table->foreign('id_labproduksi')
-                    ->references('id_labproduksi')
-                    ->on('lab_produksi')
+            $table->unsignedInteger('id_produksi');
+            $table->foreign('id_produksi')
+                    ->references('id_produksi')
+                    ->on('produksi_barang')
                     ->onUpdate('restrict')
-                    ->onDelete('restrict');
+                    ->onDelete('cascade');
+            $table->unsignedInteger('id_grade');
+            $table->foreign('id_grade')
+                    ->references('id_grade')
+                    ->on('grade')
+                    ->onUpdate('restrict')
+                    ->onDelete('cascade');
             $table->integer('jumlah_produk');
             $table->integer('stok');
             $table->timestamps();

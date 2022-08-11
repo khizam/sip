@@ -22,7 +22,7 @@ class StatusGudangSeeder extends Seeder
             [
                 'id_status'=> 2,
                 'status'=>'sudah di gudang',
-            ],
+            ]
         ];
         StatusGudang::insert($data);
     }
