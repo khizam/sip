@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\DetailProduksi;
 use App\Models\Enums\StatusPermintaanBahanEnum;
 use App\Models\Enums\StatusProduksiEnum;
+use App\Models\LabProduksi;
 use App\Models\StatusProduksi;
 use App\Models\Satuan;
 use App\Models\User;
 use App\Models\Produk;
 use App\Models\ProduksiBarang;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -45,7 +48,13 @@ class ProduksiBarangController extends Controller
         return datatables()
             ->of($produksibarang)
             ->addIndexColumn()
-
+            ->addColumn('jumlah_hasil_produksi', function ($produksibarang) {
+                $hasil_produksi = format_uang($produksibarang->jumlah_hasil_produksi);
+                if (is_null($hasil_produksi)) {
+                    $hasil_produksi = '-';
+                }
+                return $hasil_produksi;
+            })
             ->addColumn('jumlah', function ($produksibarang) {
                 return format_uang($produksibarang->jumlah);
             })
@@ -69,14 +78,8 @@ class ProduksiBarangController extends Controller
                     <button onclick="deleteData(`' . route('produksi.destroy', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                     <a href=' . route('detailProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">detail produksi</a>';
                 } elseif ($produksibarang->id_status == StatusProduksiEnum::Proses) {
-                    $html .= '<a href=' . route('detailProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">detail produksi</a>
-                    <button onclick="selesaiProduksiBarang(`' . route('produksi.selesai_produksi', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-pencil"></i></button>
-                    ';
+                    $html .= '<button onclick="selesaiProduksiBarang(`' . route('produksi.selesai_produksi', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-success btn-flat"><i class="fa fa-check"></i></button><a href=' . route('detailProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">detail produksi</a>';
                 }
-
-                // <a href=' . route('trackingProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-danger btn-flat">proses produksi</a>
-
-
                 $html .= '</div>';
                 return $html;
             })
@@ -135,17 +138,38 @@ class ProduksiBarangController extends Controller
     public function selesaiProduksiBahan(Request $request, $id_produksi)
     {
         try {
+            DB::beginTransaction();
             $produksibarang = ProduksiBarang::find($id_produksi);
+            $jumlahHasilProduksi = $request->jumlah_hasil_produksi;
+            if ($jumlahHasilProduksi > $produksibarang->jumlah) {
+                throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR, "Jumlah produksi tidak lebih dari " . $produksibarang->jumlah);
+            }
             if ($produksibarang->count() == 0) {
                 throw new NotFoundHttpException("Permintaan produksi tidak ditemukan");
             }
             $produksibarang->update([
-                'jumlah_hasil_produksi' => $request->jumlah_hasil_produksi,
+                'jumlah_hasil_produksi' => $jumlahHasilProduksi,
             ]);
+            $produksiItem = LabProduksi::where('id_produksi', $id_produksi)->first();
+            $dataLab = [
+                'jumlah_produksi' => $jumlahHasilProduksi,
+                'lost' => $request->lost
+            ];
+            if ($produksiItem->count() == 0) {
+                $dataLab += [
+                    'id_produksi' => $id_produksi,
+                ];
+                LabProduksi::create($dataLab);
+            } else {
+                $produksiItem->update($dataLab);
+            }
+            DB::commit();
             return jsonResponse($produksibarang);
         } catch (NotFoundHttpException $th) {
+            DB::rollback();
             return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
         } catch (\Throwable $th) {
+            DB::rollback();
             return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -168,6 +192,8 @@ class ProduksiBarangController extends Controller
             return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+
 
     /**
      * Display the specified resource.
