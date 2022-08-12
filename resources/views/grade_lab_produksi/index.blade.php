@@ -21,7 +21,33 @@
     <!-- /.box-header -->
     <div class="box-body">
         <div class="row">
-            <form action="{{ route('detailProduksi.store') }}" method="post">
+                {{-- <input type="hidden" name="id_produksi" value="{{ request()->route('id_produksi') }}"> --}}
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Produk</label>
+                        <input type="text" name="produk" id="produk" class="form-control" readonly value="{{ $produksibarang->nama_produk }}">
+                    </div>
+
+                    <!-- /.form-group -->
+                </div>
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label>Jumlah Hasil Produksi</label>
+                        <input type="number" name="jumlah" id="jumlah" class="form-control" readonly value="{{ $labproduksi->jumlah_hasil_produksi }}">
+                    </div>
+                </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.box-body -->
+</div>
+
+<div class="box box-default">
+    <!-- /.box-header -->
+    <div class="box-body">
+        <div class="row">
+            <form action="{{ route('grade-lab-produksi.store') }}" method="post">
             @csrf
             @method('post')
                 <input type="hidden" name="id_produksi" value="{{ request()->route('id_produksi') }}">
@@ -29,40 +55,31 @@
                     @error('id_produksi')
                     <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
-                    <div class="form-group @error('id_bahan') has-error @enderror">
-                        <label>Produk</label>
-                        <select class="form-control select2" style="width: 100%;" name="id_bahan" id="id_bahan">
-                            {{-- <option value="">Pilih Bahan</option>
-                            @foreach ($bahan as $item)
-                            <option value="{{ $item->id_bahan }}">{{ $item->nama_bahan }}</option>
-                            @endforeach --}}
+                    <div class="form-group @error('id_grade') has-error @enderror">
+                        <label>Grade</label>
+                        <select class="form-control select2" style="width: 100%;" name="id_grade" id="id_grade">
+                            <option value="">Pilih Grade</option>
+                            @foreach ($grade as $item)
+                            <option value="{{ $item->id_grade }}">{{ $item->nama_grade }}</option>
+                            @endforeach
                         </select>
-                        @error('id_bahan')
+                        @error('id_grade')
                         <span class="help-block">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="form-group @error('jumlah') has-error @enderror">
-                        <label for="jumlah">Stok</label>
-                        <input type="number" name="jumlah" id="jumlah" class="form-control">
-                        @error('jumlah')
+                    <div class="form-group @error('jumlah_produk') has-error @enderror">
+                        <label for="stok">Stok</label>
+                        <input type="number" name="stok" id="stok" class="form-control">
+                        @error('stok')
                         <span class="help-block">{{ $message }}</span>
                         @enderror
                     </div>
-                    <!-- /.form-group -->
-
                     <div class="form-group">
                         <button type="submit" class="btn btn-sm btn-flat btn-primary">Simpan</button>
                     </div>
+                    <!-- /.form-group -->
                 </div>
                 <div class="col-md-6">
-                    @if (session()->has('errors'))
-                    <div class="alert alert-danger alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <h4><i class="icon fa fa-ban"></i> Alert!</h4>
-                        {{ session()->get('errors-throw') }}
-                    </div>
-                    @endif
-
                     @if (session()->has('success'))
                     <div class="alert alert-success alert-dismissible">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -70,13 +87,14 @@
                         {{ session()->get('success') }}
                     </div>
                     @endif
-                    <div class="form-group @error('jumlah') has-error @enderror">
-                        <label for="jumlah">Hasil Produk Jadi</label>
-                        <input type="number" name="jumlah" id="jumlah" class="form-control">
-                        @error('jumlah')
+                    <div class="form-group @error('jumlah_produk') has-error @enderror">
+                        <label for="jumlah_produk">Hasil Bagi Jumlah Produk</label>
+                        <input type="number" name="jumlah_produk" id="jumlah_produk" class="form-control">
+                        @error('jumlah_produk')
                         <span class="help-block">{{ $message }}</span>
                         @enderror
                     </div>
+
                 </div>
             </form>
         </div>
@@ -85,135 +103,103 @@
     <!-- /.box-body -->
 </div>
 
-<div class="box box-default">
-    <div class="box-header with-border">
-
-        <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+<div class="row">
+    <div class="col-md-12">
+      <div class="box">
+        <div class="box-header with-border">
+          <h4>Grade Lab Produksi</h4>
         </div>
+        <div class="box-body table-responsive">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <th width="5%">No</th>
+              <th>Nama Grade</th>
+              <th>Jumlah Produk</th>
+              <th>Stok</th>
+              <th width="15%"><i class="fa fa-cog"></i></th>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <!-- /.box-header -->
-    <div class="box-body">
-        <form method="post" action="">
-            <div id="firstproduct">
-            <div class="productdiv">
-            <div class="form-group row">
-                <label class="col-md-2">Bagi Jumlah Produk</label>
-                <div class="col-md-8">
-                    <input type="number" name="jumlah_hasil_produksi[]" class="form-control" required>
-                </div>
-            </div>
+  </div>
 
-            <div class="form-group row">
-                <label class="col-md-2">Grade</label>
-                <div class="col-md-8">
-                    <select name="id_grade[]" id="id_grade" class="form-control" required>
-                        <option value="">Pilih Grade</option>
-                            <option value="jakarta">Jakarta</option>
-                            <option value="jakarta">Bandung</option>
-                            <option value="jakarta">Jogja</option>
-                    </select>
-                </div>
-            </div>
-
-            </div>
-            </div>
-
-            <div id="moreproduct"></div>
-            {{-- <div id="moreproduct"></div> --}}
-
-            <div class="form-group row">
-                <label class="col-md-2"></label>
-                <div class="col-md-8">
-                    <input type="submit" name="submit" value="submit" class="btn btn-primary">
-                    <button type="button" class="btn btn-info" onclick="addProduct();">Tambah</button>
-                    <button type="button" class="btn btn-info" onclick="removeProduct();">Remove</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <!-- /.box-body -->
-</div>
-
-
-@includeIf('grade.form')
+{{-- @includeIf('grade.form') --}}
 @endsection
 
 @push('scripts')
 
+<!-- Select2 -->
+<script src="{{asset('template/bower_components/select2/dist/js/select2.full.min.js')}}"></script>
+<!-- wajib jquery  -->
 <script>
-    function addProduct() {
-        $('#firstproduct .productdiv').clone().find('input').val('').end().appendTo('#moreproduct');
-            find('select').val('').end().appendTo('#moreproduct');
-        // $('.gardediv').clone().appendTo('#moregrade');
-    }
-    function removeProduct() {
-        $('#moreproduct .productdiv').last().remove();
-    }
-
-</script>
-
-<script>
-  let table;
-
+    let table;
     $(function () {
+        $('.select2').select2()
+        let url = '{{ route("grade-lab-produksi.data", request()->route("id_produksi")) }}'
         table = $('.table').DataTable({
           processing: true,
           autoWidth: false,
           ajax: {
-            url: '{{ route('grade.data') }}',
+            url: url,
           },
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
             {data: 'nama_grade'},
+            {data: 'jumlah_produk'},
+            {data: 'stok'},
+            // {data: 'proses'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });
 
-        $('#modal-form').validator().on('submit', function (e) {
-            if (! e.preventDefault()) {
-              $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
-              .done((response) => {
-                $('#modal-form').modal('hide');
+        $('#modal_edit_detail').validator().on('submit', function (e) {
+            e.preventDefault()
+            console.log('da')
+            let url = $('#modal_edit_detail').attr('action')
+            console.log(url)
+            $.ajax({
+                url: url,
+                method: $('#modal_edit_detail [name=_method]').val() ?? 'PUT',
+                data: $('#modal_edit_detail form').serialize(),
+                dataType: "json"
+            })
+            .done((response) => {
+                $('#modal_edit_detail').modal('hide');
                 table.ajax.reload();
-              })
-              .fail((errors) => {
-                alert('Tidak dapat menyimpan data');
+            })
+            .fail((errors) => {
+                errors.responseJSON !== '' ? alert(errors.responseJSON) : alert('Tidak dapat menyimpan data');
                 return;
-              });
-            }
+            });
         })
     });
 
-    function addForm(url) {
-      $('#modal-form').modal('show');
-      $('#modal-form .modal-title').text('Tambah Grade');
 
-      $('#modal-form form')[0].reset();
-      $('#modal-form form').attr('action', url);
-      $('#modal-form [name=_method]').val('post');
-      $('#modal-form [name=nama_grade]').focus();
+    function editDetailForm(url, formUrl) {
+        $('#modal_edit_detail').modal('show');
+        $('#modal_edit_detail .modal-title').text('Edit Detail Produksi');
+
+        $('#modal_edit_detail form')[0].reset();
+        $('#modal_edit_detail').attr('action',formUrl);
+        $('#modal_edit_detail [name=_method]').val('put');
+        $('#modal_edit_detail [name=id_grade]').focus();
+        $('#modal_edit_detail [name=id_grade]').find('option:not(:first)').removeAttr('selected',true).trigger('change');
+        $.get(url)
+            .done((response) => {
+                $('#modal_edit_detail [name=id_detail]').val(response.id_detail);
+                $('#modal_edit_detail [name=id_produksi]').val(response.id_produksi);
+                $('#modal_edit_detail [name=jumlah]').val(response.jumlah);
+                $('#modal_edit_detail [name=id_grade] option[value="'+response.id_grade+'"]').attr("selected", true);
+                $('#modal_edit_detail [name=id_grade]').trigger('change');
+            })
+        .fail((errors) => {
+            alert(errors.responseJSON ?? 'Tidak dapat menampilkan data');
+            return;
+        });
     }
-
-    function editForm(url, url_show) {
-      $('#modal-form').modal('show');
-      $('#modal-form .modal-title').text('Edit Grade');
-
-      $('#modal-form form')[0].reset();
-      $('#modal-form form').attr('action',url);
-      $('#modal-form [name=_method]').val('put');
-      $('#modal-form [name=nama_grade]').focus();
-      $.get(url_show)
-        .done((response) => {
-          $('#modal-form [name=nama_grade]').val(response.nama_grade);
-        })
-      .fail((errors) => {
-          alert('Tidak dapat menampilkan data');
-          return;
-      });
-
-    }
-
 
     function deleteData(url) {
       if (confirm('Yakin ingin menghapus data terpilih')) {
@@ -230,5 +216,48 @@
         });
       }
     }
+
+    function permintaanKeGudang(url) {
+      if (confirm('Permintaan ke gudang ?')) {
+        $.post(url, {
+          '_token': $('[name=csrf-token]').attr('content'),
+        })
+        .done((response) => {
+          table.ajax.reload();
+        })
+        .fail((errors) => {
+          alert(errors);
+          return;
+        });
+      }
+    }
+
+    function canProsesProduksi(url) {
+        if (confirm('Apakah akan dilanjutkan ke proses produksi ?')) {
+
+            let id_produksi = $('#proses_produksi').attr('data-proses')
+            let token =  $('[name=csrf-token]').attr('content')
+            let data = {
+                '_token': $('[name=csrf-token]').attr('content'),
+                'id_produksi': id_produksi
+            }
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                dataType: 'json'
+            })
+            .done((response) => {
+                console.log(response)
+                window.location.href = response
+            })
+            .fail((errors) => {
+                alert(errors.responseJSON);
+                return;
+            });
+        }
+    }
+
 </script>
 @endpush

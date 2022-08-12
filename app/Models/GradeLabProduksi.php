@@ -14,10 +14,23 @@ class GradeLabProduksi extends Model
     protected $primaryKey = "id_gradelab";
 
     protected $fillable = [
-        'id_labproduksi',
+        'id_produksi',
+        'id_grade',
         'jumlah_produk',
         'stok',
     ];
 
+    protected static $logName = 'grade_lab_produksi';
+
     protected $casts = ['created_at','updated_at'];
+
+    public function grade()
+    {
+        return $this->belongsTo(Grade::class, 'id_grade');
+    }
+
+    public function produksi()
+    {
+        return $this->belongsTo(ProduksiBarang::class, 'id_produksi');
+    }
 }

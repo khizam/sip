@@ -24,7 +24,7 @@
                 <th width="5%">No</th>
                 <th>Kode Lab</th>
                 <th>Tanggal</th>
-                <th>Nama produks</th>
+                <th>Nama produk</th>
                 <th>Jumlah Permintaan</th>
                 <th>Jumlah Produksi</th>
                 <th width="15%"><i class="fa fa-cog"></i></th>

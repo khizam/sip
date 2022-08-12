@@ -153,9 +153,9 @@ class ProduksiBarangController extends Controller
             $produksiItem = LabProduksi::where('id_produksi', $id_produksi)->first();
             $dataLab = [
                 'jumlah_produksi' => $jumlahHasilProduksi,
-                'lost' => $request->lost
+                'lost' => null
             ];
-            if ($produksiItem->count() == 0) {
+            if (is_null($produksiItem)) {
                 $dataLab += [
                     'id_produksi' => $id_produksi,
                 ];

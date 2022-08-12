@@ -176,8 +176,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/lab-produksi/grade/{id_produksi}', [LabProduksiController::class, 'halGrade'])
             ->name('lab-produksi.halGrade');
 
-    Route::get('/grade-lab-produksi/data', [GradeLabProduksiController::class, 'data'])
-        ->name('grade-lab-produksi.data');
     Route::resource('/grade-lab-produksi', GradeLabProduksiController::class)
+        ->except('index')
         ->names('grade-lab-produksi');
+    Route::get('/grade-lab-produksi/data/{id_produksi}', [GradeLabProduksiController::class, 'data'])
+        ->name('grade-lab-produksi.data');
+    Route::get('/grade-lab-produksi/index/{id_produksi?}', [GradeLabProduksiController::class, 'index'])
+        ->name('grade-lab-produksi.index');
 });

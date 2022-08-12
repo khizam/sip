@@ -32,7 +32,7 @@ class LabProduksiController extends Controller
             ->leftJoin('produk', 'produk.id_produk', '=', 'produksi_barang.id_produk')
             ->leftJoin('status_produksi', 'status_produksi.id_status', '=', 'produksi_barang.id_status')
             ->orderBy('lab_produksi.created_at', 'DESC')
-            ->select(['id_labproduksi', 'produk.nama_produk', 'status_produksi.status', 'lab_produksi.jumlah_produksi', 'lab_produksi.created_at', 'produksi_barang.jumlah'])
+            ->select(['id_labproduksi', 'produk.nama_produk', 'status_produksi.status', 'lab_produksi.jumlah_produksi', 'lab_produksi.created_at', 'produksi_barang.jumlah', 'produksi_barang.id_produksi'])
             ->get();
 
         return datatables()

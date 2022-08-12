@@ -2,7 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreGradeLabProduksiRequest;
+use App\Models\GradeLabProduksi;
+use App\Models\Produk;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Models\Grade;
+use App\Models\DetailProduksi;
+use Illuminate\Http\Response;
+use App\Models\ProduksiBarang;
+use App\Models\LabProduksi;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GradeLabProduksiController extends Controller
 {
@@ -11,9 +23,31 @@ class GradeLabProduksiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id_produksi = null)
     {
-        return view('grade_lab_produksi.index');
+        $grade = Grade::all(['nama_grade', 'id_grade']);
+        $data = [
+            'grade' => $grade
+        ];
+        if ($id_produksi != null) {
+            $produksibarang = ProduksiBarang::leftJoin('produk', 'produk.id_produk', '=', 'produksi_barang.id_produk')
+            ->select(['produk.nama_produk'])
+            ->first();
+            $data += [
+                'produksibarang' => $produksibarang,
+            ];
+        }
+
+        if ($id_produksi != null) {
+            $labproduksi = LabProduksi::leftJoin('produksi_barang', 'produksi_barang.id_produksi', '=', 'lab_produksi.id_produksi')
+            ->select(['produksi_barang.jumlah_hasil_produksi'])
+            ->first();
+            $data += [
+                'labproduksi' => $labproduksi,
+            ];
+        }
+
+        return view('grade_lab_produksi.index', $data);
     }
 
     /**
@@ -26,9 +60,29 @@ class GradeLabProduksiController extends Controller
         //
     }
 
-    public function data()
+    public function data($id_produksi)
     {
+        $gradelabproduksi = GradeLabProduksi::leftJoin('lab_produksi', 'lab_produksi.id_produksi', '=', 'grade_lab_produksi.id_produksi')
+            ->leftJoin('grade', 'grade.id_grade', '=', 'grade_lab_produksi.id_grade')
+            ->select('grade_lab_produksi.*', 'grade.nama_garde', 'lab_produksi.id_produksi')
+            ->orderBy('grade_lab_produksi.id_gradelab', 'asc')
+            ->where('grade_lab_produksi', $id_produksi)
+            ->get();
 
+        return datatables()
+            ->of($gradelabproduksi)
+            ->addIndexColumn()
+
+            ->addColumn('aksi', function ($gradelabproduksi) {
+                return '
+            <div class="">
+                <button onclick="editForm(`' . route('gradelabproduksi.update', $gradelabproduksi->id_grade) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                <button onclick="deleteData(`' . route('gradelabproduksi.destroy', $gradelabproduksi->id_grade) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+            </div>
+            ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
     }
 
     /**
@@ -37,11 +91,23 @@ class GradeLabProduksiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreGradeLabProduksiRequest $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+            GradeLabProduksi::create($request->validated());
+            DB::commit();
+            return redirect()
+                ->route('grade-lab-produksi.index', $request->id_produksi)
+                ->with('success', 'berhasil diproses');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            Log::error("tambah request detail produksi" . $th);
+            return redirect()
+                    ->route('grade-lab-produksi.index', $request->id_produksi)
+                    ->with('errors-throw', $th->getMessage());
+        }
     }
-
     /**
      * Display the specified resource.
      *
@@ -50,7 +116,19 @@ class GradeLabProduksiController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $gradelabproduksi = GradeLabProduksi::with('grade')->find($id);
+            if ($gradelabproduksi == null) {
+                throw new NotFoundHttpException('grade tidak ditemukan');
+            }
+            return jsonResponse($gradelabproduksi);
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
+        } catch (NotFoundHttpException $th) {
+            return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -61,7 +139,7 @@ class GradeLabProduksiController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -71,9 +149,18 @@ class GradeLabProduksiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $gradelabproduksi)
     {
-        //
+        try {
+            $gradelabproduksi->update($request->validated());
+            return jsonResponse($gradelabproduksi);
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
+        } catch (NotFoundHttpException $th) {
+            return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -82,8 +169,17 @@ class GradeLabProduksiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($gradelabproduksi)
     {
-        //
+        try {
+            $gradelabproduksi->delete();
+            return jsonResponse('', Response::HTTP_NO_CONTENT);
+        } catch (AuthorizationException $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
+        } catch (NotFoundHttpException $th) {
+            return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
             SupplierPermissionSeeder::class,
             UserPermissionSeeder::class,
             DumpInsertSeeder::class,
-            LabProduksiSeeder::class,
+
         ]);
     }
 }

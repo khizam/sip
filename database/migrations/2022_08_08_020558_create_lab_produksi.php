@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use phpDocumentor\Reflection\Types\Nullable;
 
 class CreateLabProduksi extends Migration
 {
@@ -22,7 +23,8 @@ class CreateLabProduksi extends Migration
                     ->onUpdate('restrict')
                     ->onDelete('restrict');
             $table->integer('jumlah_produksi');
-            $table->integer('lost');
+            $table->integer('lost')
+                    ->nullable();
             $table->timestamps();
         });
     }
