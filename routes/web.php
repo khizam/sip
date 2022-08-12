@@ -174,7 +174,7 @@ Route::group(['middleware' => 'auth'], function () {
         ->names('lab-produksi');
 
     Route::get('/lab-produksi/grade/{id_produksi}', [LabProduksiController::class, 'halGrade'])
-            ->name('lab-produksi.halGrade');
+        ->name('lab-produksi.halGrade');
 
     Route::resource('/grade-lab-produksi', GradeLabProduksiController::class)
         ->except('index')

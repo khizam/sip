@@ -67,26 +67,12 @@
                         <span class="help-block">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="form-group @error('jumlah_produk') has-error @enderror">
-                        <label for="stok">Stok</label>
-                        <input type="number" name="stok" id="stok" class="form-control">
-                        @error('stok')
-                        <span class="help-block">{{ $message }}</span>
-                        @enderror
-                    </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-sm btn-flat btn-primary">Simpan</button>
                     </div>
                     <!-- /.form-group -->
                 </div>
                 <div class="col-md-6">
-                    @if (session()->has('success'))
-                    <div class="alert alert-success alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <h4><i class="icon fa fa-ban"></i> Alert!</h4>
-                        {{ session()->get('success') }}
-                    </div>
-                    @endif
                     <div class="form-group @error('jumlah_produk') has-error @enderror">
                         <label for="jumlah_produk">Hasil Bagi Jumlah Produk</label>
                         <input type="number" name="jumlah_produk" id="jumlah_produk" class="form-control">
@@ -94,7 +80,20 @@
                         <span class="help-block">{{ $message }}</span>
                         @enderror
                     </div>
-
+                    @if (session()->has('success'))
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                        {{ session()->get('success') }}
+                    </div>
+                    @endif
+                    @if (session()->has('errors-throw'))
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                        {{ session()->get('errors-throw') }}
+                    </div>
+                    @endif
                 </div>
             </form>
         </div>
@@ -150,7 +149,6 @@
             {data: 'nama_grade'},
             {data: 'jumlah_produk'},
             {data: 'stok'},
-            // {data: 'proses'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });

@@ -27,7 +27,6 @@ class StoreGradeLabProduksiRequest extends FormRequest
             'id_produksi' => 'required|exists:produksi_barang,id_produksi',
             'id_grade' => 'required|exists:grade,id_grade',
             'jumlah_produk' => 'required|integer|not_in:0',
-            'stok' => 'required|integer|not_in:0',
         ];
     }
 }

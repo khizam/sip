@@ -23,7 +23,6 @@ class LabProduksiController extends Controller
     {
 
         return view('lab_produksi.index');
-
     }
 
     public function data()
@@ -47,12 +46,13 @@ class LabProduksiController extends Controller
                     <button onclick="editLabForm(`' . route('lab.editLab', $labProduksi->id_labproduksi) . '` , `' . route('lab.updateLab', $labProduksi->id_labproduksi) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-pencil"></i></button>
                     <button onclick="editForm(`' . route('lab.edit', $labProduksi->id_labproduksi) . '` , `' . route('lab.update', $labProduksi->id_labproduksi) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-plus"></i></button>
                     <button onclick="check(`' . route('lab.edit', $labProduksi->id_labproduksi) . '` , `' . route(
-                    'lab.checkStatus',$labProduksi->id_labproduksi) . '`)" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-check"></i></button>
+                    'lab.checkStatus',
+                    $labProduksi->id_labproduksi
+                ) . '`)" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-check"></i></button>
                     <a href=' . route('grade-lab-produksi.index', $labProduksi->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">grade produk</a>
                     </div>';
 
                 return $html;
-
             })
             ->rawColumns(['aksi', 'kode_lab'])
             ->make(true);
