@@ -35,6 +35,7 @@ class GradeLabProduksiController extends Controller
         if ($id_produksi != null) {
             $produksibarang = ProduksiBarang::leftJoin('produk', 'produk.id_produk', '=', 'produksi_barang.id_produk')
                 ->select(['produk.nama_produk'])
+                ->where('produksi_barang.id_produksi', $id_produksi)
                 ->first();
             $data += [
                 'produksibarang' => $produksibarang,
@@ -44,6 +45,7 @@ class GradeLabProduksiController extends Controller
         if ($id_produksi != null) {
             $labproduksi = LabProduksi::leftJoin('produksi_barang', 'produksi_barang.id_produksi', '=', 'lab_produksi.id_produksi')
                 ->select(['produksi_barang.jumlah_hasil_produksi'])
+                ->where('produksi_barang.id_produksi', $id_produksi)
                 ->first();
             $data += [
                 'labproduksi' => $labproduksi,

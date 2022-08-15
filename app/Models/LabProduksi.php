@@ -31,5 +31,5 @@ class LabProduksi extends Model
      */
     protected static $logName = 'labproduksi';
 
-    protected $casts = ['created_at','updated_at'];
+    protected $casts = ['created_at', 'updated_at'];
 }
