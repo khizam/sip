@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PeralatanKerja;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facedes\Gate;
 
 class PeralatanKerjaController extends Controller
 {
@@ -13,7 +15,7 @@ class PeralatanKerjaController extends Controller
      */
     public function index()
     {
-        return view('peralatan_kerja.index');
+        return view('peralatanKerja.index');
     }
 
     /**
@@ -21,6 +23,26 @@ class PeralatanKerjaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function  data()
+     {
+        $peralatanKerja = PeralatanKerja::orderBy('id_peralatan_kerja', 'desc');
+
+        return datatables()
+        ->of($peralatanKerja)
+        ->addIndexColumn()
+        ->addColumn('aksi', function ($peralatanKerja) {
+            return '
+            <div class="btn-group">
+                <button onClick="editForm(`'. route('peralatanKerja.update', $peralatanKerja->id_peralatan_kerja) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                <button onClick="deleteData(`'. route('peralatanKerja.destroy', $peralatanKerja->id_peralatan_kerja) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+            </div>
+            ';
+        })
+        ->rawColumns(['aksi'])
+        ->make(true);
+     }
+
     public function create()
     {
         //
@@ -34,7 +56,10 @@ class PeralatanKerjaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $peralatanKerja = $request->alat;
+        $peralatanKerja = $request->jumlah_alat;
+        $peralatanKerja = PeralatanKerja::create($request->all());
+        return response()->json('Data Berhasil Disimpan', 200);
     }
 
     /**
@@ -45,7 +70,9 @@ class PeralatanKerjaController extends Controller
      */
     public function show($id)
     {
-        //
+        $peralatanKerja = PeralatanKerja::find($id);
+
+        return response()->json($peralatanKerja);
     }
 
     /**
@@ -68,7 +95,12 @@ class PeralatanKerjaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $peralatanKerja = PeralatanKerja::find($id);
+        $peralatanKerja->alat = $request->alat;
+        $peralatanKerja->jumlah_alat = $request->jumlah_alat;
+        $peralatanKerja->update();
+
+        return response()->json('Data Berhasil disimpan', 200);
     }
 
     /**
@@ -79,6 +111,9 @@ class PeralatanKerjaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $peralatanKerja = PeralatanKerja::find($id);
+        $peralatanKerja->delete();
+
+        return response(null, 204);
     }
 }

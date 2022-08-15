@@ -15,7 +15,7 @@ class PeralatanKerja extends Model
 
     protected $fillable = [
         'alat',
-        'jumlah_alat',
+        'jumlah_alat'
     ];
     protected $guarded = [];
 

@@ -119,7 +119,6 @@ class LabProduksiController extends Controller
     {
         $labProduksi = LabProduksi::find($id);
         $labProduksi->jumlah_produksi = $request->jumlah_produksi;
-        $labProduksi->lost = $request->lost;
         $labProduksi->save();
 
         return response()->json('Data berhasil disimpan', 200);
