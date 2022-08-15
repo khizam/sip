@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGradeLabProduksi extends Migration
+class CreateGudangProdukTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,14 @@ class CreateGradeLabProduksi extends Migration
      */
     public function up()
     {
-        Schema::create('grade_lab_produksi', function (Blueprint $table) {
-            $table->increments('id_gradelab');
+        Schema::create('gudang_produk', function (Blueprint $table) {
+            $table->increments('id_gudangproduk');
             $table->unsignedInteger('id_produksi');
             $table->foreign('id_produksi')
                     ->references('id_produksi')
                     ->on('produksi_barang')
                     ->onUpdate('restrict')
                     ->onDelete('restrict');
-            $table->unsignedInteger('id_grade');
-            $table->foreign('id_grade')
-                    ->references('id_grade')
-                    ->on('grade')
-                    ->onUpdate('restrict')
-                    ->onDelete('restrict');
-            $table->integer('jumlah_produk');
-            $table->integer('stok');
             $table->timestamps();
         });
     }
@@ -40,6 +32,6 @@ class CreateGradeLabProduksi extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('grade_lab_produksi');
+        Schema::dropIfExists('gudang_produk');
     }
 }

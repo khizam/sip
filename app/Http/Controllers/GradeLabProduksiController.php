@@ -31,6 +31,7 @@ class GradeLabProduksiController extends Controller
         $data = [
             'grade' => $grade
         ];
+
         if ($id_produksi != null) {
             $produksibarang = ProduksiBarang::leftJoin('produk', 'produk.id_produk', '=', 'produksi_barang.id_produk')
                 ->select(['produk.nama_produk'])
@@ -48,6 +49,15 @@ class GradeLabProduksiController extends Controller
                 'labproduksi' => $labproduksi,
             ];
         }
+
+        // if ($id_produksi != null) {
+        //     $produksibarang = ProduksiBarang::leftJoin('produksi_barang', 'produksi_barang.id_produksi', '=', 'lab_produksi.id_produksi')
+        //         ->select(['produksi_barang.jumlah_hasil_produksi'])
+        //         ->first();
+        //     $data += [
+        //         'produksibarang' => $produksibarang,
+        //     ];
+        // }
 
         return view('grade_lab_produksi.index', $data);
     }

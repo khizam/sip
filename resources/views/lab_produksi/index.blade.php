@@ -27,6 +27,7 @@
                 <th>Nama produk</th>
                 <th>Jumlah Permintaan</th>
                 <th>Jumlah Produksi</th>
+                <th>Lost Produk</th>
                 <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
               <tbody>
@@ -57,7 +58,7 @@
             {data: 'nama_produk'},
             {data: 'jumlah'},
             {data: 'jumlah_produksi'},
-
+            {data: 'lost'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });

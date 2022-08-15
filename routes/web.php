@@ -164,9 +164,9 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('grade.data');
     Route::resource('grade', GradeController::class);
 
-    Route::get('/peralatan_kerja/data', [PeralatanKerjaController::class, 'data'])
-        ->name('peralatan_kerja.data');
-    Route::resource('peralatan_kerja', PeralatanKerjaController::class);
+    Route::get('/peralatanKerja/data', [PeralatanKerjaController::class, 'data'])
+        ->name('peralatanKerja.data');
+    Route::resource('peralatanKerja', PeralatanKerjaController::class);
 
     Route::get('/lab-produksi/data', [LabProduksiController::class, 'data'])
         ->name('lab-produksi.data');

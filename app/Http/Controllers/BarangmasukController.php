@@ -46,8 +46,8 @@ class BarangmasukController extends Controller
             // ->leftJoin('satuan', 'satuan.id_satuan', '=', 'barangmasuk.id_satuan')
             ->join('lab', 'lab.id_barangmasuk', '=', 'barangmasuk.id_barangmasuk')
             ->select('barangmasuk.*', 'nama_bahan', 'id_satuan', 'nama_kategori', 'nama_supplier', 'lab.status', 'satuan')
-            ->orderBy('kode_barangmasuk', 'asc')
-            ->get();
+            ->orderBy('kode_barangmasuk', 'asc');
+
 
 
         return datatables()
@@ -110,6 +110,8 @@ class BarangmasukController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+
     public function store(Request $request)
     {
         try {

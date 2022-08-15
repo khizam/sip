@@ -25,16 +25,14 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Produk</label>
-                        <input type="text" name="produk" id="produk" class="form-control" readonly value="{{ $produksibarang->nama_produk }}">
+                        <input type="text" name="nama_produk" id="nama_produk" class="form-control" readonly value="{{ $produksibarang->nama_produk }}">
                     </div>
-
                     <!-- /.form-group -->
                 </div>
                 <div class="col-md-6">
-
                     <div class="form-group">
                         <label>Jumlah Hasil Produksi</label>
-                        <input type="number" name="jumlah" id="jumlah" class="form-control" readonly value="{{ $labproduksi->jumlah_hasil_produksi }}">
+                        <input type="number" name="jumlah_produksi" id="jumlah_produksi" class="form-control" readonly value="{{ $labproduksi->jumlah_hasil_produksi }}">
                     </div>
                 </div>
         </div>
