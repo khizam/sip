@@ -102,7 +102,6 @@ class GradeLabProduksiController extends Controller
             $labProduksi = LabProduksi::where('id_produksi', $request->id_produksi)->first(['jumlah_produksi']);
             $jumlahHasilProduksi = $labProduksi->jumlah_produksi;
             $totalGradeProduksi = $grade->total_jumlah_produk + $inputReqJumlahProduk;
-            // \dd($totalGradeProduksi);
             if ($totalGradeProduksi > $jumlahHasilProduksi) {
                 throw new HttpException(500, 'Maaf, grade tidak lebih dari ' . $jumlahHasilProduksi);
             }
