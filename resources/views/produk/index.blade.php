@@ -23,6 +23,7 @@
               <thead>
                 <th width="5%">No</th>
                 <th>Produk</th>
+                <th>Satuan</th>
                 <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
               <tbody>
@@ -51,6 +52,7 @@
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
             {data: 'nama_produk'},
+            {data: 'satuan'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });
@@ -88,10 +90,12 @@
       $('#modal-form form').attr('action',url);
       $('#modal-form [name=_method]').val('put');
       $('#modal-form [name=nama_produk]').focus();
+      $('#modal-form [name=id_satuan]').focus();
 
       $.get(url)
         .done((response) => {
           $('#modal-form [name=nama_produk]').val(response.nama_produk);
+          $('#modal-form [name=id_satuan]').val(response.id_satuan);
         })
       .fail((errors) => {
           alert('Tidak dapat menampilkan data');

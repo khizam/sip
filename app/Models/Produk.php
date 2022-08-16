@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Produk extends Model
@@ -12,6 +13,7 @@ class Produk extends Model
     use LogsActivity;
 
     protected $table = 'produk';
+
     protected $primaryKey = 'id_produk';
 
     protected $fillable = [
@@ -27,7 +29,11 @@ class Produk extends Model
      * Specify $logName to make the model use another name than the default. spatie/laravel-acitivtylog
      */
     protected static $logName = 'produk';
-
     protected $guarded = [];
+
+    public function satuan(): BelongsTo
+    {
+        return $this->belongsTo(Satuan::class, 'id_satuan');
+    }
 
 }

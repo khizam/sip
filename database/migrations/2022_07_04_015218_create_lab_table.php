@@ -14,10 +14,10 @@ class CreateLabTable extends Migration
     public function up()
     {
         Schema::create('lab', function (Blueprint $table) {
-            $table->increments('id_lab');
-            $table->unsignedInteger('id_barangmasuk');
-            $table->foreign('id_barangmasuk')
-                  ->references('id_barangmasuk')
+            $table->increments('id_lab_bahan');
+            $table->unsignedInteger('id_lab');
+            $table->foreign('id_lab')
+                  ->references('id_lab')
                   ->on('barangmasuk')
                   ->onUpdate('restrict')
                   ->onDelete('restrict');

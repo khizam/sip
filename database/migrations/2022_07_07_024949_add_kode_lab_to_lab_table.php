@@ -14,7 +14,7 @@ class AddKodeLabToLabTable extends Migration
     public function up()
     {
         Schema::table('lab', function (Blueprint $table) {
-            $table->string('kode_lab')
+            $table->string('kode_lab_bahan')
             ->unique()
             ->after('id_lab');
             $table->enum('status', ['Accept', 'Reject'])->default('Reject');

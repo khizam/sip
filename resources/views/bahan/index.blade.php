@@ -90,11 +90,12 @@
       $('#modal-form form').attr('action',url);
       $('#modal-form [name=_method]').val('put');
       $('#modal-form [name=nama_bahan]').focus();
-      $('#modal-form [name=satuan]').focus();
+      $('#modal-form [name=id_satuan]').focus();
 
       $.get(url)
         .done((response) => {
           $('#modal-form [name=nama_bahan]').val(response.nama_bahan);
+          $('#modal-form [name=id_satuan]').val(response.id_satuan);
         })
       .fail((errors) => {
           alert('Tidak dapat menampilkan data');

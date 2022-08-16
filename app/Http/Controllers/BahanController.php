@@ -29,8 +29,7 @@ class BahanController extends Controller
         }
         $bahan = Bahan::leftJoin('satuan', 'satuan.id_satuan', '=', 'bahan.id_satuan')
         ->select('bahan.*', 'satuan')
-        ->orderBy('satuan', 'asc')
-        ->get();
+        ->orderBy('satuan', 'asc');
         // dd($bahan);
 
         return datatables()
@@ -111,6 +110,7 @@ class BahanController extends Controller
         $this->authorize('bahan_edit');
         $bahan = Bahan::find($id);
         $bahan->nama_bahan = $request->nama_bahan;
+        $bahan->id_satuan = $request->id_sataun;
         $bahan->update();
 
         return response()->json('Data Berhasil disimpan', 200);

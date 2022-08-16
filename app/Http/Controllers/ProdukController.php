@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Produk;
+use App\Models\Satuan;
 use Illuminate\Support\Facades\Gate;
 
 class ProdukController extends Controller
@@ -16,7 +17,8 @@ class ProdukController extends Controller
     public function index()
     {
         $this->authorize('produk_index');
-        return view('produk.index');
+        $satuan = Satuan::all()->pluck('satuan', 'id_satuan');
+        return view('produk.index', compact('satuan'));
     }
 
     public function data()
@@ -24,7 +26,9 @@ class ProdukController extends Controller
         if (Gate::denies('produk_index')) {
             return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
         }
-        $produk = Produk::orderBy('id_produk', 'desc')->get();
+        $produk = Produk::leftJoin('satuan', 'satuan.id_satuan', '=', 'produk.id_satuan')
+        ->select('produk.*', 'satuan')
+        ->orderBy('satuan', 'asc');
 
         return datatables()
         ->of($produk)
@@ -62,9 +66,10 @@ class ProdukController extends Controller
         if (Gate::denies('produk_create')) {
             return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
         }
-        $produk = Produk::latest()->first();
-        $produk = Produk::create($request->all());
-
+        $produk = new produk();
+        $produk->nama_produk = $request->nama_produk;
+        $produk->id_satuan = $request->id_satuan;
+        $produk->save();
         return response()->json('Data Berhasil Disimpan', 200);
     }
 
@@ -109,6 +114,7 @@ class ProdukController extends Controller
         }
         $produk = Produk::find($id);
         $produk->nama_produk = $request->nama_produk;
+        $produk->id_satuan = $request->id_satuan;
         $produk->update();
 
         return response()->json('Data Berhasil disimpan', 200);

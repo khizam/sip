@@ -21,9 +21,9 @@
                 <div class="col-md-8">
                     <select name="id_satuan" id="id_satuan" class="form-control" required>
                       <option value="">Pilih Satuan</option>
-                      @foreach ($satuan as $key => $item)
-                          <option value="{{ $key }}">{{ $item }}</option>
-                      @endforeach
+                        @foreach ($satuan as $key => $item)
+                            <option value="{{ $key }}">{{ $item }}</option>
+                        @endforeach
                     </select>
                     <span class="help-block with-errors"></span>
                 </div>

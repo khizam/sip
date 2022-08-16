@@ -14,7 +14,7 @@ class CreateBarangmasukTable extends Migration
     public function up()
     {
         Schema::create('barangmasuk', function (Blueprint $table) {
-            $table->increments('id_barangmasuk');
+            $table->increments('id_lab');
             $table->unsignedInteger('id_bahan');
             $table->foreign('id_bahan')
                     ->references('id_bahan')

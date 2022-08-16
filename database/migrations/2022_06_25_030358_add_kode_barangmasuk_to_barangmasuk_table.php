@@ -14,9 +14,9 @@ class AddKodeBarangmasukToBarangmasukTable extends Migration
     public function up()
     {
         Schema::table('barangmasuk', function (Blueprint $table) {
-            $table->string('kode_barangmasuk')->nullable()
+            $table->string('kode_lab')->nullable()
             ->unique()
-            ->after('id_barangmasuk');
+            ->after('id_lab');
         });
     }
 

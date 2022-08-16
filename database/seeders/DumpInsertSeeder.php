@@ -52,18 +52,17 @@ class DumpInsertSeeder extends Seeder
         $gudang->assignRole(RolesEnum::Gudang);
         $inventoryAlat->assignRole(RolesEnum::InventoryAlat);
 
-        Produk::firstOrCreate([
-            'nama_produk' => 'nike'
-        ]);
         Supplier::firstOrCreate([
             'nama_supplier' => 'PT BENKA NUSANTARA',
             'alamat' => 'jl samudra surabaya',
             'telepon' => '0221098664',
             'contact_person' => '082234554330'
         ]);
+
         Kategori::firstOrCreate([
             'nama_kategori' => 'sepatu',
         ]);
+
         Bahan::firstOrCreate([
             'nama_bahan' => 'kain',
             'id_satuan' => 1
