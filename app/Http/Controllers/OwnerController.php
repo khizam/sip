@@ -38,8 +38,7 @@ class OwnerController extends Controller
             ->leftJoin('users', 'users.id', '=', 'produksi_barang.id_user')
             ->leftJoin('satuan', 'satuan.id_satuan', '=', 'produksi_barang.id_satuan')
             ->select('produksi_barang.*', 'produk.nama_produk', 'status_produksi.status', 'users.id', 'satuan.satuan')
-            ->orderBy('created_at', 'asc')
-            ->get();
+            ->orderBy('created_at', 'asc');
 
         return datatables()
             ->of($produksibarang)

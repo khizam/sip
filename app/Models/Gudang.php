@@ -16,7 +16,7 @@ class Gudang extends Model
     protected $primaryKey = 'id_gudang';
 
     protected $fillable = [
-        'id_lab',
+        'id_barangmasuk',
         'stok',
     ];
 

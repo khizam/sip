@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Bahan;
+use App\Models\Barangmasuk;
+use App\Models\DetailProduksi;
 use App\Models\Enums\StatusPermintaanBahanEnum;
+use App\Models\Gudang;
 use App\Models\PermintaanBahan;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -43,13 +46,11 @@ class GudangRequestController extends Controller
             ->addColumn('aksi', function ($permintaanBahan) {
                 $html = '<div class="">';
                 if (
-                    is_null($permintaanBahan->id_user_gudang) &&
                     $permintaanBahan->status == StatusPermintaanBahanEnum::Proses
-                ){
+                ) {
                     $html .= '<button onclick="terimaPermintaanKeGudang(`' . route('gudang_request.terima_permintaan', $permintaanBahan->id_request) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-check"></i></button>
 
                     <button onclick="tolakPermintaanKeGudang(`' . route('gudang_request.tolak_permintaan', $permintaanBahan->id_request) . '` )" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-ban"></i></button>';
-
                 } else {
                     $html .= 'Permintaan bahan di' . $permintaanBahan->status;
                 }
@@ -64,6 +65,7 @@ class GudangRequestController extends Controller
     public function terimaPermintaanBahan($id_request)
     {
         try {
+            DB::beginTransaction();
             $id_user = Auth::user();
             $permintaanBahan = PermintaanBahan::find($id_request);
             if ($permintaanBahan->count() == 0) {
@@ -73,13 +75,32 @@ class GudangRequestController extends Controller
                 'id_user_gudang' => $id_user->id,
                 'status' => StatusPermintaanBahanEnum::Terima,
                 'keterangan' => 'bahan sesuai dengan permintaan'
-                // 'satuan' => $
-
             ]);
-            return jsonResponse($permintaanBahan);
+            $jumlahPermintaanBahan = $permintaanBahan->jumlah_bahan;
+            $detailProduksi = DetailProduksi::find($permintaanBahan->id_detail_produksi, ['id_bahan']);
+            $idBahan = $detailProduksi->id_bahan;
+            $barangMasuk = Barangmasuk::where('id_bahan', $idBahan)->first(['id_barangmasuk']);
+            $idBarangmasuk = $barangMasuk->id_barangmasuk;
+            $gudang = Gudang::where('id_barangmasuk', $idBarangmasuk)->first(['stok']);
+            $stokGudang = $gudang->stok;
+            if ($stokGudang == 0) {
+                throw new NotFoundHttpException("Maaf stok sedang kosong");
+            }
+
+            // Pengurangan stok bahan di gudang
+            $ttlStok = $stokGudang - $jumlahPermintaanBahan;
+
+            // Update jumlah stok gudang
+            Gudang::where('id_barangmasuk', $idBarangmasuk)->update([
+                'stok' => $ttlStok,
+            ]);
+            DB::commit();
+            return jsonResponse($gudang);
         } catch (NotFoundHttpException $th) {
+            DB::rollback();
             return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
         } catch (\Throwable $th) {
+            DB::rollback();
             return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -119,7 +140,6 @@ class GudangRequestController extends Controller
      */
     public function show()
     {
-
     }
 
     /**
@@ -142,7 +162,6 @@ class GudangRequestController extends Controller
      */
     public function update(Request $request, $id)
     {
-
     }
 
     /**
