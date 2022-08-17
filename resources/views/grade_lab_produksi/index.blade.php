@@ -110,6 +110,7 @@
           <table class="table table-striped table-bordered">
             <thead>
               <th width="5%">No</th>
+              {{-- <th>Produk</th> --}}
               <th>Nama Grade</th>
               <th>Jumlah Produk</th>
               <th>Stok</th>
@@ -145,6 +146,7 @@
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
             {data: 'nama_grade'},
+            // {data: 'nama_produk'},
             {data: 'jumlah_produk'},
             {data: 'stok'},
             {data: 'aksi', searchable: false, sortable: false},

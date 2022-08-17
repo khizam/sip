@@ -83,6 +83,7 @@ class GradeLabProduksiController extends Controller
             ->where('grade_lab_produksi.id_produksi', $id_produksi)
             ->get();
 
+
         return datatables()
             ->of($gradelabproduksi)
             ->addIndexColumn()
@@ -92,9 +93,11 @@ class GradeLabProduksiController extends Controller
             <div class="">
                 <button onclick="editForm(`' . route('grade-lab-produksi.update', $gradelabproduksi->id_grade) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
                 <button onclick="deleteData(`' . route('grade-lab-produksi.destroy', $gradelabproduksi->id_grade) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                
             </div>
             ';
             })
+
             ->rawColumns(['aksi'])
             ->make(true);
     }

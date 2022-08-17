@@ -21,6 +21,12 @@ class CreateGudangProdukTable extends Migration
                     ->on('produksi_barang')
                     ->onUpdate('restrict')
                     ->onDelete('restrict');
+            $table->unsignedInteger('id_gradelab');
+            $table->foreign('id_gradelab')
+                    ->references('id_gradelab')
+                    ->on('grade_lab_produksi')
+                    ->onUpdate('restrict')
+                    ->onDelete('restrict');
             $table->timestamps();
         });
     }
