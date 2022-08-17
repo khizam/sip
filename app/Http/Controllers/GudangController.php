@@ -41,10 +41,9 @@ class GudangController extends Controller
         if (Gate::denies('gudang_index')) {
             return jsonResponse("Anda tidak dapat Mengakses Halaman atau Tindakan ini", 403);
         }
-        $gudang = Gudang::join('lab', 'lab.id_lab', '=', 'gudang.id_lab')
+        $gudang = Gudang::join('lab', 'lab.id_barangmasuk', '=', 'gudang.id_barangmasuk')
             ->join('barangmasuk', 'barangmasuk.id_barangmasuk', '=', 'lab.id_barangmasuk')
-            ->join('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
-            ->get();
+            ->join('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan');
 
         return datatables()
             ->of($gudang)

@@ -124,7 +124,11 @@
     </div>
   </div>
 
-{{-- @includeIf('grade.form') --}}
+<div class="row" style="margin-bottom: 1rem">
+    <div class="col-md-12" style="display: flex; flex-direction: column">
+        <button type="button" class="btn btn-success" onclick="tambahkanKeGudangProduksi('{{ route('gudang_produksi.store') }}')" id="tambah_gudang" data-proses="{{ request()->segment(3) }}">Tambahkan ke Gudang Produksi</button>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -230,10 +234,10 @@
       }
     }
 
-    function canProsesProduksi(url) {
-        if (confirm('Apakah akan dilanjutkan ke proses produksi ?')) {
+    function tambahkanKeGudangProduksi(url) {
+        if (confirm('Apakah akan ditambahkan ke gudang produksi ?')) {
 
-            let id_produksi = $('#proses_produksi').attr('data-proses')
+            let id_produksi = $('#tambah_gudang').attr('data-proses')
             let token =  $('[name=csrf-token]').attr('content')
             let data = {
                 '_token': $('[name=csrf-token]').attr('content'),
@@ -247,7 +251,6 @@
                 dataType: 'json'
             })
             .done((response) => {
-                console.log(response)
                 window.location.href = response
             })
             .fail((errors) => {

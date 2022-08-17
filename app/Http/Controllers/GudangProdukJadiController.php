@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GudangProdukJadi;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class GudangProdukJadiController extends Controller
 {
@@ -34,7 +36,14 @@ class GudangProdukJadiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            GudangProdukJadi::create($request->only('id_produksi'));
+
+            $response = route('grade-lab-produksi.index', $request->id_produksi);
+            return jsonResponse($response, Response::HTTP_CREATED);
+        } catch (\Throwable $th) {
+            return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**

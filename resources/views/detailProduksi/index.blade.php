@@ -83,7 +83,7 @@
     <div class="box">
       <div class="box-header with-border">
         <h4>Bahan Produksi - @isset($statusProduksi)
-            <i class="bg-primary" style="border-radius: 25% 10%; padding: 3px 5px">{{ $statusProduksi->status->status }}</i>
+            <i class="bg-primary" style="border-radius: 25% 10%; padding: 3px 5px">{{ $statusProduksi->status->id_status == \App\Models\Enums\StatusProduksiEnum::Terima ? 'Produksi diterima' : $statusProduksi->status->status }}</i>
         @endisset</h4>
       </div>
       <div class="box-body table-responsive">
@@ -93,7 +93,6 @@
             <th>Nama Bahan</th>
             <th>Jumlah</th>
             <th>Permintaan Bahan</th>
-            {{-- <th>Proses</th> --}}
             <th width="15%"><i class="fa fa-cog"></i></th>
           </thead>
           <tbody>
@@ -237,7 +236,6 @@
                 dataType: 'json'
             })
             .done((response) => {
-                console.log(response)
                 window.location.href = response
             })
             .fail((errors) => {

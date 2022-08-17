@@ -42,8 +42,7 @@ class ProduksiBarangController extends Controller
             ->leftJoin('users', 'users.id', '=', 'produksi_barang.id_user')
             ->leftJoin('satuan', 'satuan.id_satuan', '=', 'produksi_barang.id_satuan')
             ->select('produksi_barang.*', 'produk.nama_produk', 'status_produksi.status', 'users.id', 'satuan.satuan')
-            ->orderBy('id_produksi', 'asc')
-            ->get();
+            ->orderBy('id_produksi', 'asc');
 
         return datatables()
             ->of($produksibarang)

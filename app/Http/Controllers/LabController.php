@@ -42,7 +42,7 @@ class LabController extends Controller
             ->join('barangmasuk', 'barangmasuk.id_barangmasuk', '=', 'lab.id_barangmasuk')
             ->join('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
             ->orderBy('lab.created_at', 'DESC')
-            ->get(['lab.id_lab', 'lab.kode_lab', 'lab.updated_at', 'bahan.nama_bahan', 'barangmasuk.jumlah_bahan', 'lab.bahan_layak', 'lab.status', 'sg.status as status_gudang']);
+            ->select(['lab.id_lab', 'lab.kode_lab', 'lab.updated_at', 'bahan.nama_bahan', 'barangmasuk.jumlah_bahan', 'lab.bahan_layak', 'lab.status', 'sg.status as status_gudang']);
 
         return datatables()
             ->of($lab)
@@ -243,7 +243,7 @@ class LabController extends Controller
 
             // Save To Gudang
             $gudang = new Gudang();
-            $gudang->id_lab = $lab->id_lab;
+            $gudang->id_barangmasuk = $lab->id_barangmasuk;
             $gudang->stok = $lab->bahan_layak;
             $gudang->save();
             DB::commit();

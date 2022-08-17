@@ -15,12 +15,12 @@ class CreateGudangTable extends Migration
     {
         Schema::create('gudang', function (Blueprint $table) {
             $table->increments('id_gudang');
-            $table->unsignedInteger('id_lab');
-            $table->foreign('id_lab')
-                  ->references('id_lab')
-                  ->on('lab')
-                  ->onUpdate('restrict')
-                  ->onDelete('cascade');
+            $table->unsignedInteger('id_barangmasuk');
+            $table->foreign('id_barangmasuk')
+                ->references('id_barangmasuk')
+                ->on('barangmasuk')
+                ->onUpdate('restrict')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

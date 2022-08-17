@@ -19,6 +19,7 @@ use App\Http\Controllers\{
     SatuanController,
     GradeController,
     GradeLabProduksiController,
+    GudangProdukJadiController,
     PeralatanKerjaController,
     LabProduksiController,
 };
@@ -186,4 +187,6 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('grade-lab-produksi.data');
     Route::get('/grade-lab-produksi/index/{id_produksi?}', [GradeLabProduksiController::class, 'index'])
         ->name('grade-lab-produksi.index');
+
+    Route::resource('gudang-produksi', GudangProdukJadiController::class)->names('gudang_produksi');
 });

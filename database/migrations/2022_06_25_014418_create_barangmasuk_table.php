@@ -14,25 +14,25 @@ class CreateBarangmasukTable extends Migration
     public function up()
     {
         Schema::create('barangmasuk', function (Blueprint $table) {
-            $table->increments('id_lab');
+            $table->increments('id_barangmasuk');
             $table->unsignedInteger('id_bahan');
             $table->foreign('id_bahan')
-                    ->references('id_bahan')
-                    ->on('bahan')
-                    ->onUpdate('restrict')
-                    ->onDelete('restrict');
+                ->references('id_bahan')
+                ->on('bahan')
+                ->onUpdate('restrict')
+                ->onDelete('restrict');
             $table->unsignedInteger('id_kategori');
             $table->foreign('id_kategori')
-                    ->references('id_kategori')
-                    ->on('kategori')
-                    ->onUpdate('restrict')
-                    ->onDelete('restrict');
+                ->references('id_kategori')
+                ->on('kategori')
+                ->onUpdate('restrict')
+                ->onDelete('restrict');
             $table->unsignedInteger('id_supplier');
             $table->foreign('id_supplier')
-                    ->references('id_supplier')
-                    ->on('supplier')
-                    ->onUpdate('restrict')
-                    ->onDelete('restrict');
+                ->references('id_supplier')
+                ->on('supplier')
+                ->onUpdate('restrict')
+                ->onDelete('restrict');
             $table->integer('jumlah_bahan');
             $table->timestamps();
         });
