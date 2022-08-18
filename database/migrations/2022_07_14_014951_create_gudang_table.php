@@ -15,10 +15,10 @@ class CreateGudangTable extends Migration
     {
         Schema::create('gudang', function (Blueprint $table) {
             $table->increments('id_gudang');
-            $table->unsignedInteger('id_barangmasuk');
-            $table->foreign('id_barangmasuk')
-                ->references('id_barangmasuk')
-                ->on('barangmasuk')
+            $table->unsignedInteger('id_bahan');
+            $table->foreign('id_bahan')
+                ->references('id_bahan')
+                ->on('bahan')
                 ->onUpdate('restrict')
                 ->onDelete('cascade');
             $table->timestamps();

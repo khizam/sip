@@ -93,6 +93,7 @@
             <th>Nama Bahan</th>
             <th>Jumlah</th>
             <th>Permintaan Bahan</th>
+            <th>Keterangan</th>
             <th width="15%"><i class="fa fa-cog"></i></th>
           </thead>
           <tbody>
@@ -137,6 +138,7 @@
             {data: 'nama_bahan'},
             {data: 'jumlah'},
             {data: 'permintaan_bahan'},
+            {data: 'keterangan'},
             // {data: 'proses'},
             {data: 'aksi', searchable: false, sortable: false},
           ]

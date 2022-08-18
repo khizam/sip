@@ -42,7 +42,7 @@ class DetailProduksiController extends Controller
     {
         $detailproduksi = DetailProduksi::leftJoin('permintaan_bahan', 'permintaan_bahan.id_detail_produksi', '=', 'detail_produksi.id_detail')
             ->leftJoin('bahan', 'bahan.id_bahan', '=', 'detail_produksi.id_bahan')
-            ->select('detail_produksi.jumlah', 'detail_produksi.id_detail', 'bahan.nama_bahan', 'permintaan_bahan.status', 'permintaan_bahan.id_request', 'permintaan_bahan.id_user_gudang')
+            ->select('detail_produksi.jumlah', 'detail_produksi.id_detail', 'bahan.nama_bahan', 'permintaan_bahan.status', 'permintaan_bahan.keterangan', 'permintaan_bahan.id_request', 'permintaan_bahan.id_user_gudang')
             ->orderBy('detail_produksi.id_detail', 'asc')
             ->where('detail_produksi.id_produksi', $id_produksi);
 

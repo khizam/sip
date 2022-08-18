@@ -242,10 +242,18 @@ class LabController extends Controller
             $lab->update($request->all());
 
             // Save To Gudang
-            $gudang = new Gudang();
-            $gudang->id_barangmasuk = $lab->id_barangmasuk;
-            $gudang->stok = $lab->bahan_layak;
-            $gudang->save();
+            $cariBahandiGudang = Gudang::where('id_bahan', $lab->barang_masuk->id_bahan)->first();
+            if (!is_null($cariBahandiGudang)) {
+                $ttlStokBahan = $cariBahandiGudang->stok + $lab->bahan_layak;
+                $cariBahandiGudang->update([
+                    'stok' => $ttlStokBahan,
+                ]);
+            } else {
+                $gudang = new Gudang();
+                $gudang->id_bahan = $lab->barang_masuk->id_bahan;
+                $gudang->stok = $lab->bahan_layak;
+                $gudang->save();
+            }
             DB::commit();
             return jsonResponse('Data berhasil disimpan', 200);
         } catch (NotFoundHttpException $th) {

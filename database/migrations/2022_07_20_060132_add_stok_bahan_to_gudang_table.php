@@ -16,7 +16,7 @@ class AddStokBahanToGudangTable extends Migration
         Schema::table('gudang', function (Blueprint $table) {
             $table->integer('stok')
                 ->nullable()
-                ->after('id_barangmasuk');
+                ->after('id_bahan');
         });
     }
 

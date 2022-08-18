@@ -22,11 +22,8 @@
             <table class="table table-striped table-bordered">
               <thead>
                 <th width="5%">No</th>
-                <th>Bahan</th>
-                <th>Jumlah Bahan</th>
-                <th>Satuan</th>
+                <th>Nama Bahan</th>
                 <th>Stok</th>
-                <th>Kesimpulan</th>
                 <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
               <tbody>
@@ -64,10 +61,7 @@
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
             {data: 'nama_bahan'},
-            {data: 'bahan_layak'},
-            {data: 'satuan'},
             {data: 'stok'},
-            {data: 'kesimpulan'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });

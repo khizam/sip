@@ -8,7 +8,9 @@ use App\Models\DetailProduksi;
 use App\Models\Enums\StatusPermintaanBahanEnum;
 use App\Models\Gudang;
 use App\Models\PermintaanBahan;
+use Exception;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class PermintaanBahanController extends Controller
 {
@@ -22,12 +24,6 @@ class PermintaanBahanController extends Controller
                 'status' => StatusPermintaanBahanEnum::Proses,
             ];
             $permintaan = PermintaanBahan::create($data);
-            // $gudang = Gudang::where('id_lab', $detail_produksi->id_bahan)->first();
-            // $stok = $gudang->stok;
-            // $kurangiStok = $stok - $detail_produksi->jumlah;
-            // $gudang->update([
-            //     'stok' => $kurangiStok,
-            // ]);
             event(new PermintaanBahanEvent($permintaan));
             return jsonResponse($permintaan, Response::HTTP_CREATED);
         } catch (\Throwable $th) {

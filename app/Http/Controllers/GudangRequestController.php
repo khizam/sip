@@ -76,24 +76,24 @@ class GudangRequestController extends Controller
                 'status' => StatusPermintaanBahanEnum::Terima,
                 'keterangan' => 'bahan sesuai dengan permintaan'
             ]);
+
+            // Pengurangan stok bahan di gudang
             $jumlahPermintaanBahan = $permintaanBahan->jumlah_bahan;
             $detailProduksi = DetailProduksi::find($permintaanBahan->id_detail_produksi, ['id_bahan']);
             $idBahan = $detailProduksi->id_bahan;
-            $barangMasuk = Barangmasuk::where('id_bahan', $idBahan)->first(['id_barangmasuk']);
-            $idBarangmasuk = $barangMasuk->id_barangmasuk;
-            $gudang = Gudang::where('id_barangmasuk', $idBarangmasuk)->first(['stok']);
-            $stokGudang = $gudang->stok;
-            if ($stokGudang == 0) {
-                throw new NotFoundHttpException("Maaf stok sedang kosong");
+            $gudang = Gudang::where('id_bahan', $idBahan)->first(['stok']);
+            if (is_null($gudang)) {
+                throw new NotFoundHttpException("Maaf bahan tidak ada di gudang");
+            } elseif ($gudang->stok < $jumlahPermintaanBahan) {
+                throw new NotFoundHttpException("Maaf stok bahan tidak cukup di gudang");
+            } else {
+                // Pengurangan stok bahan di gudang
+                $ttlStok = $gudang->stok - $jumlahPermintaanBahan;
+                // Update jumlah stok gudang
+                Gudang::where('id_bahan', $idBahan)->update([
+                    'stok' => $ttlStok,
+                ]);
             }
-
-            // Pengurangan stok bahan di gudang
-            $ttlStok = $stokGudang - $jumlahPermintaanBahan;
-
-            // Update jumlah stok gudang
-            Gudang::where('id_barangmasuk', $idBarangmasuk)->update([
-                'stok' => $ttlStok,
-            ]);
             DB::commit();
             return jsonResponse($gudang);
         } catch (NotFoundHttpException $th) {

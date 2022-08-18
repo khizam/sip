@@ -108,7 +108,7 @@
           table.ajax.reload();
         })
         .fail((errors) => {
-          alert(errors);
+          alert(errors.responseText);
           return;
         });
       }
