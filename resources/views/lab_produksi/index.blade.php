@@ -38,6 +38,7 @@
       </div>
 </div>
 
+@includeIf('lab_produksi.form_lost')
 @endsection
 
 @push('scripts')
@@ -49,7 +50,7 @@
           processing: true,
           autoWidth: false,
           ajax: {
-            url: '{{ route('lab-produksi.data') }}',
+            url: '{{ route('labProduksi.data') }}',
           },
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
@@ -62,6 +63,38 @@
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });
+
+        $('#modal_form_lost form').validator().on('submit', function (e) {
+            if (! e.preventDefault()) {
+              $.ajax({
+                  url: $('#modal_form_lost form').attr('action'),
+                  method: $('#modal_form_lost [name=_method]').val() ?? 'PUT',
+                  data: $('#modal_form_lost form').serialize(),
+                  dataType: "json"
+              })
+              .done((response) => {
+                $('#modal_form_lost').modal('hide');
+                table.ajax.reload();
+              })
+              .fail((errors) => {
+                errors.responseJSON !== '' ? alert(errors.responseJSON) : alert('Tidak dapat menyimpan data');
+                return;
+              });
+            }
+        })
+
+
     });
+
+    function plusLost(url, url_show) {
+        $('#modal_form_lost').modal('show');
+        $('#modal_form_lost .modal-title').text('lost');
+
+        $('#modal_form_lost form')[0].reset();
+        $('#modal_form_lost form').attr('action' ,url);
+        $('#modal_form_lost [name=_method]').val('put');
+        $('#modal_form_lost [name=lost]').focus();
+    }
+
 </script>
 @endpush

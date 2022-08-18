@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
@@ -45,14 +46,41 @@ class LabProduksiController extends Controller
             })
             ->addColumn('aksi', function ($labProduksi) {
                 $html = '<div class="">
-                        <a href=' . route('grade-lab-produksi.index', $labProduksi->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">grade produk</a>
-                        </div>';
+                     <a href=' . route('grade-lab-produksi.index', $labProduksi->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">grade produk</a>
+                    </div>';
 
                 return $html;
             })
             ->rawColumns(['aksi', 'kode_lab'])
             ->make(true);
     }
+
+    public function selesaiLost(Request $request, $id_produksi)
+    {
+        try {
+            DB::beginTransaction();
+            $labProduksi = LabProduksi::find($id_produksi);
+            $Lost = $request->lost;
+            if ($Lost > $labProduksi->jumlah_produksi) {
+                throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR, "jumlah Lost tidak lebih dari" . $labProduksi->jumlah_produksi);
+            }
+            if ($labProduksi->count() == 0) {
+                throw new NotFoundHttpException("Permintaan Lost Tidak ditemukan");
+            }
+            $labProduksi->update([
+                'lost' => $Lost,
+            ]);
+            DB::commit();
+            return jsonResponse($labProduksi);
+        } catch (NotFoundHttpException $th) {
+                DB::rollback();
+                return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Throwable $th) {
+                DB::rollback();
+                return jsonResponse($th->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     public function create()
     {
