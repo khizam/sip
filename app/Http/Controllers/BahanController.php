@@ -18,7 +18,7 @@ class BahanController extends Controller
     public function index()
     {
         $this->authorize('bahan_index');
-        $satuan = Satuan::all()->pluck('satuan', 'id_satuan');
+        $satuans = Satuan::all(['satuan', 'id_satuan']);
         return view('bahan.index', compact('satuan'));
     }
 

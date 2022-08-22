@@ -18,8 +18,8 @@ class AddSatuanToProduksiBarangTable extends Migration
             $table->foreign('id_satuan')
                     ->references('id_satuan')
                     ->on('satuan')
-                    ->onUpdate('restrict')
-                    ->onDelete('restrict');
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
         });
     }
 

@@ -19,8 +19,8 @@ class CreateLabTable extends Migration
             $table->foreign('id_barangmasuk')
                 ->references('id_barangmasuk')
                 ->on('barangmasuk')
-                ->onUpdate('restrict')
-                ->onDelete('restrict');
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->enum('satuan', ['kg', 'liter'])->nullable();
             $table->text('parameter')->nullable();
             $table->text('hasil')->nullable();

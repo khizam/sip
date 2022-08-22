@@ -15,13 +15,7 @@ class CreateGudangProdukTable extends Migration
     {
         Schema::create('gudang_produk', function (Blueprint $table) {
             $table->increments('id_gudangproduk');
-            $table->unsignedInteger('id_produksi');
-            $table->foreign('id_produksi')
-                    ->references('id_produksi')
-                    ->on('produksi_barang')
-                    ->onUpdate('restrict')
-                    ->onDelete('restrict');
-            $table->unsignedInteger('id_gradelab');
+            $table->unsignedInteger('id_gradelab')->nullable();
             $table->foreign('id_gradelab')
                     ->references('id_gradelab')
                     ->on('grade_lab_produksi')

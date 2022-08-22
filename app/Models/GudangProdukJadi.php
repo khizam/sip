@@ -16,6 +16,19 @@ class GudangProdukJadi extends Model
     protected $primaryKey = 'id_gudangproduk';
 
     protected $fillable = [
-        'id_produksi',
+
+        'id_gradelab',
     ];
+
+    protected static $logFillable = true;
+
+    protected static $logName = 'gudangproduk';
+
+    protected $casts = ['created_at', 'updated_at'];
+
+    public function id_gradelab()
+    {
+        return $this->belongsTo(GradeLabProduksi::class, 'id_gradelab');
+    }
+
 }

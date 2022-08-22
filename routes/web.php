@@ -92,6 +92,7 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('gudang.editGudang');
     Route::resource('/gudang', GudangController::class);
 
+
     Route::get('/gudang_request/data', [GudangRequestController::class, 'data'])
         ->name('gudang_request.data');
     Route::get('/gudang_request', [GudangRequestController::class, 'index'])
@@ -179,7 +180,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/lab-produksi/grade/{id_produksi}', [LabProduksiController::class, 'halGrade'])
         ->name('lab-produksi.halGrade');
 
-
     Route::resource('/grade-lab-produksi', GradeLabProduksiController::class)
         ->except('index')
         ->names('grade-lab-produksi');
@@ -188,5 +188,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/grade-lab-produksi/index/{id_produksi?}', [GradeLabProduksiController::class, 'index'])
         ->name('grade-lab-produksi.index');
 
-    Route::resource('gudang-produksi', GudangProdukJadiController::class)->names('gudang_produksi');
+    Route::resource('gudang-produksi', GudangProdukJadiController::class)
+        ->names('gudang_produksi');
+    Route::get('/gudang-produksi/data', [GudangProdukJadiController::class, 'data'])
+        ->name('gudang_produksi.data');
+    Route::get('gudang-produksi/index', [GudangProdukJadiController::class, 'index'])
+        ->name('gudang-produksi.index');
+
+
+
 });

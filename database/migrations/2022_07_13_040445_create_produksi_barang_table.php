@@ -19,21 +19,21 @@ class CreateProduksiBarangTable extends Migration
             $table->foreign('id_produk')
                   ->references('id_produk')
                   ->on('produk')
-                  ->onUpdate('restrict')
-                  ->onDelete('restrict');
+                  ->onUpdate('cascade')
+                  ->onDelete('cascade');
             $table->unsignedInteger('id_status')->nullable();
             $table->foreign('id_status')
                   ->references('id_status')
                   ->on('status_produksi')
-                  ->onUpdate('restrict')
-                  ->onDelete('restrict');
+                  ->onUpdate('cascade')
+                  ->onDelete('cascade');
             $table->integer('jumlah');
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')
                   ->references('id')
                   ->on('users')
-                  ->onUpdate('restrict')
-                  ->onDelete('restrict');
+                  ->onUpdate('cascade')
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -112,7 +112,7 @@
               <li class="active"><a href="{{ route('gudang.index') }}"><i class="fa fa-circle-o"></i>Gudang Bahan</a></li>
               <li class="active"><a href="{{ route('gudang_request.index') }}"><i class="fa fa-circle-o"></i>Permintaan Bahan</a></li>
               {{-- <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Evaluasi Code</a></li> --}}
-              <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>/ taru sini ya Gudang Produk Jadi</a></li>
+              <li class="active"><a href="{{ route('gudang_produksi.index') }}"><i class="fa fa-circle-o"></i>Gudang Produk</a></li>
             </ul>
           </li>
           @endcan

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GradeLabProduksi;
 use App\Models\GudangProdukJadi;
+use App\Models\ProduksiBarang;
+use App\Models\LabProduksi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -15,7 +18,7 @@ class GudangProdukJadiController extends Controller
      */
     public function index()
     {
-        //
+        return view('gudang_produksi.index');
     }
 
     /**
@@ -23,6 +26,32 @@ class GudangProdukJadiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function data()
+    {
+        $gudangProdukjadi = GudangProdukJadi::leftJoin('grade_lab_produksi', 'grade_lab_produksi.id_gradelab', '=', 'gudang_produk.id_gradelab')
+            ->select('gudang_produk.*', 'grade_lab_produksi.jumlah_produk', 'grade_lab_produksi.stok', 'grade_lab_produksi.id_grade')
+            ->orderBy('grade_lab_produksi.id_gradelab', 'ASC')
+            ->where('gudang_produk.id_gradelab')
+            ->get();
+
+
+            return datatables()
+            ->of($gudangProdukjadi)
+            ->addIndexColumn()
+
+            ->addColumn('aksi', function ($gudangProdukjadi) {
+                return '
+                <div class="btn-group">
+                    <button onclick="editForm(`' . route('grade-lab-produksi.update', $gudangProdukjadi->id_gradelab) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                    <button onclick="deleteData(`' . route('grade-lab-produksi.destroy', $gudangProdukjadi->id_gradelab) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                </div>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+    }
+
     public function create()
     {
         //
@@ -37,7 +66,15 @@ class GudangProdukJadiController extends Controller
     public function store(Request $request)
     {
         try {
-            GudangProdukJadi::create($request->only('id_produksi'));
+            $gradelabproduksi = GradeLabProduksi::where('id_produksi', $request->id_produksi)->get();
+
+            foreach ($gradelabproduksi as $value) {
+                $gudangproduksi = GudangProdukJadi::where('id_gradelab', $value->id_gradelab)->first();
+                if (is_null($gudangproduksi)) {
+                    GudangProdukJadi::create(['id_gradelab' => $value->id_gradelab]);
+                }
+            }
+            // GudangProdukJadi::create($request->only('id_produksi'));
 
             $response = route('grade-lab-produksi.index', $request->id_produksi);
             return jsonResponse($response, Response::HTTP_CREATED);

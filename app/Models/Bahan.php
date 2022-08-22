@@ -17,7 +17,8 @@ class Bahan extends Model
     protected $primaryKey = 'id_bahan';
 
     protected $fillable = [
-        'nama_bahan'
+        'nama_bahan',
+        'id_satuan',
     ];
 
     /**
@@ -29,10 +30,11 @@ class Bahan extends Model
      * Specify $logName to make the model use another name than the default. spatie/laravel-acitivtylog
      */
     protected static $logName = 'bahan';
+
     protected $guarded = [];
 
-    public function satuan(): BelongsTo
+    public function satuan()
     {
-        return $this->belongsTo(Satuan::class, 'id_satuan');
+        return $this->belongsTo(Satuan::class, 'id_satuan', 'id_satuan');
     }
 }
