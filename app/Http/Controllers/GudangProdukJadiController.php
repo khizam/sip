@@ -30,8 +30,8 @@ class GudangProdukJadiController extends Controller
     public function data()
     {
         $gudangProdukjadi = GudangProdukJadi::leftJoin('grade_lab_produksi', 'grade_lab_produksi.id_gradelab', '=', 'gudang_produk.id_gradelab')
-            ->select('gudang_produk.*', 'grade_lab_produksi.jumlah_produk', 'grade_lab_produksi.stok', 'grade_lab_produksi.id_grade')
-            ->orderBy('grade_lab_produksi.id_gradelab', 'ASC')
+            ->select('gudang_produk.*', 'gudang_produk.id_gradelab')
+            ->orderBy('gudang_produk.id_gradelab', 'ASC')
             ->where('gudang_produk.id_gradelab')
             ->get();
 
