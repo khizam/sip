@@ -177,7 +177,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/lab-produksi/lost/{id_produksi}', [LabProduksiController::class, 'selesaiLost'])
         ->name('lab-produksi.plus_Lost');
 
-        Route::get('/lab-produksi/grade/{id_produksi}', [LabProduksiController::class, 'halGrade'])
+    Route::get('/lab-produksi/grade/{id_produksi}', [LabProduksiController::class, 'halGrade'])
         ->name('lab-produksi.halGrade');
 
     Route::resource('/grade-lab-produksi', GradeLabProduksiController::class)
@@ -189,12 +189,10 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('grade-lab-produksi.index');
 
     Route::resource('gudang-produksi', GudangProdukJadiController::class)
+        ->except('index')
         ->names('gudang_produksi');
-    Route::get('/gudang-produksi/data', [GudangProdukJadiController::class, 'data'])
+    Route::get('gudangproduksi/data', [GudangProdukJadiController::class, 'data'])
         ->name('gudang_produksi.data');
-    Route::get('gudang-produksi/index', [GudangProdukJadiController::class, 'index'])
-        ->name('gudang-produksi.index');
-
-
-
+    Route::get('gudang-produksi', [GudangProdukJadiController::class, 'index'])
+        ->name('gudang_produksi.index');
 });

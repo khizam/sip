@@ -6,6 +6,7 @@ use App\Models\GradeLabProduksi;
 use App\Models\GudangProdukJadi;
 use App\Models\ProduksiBarang;
 use App\Models\LabProduksi;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -30,13 +31,11 @@ class GudangProdukJadiController extends Controller
     public function data()
     {
         $gudangProdukjadi = GudangProdukJadi::leftJoin('grade_lab_produksi', 'grade_lab_produksi.id_gradelab', '=', 'gudang_produk.id_gradelab')
-            ->select('gudang_produk.*', 'gudang_produk.id_gradelab')
-            ->orderBy('gudang_produk.id_gradelab', 'ASC')
+            ->select('gudang_produk.*', 'grade_lab_produksi.jumlah_produk', 'grade_lab_produksi.stok', 'grade_lab_produksi.id_grade')
             ->where('gudang_produk.id_gradelab')
-            ->get();
+            ->orderBy('grade_lab_produksi.id_gradelab', 'ASC');
 
-
-            return datatables()
+        return datatables()
             ->of($gudangProdukjadi)
             ->addIndexColumn()
 
