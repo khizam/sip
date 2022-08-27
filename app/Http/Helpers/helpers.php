@@ -75,6 +75,7 @@ function jsonResponse($data = '', $status = Response::HTTP_OK, array $headers = 
 if (!function_exists('mrPasienAuto')) {
     function kodeOtomatis($prefix = 'BR')
     {
+        // BR tahun-bulan-tanggal-random angka 1-9999
         return $prefix . date('ymd', strtotime(now())) . random_int(1, 9999);
     }
 }
