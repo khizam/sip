@@ -121,7 +121,7 @@ class BarangmasukController extends Controller
             $kode_barangmasuk = (int) $barangmasuk->kode_barangmasuk + 1;
 
             $barangmasuk = new barangmasuk();
-            $barangmasuk->kode_barangmasuk = tambah_nol_didepan($kode_barangmasuk, 6);
+            $barangmasuk->kode_barangmasuk = kodeOtomatis('BR');
             // $request['kode_barangmasuk'] = 'P'. tambah_nol_didepan((int)$barangmasuk->id_barangmasuk +1, 6);
             $lab = Lab::latest()->first() ?? new Lab();
             $kode_lab = (int) $lab->kode_lab + 1;
