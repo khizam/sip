@@ -52,6 +52,9 @@
               @can('user_index')
               <li class="active"><a href="{{ route('grade.index') }}"><i class="fa fa-sort-amount-asc"></i>Grade</a></li>
               @endcan
+              @can('user_index')
+              <li class="active"><a href="{{ route('parameter.index') }}"><i class="fa fa-sort-amount-asc"></i>Parameter</a></li>
+              @endcan
             </ul>
           </li>
           @endcan
@@ -86,6 +89,7 @@
           </li>
           @endcan
 
+          @can('lab_index')
           <li class="header">Lab Produksi</li>
           <li class="active treeview">
             <a href="#">
@@ -98,6 +102,7 @@
               <li class="active"><a href="{{ route('lab-produksi.index') }}"><i class="fa fa-flask"></i>Lab</a></li>
             </ul>
           </li>
+          @endcan
 
           @can('gudang_index')
           <li class="header">Penyimpanan Gudang</li>
@@ -135,7 +140,7 @@
           </li>
           @endcan
 
-          <li class="header">Owner</li>
+          <li class="header">Permintaan Produksi</li>
           <li>
             <a href="{{ route('owner.index') }}">
               <i class="fa fa-plus-square"></i> <span>Request Produksi</span>
@@ -144,6 +149,7 @@
             </a>
           </li>
 
+          @can('peralatan_index')
           <li class="header">Peralatan</li>
           <li>
             <a href="{{ route('peralatanKerja.index') }}">
@@ -152,6 +158,9 @@
               </span>
             </a>
           </li>
+          @endcan
+
+
 
           <li class="header">Log Aktivitas</li>
           <li class="active treeview">
@@ -165,6 +174,7 @@
                 <li class="active"><a href="{{ route('log.activity_user') }}"><i class="fa fa-circle-o"></i>Aktivitas user</a></li>
             </ul>
           </li>
+
 
         </ul>
       </section>

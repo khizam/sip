@@ -29,28 +29,31 @@ class GradeLabProduksiController extends Controller
     {
         $grade = Grade::all(['nama_grade', 'id_grade']);
         $data = [
-            'grade' => $grade
+            'grade' => $grade,
         ];
 
-        if ($id_produksi != null) {
-            $produksibarang = ProduksiBarang::leftJoin('produk', 'produk.id_produk', '=', 'produksi_barang.id_produk')
-                ->select(['produk.nama_produk'])
-                ->where('produksi_barang.id_produksi', $id_produksi)
-                ->first();
-            $data += [
-                'produksibarang' => $produksibarang,
-            ];
-        }
+
+        // if ($id_produksi != null) {
+        //     $produksibarang = ProduksiBarang::leftJoin('produk', 'produk.id_produk', '=', 'produksi_barang.id_produk')
+        //         ->select(['produk.nama_produk', 'produk.id_produk'])
+        //         ->where('produksi_barang.id_produksi', $id_produksi)
+        //         ->first();
+        //     $data += [
+        //         'produksibarang' => $produksibarang,
+        //     ];
+        // }
 
         if ($id_produksi != null) {
-            $labproduksi = LabProduksi::leftJoin('produksi_barang', 'produksi_barang.id_produksi', '=', 'lab_produksi.id_produksi')
-                ->select(['produksi_barang.jumlah_hasil_produksi'])
+            $labproduksi = LabProduksi::join('produksi_barang', 'produksi_barang.id_produksi', '=', 'lab_produksi.id_produksi')
+            ->join('produk', 'produk.id_produk', '=', 'produksi_barang.id_produk')
+                ->select(['produksi_barang.jumlah_hasil_produksi', 'produk.nama_produk', 'produk.id_produk'])
                 ->where('produksi_barang.id_produksi', $id_produksi)
                 ->first();
             $data += [
                 'labproduksi' => $labproduksi,
             ];
         }
+
 
         // if ($id_produksi != null) {
         //     $produksibarang = ProduksiBarang::leftJoin('produksi_barang', 'produksi_barang.id_produksi', '=', 'lab_produksi.id_produksi')
@@ -78,11 +81,10 @@ class GradeLabProduksiController extends Controller
     {
         $gradelabproduksi = GradeLabProduksi::leftJoin('lab_produksi', 'lab_produksi.id_produksi', '=', 'grade_lab_produksi.id_produksi')
             ->leftJoin('grade', 'grade.id_grade', '=', 'grade_lab_produksi.id_grade')
-            ->select('grade_lab_produksi.*', 'grade.nama_grade', 'lab_produksi.id_produksi')
+            ->leftJoin('produk', 'produk.id_produk', '=', 'grade_lab_produksi.id_produk')
+            ->select('grade_lab_produksi.*', 'grade.nama_grade', 'produk.nama_produk')
             ->orderBy('grade_lab_produksi.id_gradelab', 'ASC')
-            ->where('grade_lab_produksi.id_produksi', $id_produksi)
-            ->get();
-
+            ->where('grade_lab_produksi.id_produksi', $id_produksi);
 
         return datatables()
             ->of($gradelabproduksi)
@@ -126,6 +128,7 @@ class GradeLabProduksiController extends Controller
             $stok = [
                 'stok' => $inputReqJumlahProduk,
             ];
+
             $requestData = array_merge($request->validated(), $stok);
             GradeLabProduksi::create($requestData);
             DB::commit();

@@ -22,6 +22,7 @@ use App\Http\Controllers\{
     GudangProdukJadiController,
     PeralatanKerjaController,
     LabProduksiController,
+    ParameterController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -83,6 +84,7 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('lab.updateLab');
     Route::put('/lab/check-status/{id}', [LabController::class, 'checkStatus'])
         ->name('lab.checkStatus');
+    Route::get('/lab/cetak_lab', [LabController::class, 'cetak']);
     Route::get('/lab/cetak_pdf', [LabController::class, 'printPdfLab']);
     Route::resource('/lab', LabController::class);
 
@@ -91,7 +93,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/gudang/edit-gudang/{id}', [GudangController::class, 'editGudang'])
         ->name('gudang.editGudang');
     Route::resource('/gudang', GudangController::class);
-
 
     Route::get('/gudang_request/data', [GudangRequestController::class, 'data'])
         ->name('gudang_request.data');
@@ -110,6 +111,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/owner/data', [OwnerController::class, 'data'])
         ->name('owner.data');
+    Route::get('/owner/cetak_owner', [OwnerController::class, 'cetak']);
     Route::resource('/owner', OwnerController::class);
 
     Route::resource('/detailProduksi', DetailProduksiController::class)
@@ -193,6 +195,15 @@ Route::group(['middleware' => 'auth'], function () {
         ->names('gudang_produksi');
     Route::get('gudangproduksi/data', [GudangProdukJadiController::class, 'data'])
         ->name('gudang_produksi.data');
+    // Route::get('gudang-produksi', [GudangProdukJadiController::class, 'index'])
+    //     ->name('gudang_produksi.index');
+
     Route::get('gudang-produksi', [GudangProdukJadiController::class, 'index'])
         ->name('gudang_produksi.index');
+
+    Route::get('/parameter/data', [ParameterController::class, 'data'])
+        ->name('parameter.data');
+    Route::resource('/parameter', ParameterController::class);
+
+
 });

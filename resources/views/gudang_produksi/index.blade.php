@@ -20,6 +20,7 @@
                     <table class="table table-striped table-bordered">
                         <thead>
                             <th width="5%">No</th>
+                            <th>Produk</th>
                             <th>Grade</th>
                             <th>Jumlah Produk</th>
                             <th>Stok</th>
@@ -51,6 +52,9 @@
                         data: 'DT_RowIndex',
                         searchable: false,
                         sortable: false
+                    },
+                    {
+                        data: 'nama_produk'
                     },
                     {
                         data: 'nama_grade'

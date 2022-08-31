@@ -25,7 +25,8 @@
                 <th width="10%">Log Name</th>
                 <th width="10%">Description</th>
                 <th width="10%">Type</th>
-                <th width="40%">Detail Perubahan</th>
+                <th width="20%">Detail Perubahan</th>
+                <th width="10%">Tanggal</th>
               </thead>
             </table>
           </div>
@@ -33,7 +34,7 @@
       </div>
 </div>
 
-@includeIf('bahan.form')
+
 @endsection
 
 @push('scripts')
@@ -64,6 +65,7 @@
             {data: 'description'},
             {data: 'subject_type'},
             {data: 'attributes_to_text'},
+            {data: 'created_at'},
           ]
         });
     });

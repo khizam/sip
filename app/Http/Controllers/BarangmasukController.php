@@ -42,10 +42,11 @@ class BarangmasukController extends Controller
         }
         $barangmasuk = Barangmasuk::join('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
             ->leftJoin('kategori', 'kategori.id_kategori', '=', 'barangmasuk.id_kategori')
+            // ->leftJoin('satuan', 'satuan.id_satuan', '=', 'barangmasuk.id_satuan')
             ->leftJoin('supplier', 'supplier.id_supplier', '=', 'barangmasuk.id_supplier')
             // ->leftJoin('satuan', 'satuan.id_satuan', '=', 'barangmasuk.id_satuan')
             ->join('lab', 'lab.id_barangmasuk', '=', 'barangmasuk.id_barangmasuk')
-            ->select('barangmasuk.*', 'nama_bahan', 'id_satuan', 'nama_kategori', 'nama_supplier', 'lab.status', 'satuan')
+            ->select('barangmasuk.*', 'bahan.nama_bahan', 'kategori.nama_kategori', 'supplier.nama_supplier', 'lab.status')
             ->orderBy('kode_barangmasuk', 'asc');
 
 
@@ -111,6 +112,9 @@ class BarangmasukController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    // $maxNumber = DB::table('labpdaftar')->max('id');
+    // $prefix = "PA";
+    // $register = $prefix . str_pad($maxNumber + 1, 5, '0', STR_PAD_LEFT);
 
     public function store(Request $request)
     {
@@ -120,9 +124,12 @@ class BarangmasukController extends Controller
             $barangmasuk = Barangmasuk::latest()->first() ?? new Barangmasuk();
             $kode_barangmasuk = (int) $barangmasuk->kode_barangmasuk + 1;
 
-            $barangmasuk = new barangmasuk();
+            $barangmasuk = new Barangmasuk();
             $barangmasuk->kode_barangmasuk = tambah_nol_didepan($kode_barangmasuk, 6);
-            // $request['kode_barangmasuk'] = 'P'. tambah_nol_didepan((int)$barangmasuk->id_barangmasuk +1, 6);
+            // $maxNumber = DB::table('barangmasuk')->max('id_barangmasuk');
+            // $prefix = "PA";
+            // $kode_barangmasuk = $prefix . str_pad($maxNumber + 1, 5, '0', STR_PAD_LEFT);
+
             $lab = Lab::latest()->first() ?? new Lab();
             $kode_lab = (int) $lab->kode_lab + 1;
 

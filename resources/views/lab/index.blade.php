@@ -16,7 +16,7 @@
       <div class="col-md-12">
         <div class="box">
           <div class="box-header with-border">
-            <a href="/lab/cetak_pdf" class="btn btn-primary btn-xs" target="_blank">Cetak PDF</a>
+            <a href="/lab/cetak_lab" class="btn btn-danger btn-xs" target="_blank"> Cetak PDF</a>
           </div>
           <div class="box-body table-responsive">
             <table class="table table-striped table-bordered">
@@ -27,7 +27,6 @@
                 <th>Nama bahan</th>
                 <th>Jumlah bahan</th>
                 <th>Bahan Layak</th>
-                {{-- <th>Satuan</th> --}}
                 <th>Status</th>
                 <th>Status Gudang</th>
                 <th width="15%"><i class="fa fa-cog"></i></th>

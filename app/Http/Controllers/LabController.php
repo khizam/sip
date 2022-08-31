@@ -13,10 +13,12 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 
 
 class LabController extends Controller
@@ -267,7 +269,15 @@ class LabController extends Controller
     {
         $this->authorize('lab_edit');
         $labs = Lab::with('barang_masuk.bahan')->get();
-        $pdf = Pdf::loadview('lab.lab_pdf', compact('labs'));
+        $pdf = Pdf::loadview('lab.lab_pdf', compact('labs'))->setPaper('a4', 'potrait');
         return $pdf->download('laporan-lab.pdf');
+    }
+
+    public function cetak()
+    {
+        // yang dipakai
+        $labs = Lab::with(['barang_masuk.bahan'])->get();
+        $pdf = PDF::loadView('lab/cetak_lab', compact('labs'))->setPaper('a4', 'landscape');
+        return $pdf->stream();
     }
 }

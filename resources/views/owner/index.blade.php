@@ -17,6 +17,9 @@
         <div class="box">
           <div class="box-header with-border">
             <button onclick="addForm('{{ route('owner.store') }}')" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
+            {{-- <a href="/lab/cetak_lab" class="btn btn-danger btn-xs" target="_blank"> Cetak PDF</a> --}}
+            {{-- <a href="/owner/cetak_owner" class="btn btn-danger btn-xs" target="_blank"> Cetak Pdf</a> --}}
+
           </div>
           <div class="box-body table-responsive">
             <table class="table table-striped table-bordered">

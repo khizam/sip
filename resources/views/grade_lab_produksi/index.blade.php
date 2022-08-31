@@ -25,7 +25,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Produk</label>
-                        <input type="text" name="nama_produk" id="nama_produk" class="form-control" readonly value="{{ $produksibarang->nama_produk }}">
+                        <input type="text" name="nama_produk" id="nama_produk" class="form-control" readonly value="{{ $labproduksi->nama_produk }}">
                     </div>
                     <!-- /.form-group -->
                 </div>
@@ -49,6 +49,8 @@
             @csrf
             @method('post')
                 <input type="hidden" name="id_produksi" value="{{ request()->route('id_produksi') }}">
+                <input type="hidden" name="id_produk" value="{{ $labproduksi->id_produk }}">
+
                 <div class="col-md-6">
                     @error('id_produksi')
                     <div class="alert alert-danger">{{ $message }}</div>
@@ -111,6 +113,7 @@
             <thead>
               <th width="5%">No</th>
               {{-- <th>Produk</th> --}}
+              <th>Nama Produk</th>
               <th>Nama Grade</th>
               <th>Jumlah Produk</th>
               <th>Stok</th>
@@ -149,8 +152,8 @@
           },
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
+            {data: 'nama_produk'},
             {data: 'nama_grade'},
-            // {data: 'nama_produk'},
             {data: 'jumlah_produk'},
             {data: 'stok'},
             {data: 'aksi', searchable: false, sortable: false},

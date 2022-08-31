@@ -35,6 +35,6 @@ class Bahan extends Model
 
     public function satuan()
     {
-        return $this->belongsTo(Satuan::class, 'id_satuan', 'id_satuan');
+        return $this->belongsTo(Satuan::class, 'id_satuan');
     }
 }
