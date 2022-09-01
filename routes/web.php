@@ -24,6 +24,7 @@ use App\Http\Controllers\ {
     LabProduksiController,
     ParameterController,
     KemasanController,
+    ParameterLabController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -88,6 +89,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/lab/cetak_lab', [LabController::class, 'cetak']);
     Route::get('/lab/cetak_pdf', [LabController::class, 'printPdfLab']);
     Route::resource('/lab', LabController::class);
+
+    Route::resource('/detailParameter', ParameterLabController::class)
+        ->except('index')
+        ->names('detailParameter');
+    Route::get('/detailParameter/index/{id_lab?}', [ParameterLabController::class, 'index'])
+        ->name('detailParameter.index');
+    Route::get('/detailParameter/data/{id_lab}', [ParameterLabController::class, 'data'])
+        ->name('detailParameter.data');
+    Route::put('/detailParameter/update-detail/{id}', [ParameterLabController::class, 'updateDetail'])
+        ->name('detailParameter.updateDetail');
 
     Route::get('/gudang/data', [GudangController::class, 'data'])
         ->name('gudang.data');
@@ -210,5 +221,8 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('kemasan.data');
     Route::resource('/kemasan', KemasanController::class);
 
+    Route::get('/jenis_produksi/data', [JenisProduksiController::class, 'data'])
+        ->name('jenis_produksi.data');
+    Route::resource('/jenis_produksi', JenisProduksiController::class);
 
 });

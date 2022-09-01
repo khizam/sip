@@ -67,9 +67,24 @@
                     <input type="text" name="penerima" id="penerima" class="form-control">
                     <span class="help-block with-errors"></span>
                 </div>
+                <label for="berat_kotor" class="col-md-2 col-md-offset-1 control-label">Berat Kotor</label>
+                <div class="col-md-8">
+                    <input type="number" name="berat_kotor" id="berat_kotor" class="form-control">
+                    <span class="help-block with-errors"></span>
+                </div>
+                <label for="tara" class="col-md-2 col-md-offset-1 control-label">Tara</label>
+                <div class="col-md-8">
+                    <input type="number" name="tara" id="tara" class="form-control">
+                    <span class="help-block with-errors"></span>
+                </div>
                 <label for="netto" class="col-md-2 col-md-offset-1 control-label">Netto</label>
                 <div class="col-md-8">
                     <input type="text" name="netto" id="netto" class="form-control">
+                    <span class="help-block with-errors"></span>
+                </div>
+                <label for="reject" class="col-md-2 col-md-offset-1 control-label">Reject</label>
+                <div class="col-md-8">
+                    <input type="number" name="reject" id="reject" class="form-control">
                     <span class="help-block with-errors"></span>
                 </div>
                 <label for="kendaraan" class="col-md-2 col-md-offset-1 control-label">Kendaraan</label>

@@ -109,7 +109,10 @@ class BarangmasukController extends Controller
             $barangmasuk->nomor_po = $request->nomor_po;
             $barangmasuk->pengirim = $request->pengirim;
             $barangmasuk->penerima = $request->penerima;
+            $barangmasuk->berat_kotor = $request->berat_kotor;
+            $barangmasuk->tara = $request->tara;
             $barangmasuk->netto = $request->netto;
+            $barangmasuk->reject = $request->reject;
             $barangmasuk->kendaraan = $request->kendaraan;
             $barangmasuk->jumlah_bahan = $request->jumlah_bahan;
             $barangmasuk->save();
@@ -190,10 +193,12 @@ class BarangmasukController extends Controller
             $barangmasuk->nomor_po = $request->nomor_po;
             $barangmasuk->pengirim = $request->pengirim;
             $barangmasuk->penerima = $request->penerima;
+            $barangmasuk->berat_kotor = $request->berat_kotor;
+            $barangmasuk->tara = $request->tara;
             $barangmasuk->netto = $request->netto;
+            $barangmasuk->reject = $request->reject;
             $barangmasuk->kendaraan = $request->kendaraan;
             $barangmasuk->jumlah_bahan = $request->jumlah_bahan;
-
             if ($barangmasuk == null) {
                 throw new NotFoundHttpException('barang masuk tidak ditemukan');
             }

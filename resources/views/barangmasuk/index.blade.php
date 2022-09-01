@@ -34,7 +34,10 @@
                 <th>Nomor Po</th>
                 <th>Pengirim</th>
                 <th>Penerima</th>
+                <th>Berat kotor</th>
+                <th>Tara</th>
                 <th>Netto</th>
+                <th>Reject</th>
                 <th>Kendaraan</th>
                 <th>Status</th>
                 <th>Tanggal</th>
@@ -88,7 +91,10 @@
             {data: 'nomor_po'},
             {data: 'pengirim'},
             {data: 'penerima'},
+            {data: 'berat_kotor'},
+            {data: 'tara'},
             {data: 'netto'},
+            {data: 'reject'},
             {data: 'kendaraan'},
             {data: 'status'},
             {data: 'updated_at'},

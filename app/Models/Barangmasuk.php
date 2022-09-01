@@ -24,7 +24,10 @@ class Barangmasuk extends Model
         'nomor_po',
         'pengirim',
         'penerima',
+        'berat_kotor',
+        'tara',
         'netto',
+        'reject',
         'kendaraan',
     ];
 

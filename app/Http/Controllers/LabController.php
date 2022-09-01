@@ -57,7 +57,8 @@ class LabController extends Controller
             })
             ->addColumn('aksi', function ($lab) {
                 $html = '<div class="">
-                            <button onclick="editLabForm(`' . route('lab.editLab', $lab->id_lab) . '` , `' . route('lab.updateLab', $lab->id_lab) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-pencil"></i></button>';
+                    <button onclick="editLabForm(`' . route('lab.editLab', $lab->id_lab) . '` , `' . route('lab.updateLab', $lab->id_lab) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-pencil"></i></button>
+                    <a href=' . route('detailParameter.index', $lab->id_lab) . ' class="btn btn-xs btn-primary btn-flat">Parameter Lab</a>';
                 if ($lab->status != StatusLabEnum::Accept) {
                     $html .= '<button onclick="editForm(`' . route('lab.edit', $lab->id_lab) . '` , `' . route('lab.update', $lab->id_lab) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-plus"></i></button>
                     <button onclick="check(`' . route('lab.edit', $lab->id_lab) . '` , `' . route('lab.checkStatus', $lab->id_lab) . '`)" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-check"></i></button>';
