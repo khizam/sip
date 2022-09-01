@@ -15,6 +15,7 @@ class PeralatanKerjaController extends Controller
      */
     public function index()
     {
+        // $this->authorize('peralatan_index');
         return view('peralatanKerja.index');
     }
 
@@ -24,24 +25,25 @@ class PeralatanKerjaController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function  data()
-     {
+    public function  data()
+    {
+        // $this->authorize('peralatan_index');
         $peralatanKerja = PeralatanKerja::orderBy('id_peralatan_kerja', 'desc');
 
         return datatables()
-        ->of($peralatanKerja)
-        ->addIndexColumn()
-        ->addColumn('aksi', function ($peralatanKerja) {
-            return '
+            ->of($peralatanKerja)
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($peralatanKerja) {
+                return '
             <div class="btn-group">
-                <button onClick="editForm(`'. route('peralatanKerja.update', $peralatanKerja->id_peralatan_kerja) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                <button onClick="deleteData(`'. route('peralatanKerja.destroy', $peralatanKerja->id_peralatan_kerja) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                <button onClick="editForm(`' . route('peralatanKerja.update', $peralatanKerja->id_peralatan_kerja) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                <button onClick="deleteData(`' . route('peralatanKerja.destroy', $peralatanKerja->id_peralatan_kerja) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
             </div>
             ';
-        })
-        ->rawColumns(['aksi'])
-        ->make(true);
-     }
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+    }
 
     public function create()
     {
@@ -56,6 +58,7 @@ class PeralatanKerjaController extends Controller
      */
     public function store(Request $request)
     {
+        // $this->authorize('peralatan_create');
         $peralatanKerja = $request->alat;
         $peralatanKerja = $request->jumlah_alat;
         $peralatanKerja = PeralatanKerja::create($request->all());
@@ -70,6 +73,7 @@ class PeralatanKerjaController extends Controller
      */
     public function show($id)
     {
+        $this->authorize('peralatan_edit');
         $peralatanKerja = PeralatanKerja::find($id);
 
         return response()->json($peralatanKerja);
@@ -95,6 +99,7 @@ class PeralatanKerjaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // $this->authorize('peralatan_edit');
         $peralatanKerja = PeralatanKerja::find($id);
         $peralatanKerja->alat = $request->alat;
         $peralatanKerja->jumlah_alat = $request->jumlah_alat;
@@ -111,6 +116,7 @@ class PeralatanKerjaController extends Controller
      */
     public function destroy($id)
     {
+        // $this->authorize('peralatan_delete');
         $peralatanKerja = PeralatanKerja::find($id);
         $peralatanKerja->delete();
 
