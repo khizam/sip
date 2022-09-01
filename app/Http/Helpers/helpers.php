@@ -68,11 +68,10 @@ function tambah_nol_didepan($value, $threshold = null)
     return sprintf("%0". $threshold . "s", $value);
 }
 
+// function jsonResponse($data='', $status=Response::HTTP_OK, array $headers = []) {
 
-function jsonResponse($data='', $status=Response::HTTP_OK, array $headers = []) {
-
-    return sprintf("%0" . $threshold . "s", $value);
-}
+//     return sprintf("%0" . $threshold . "s", $value);
+// }
 
 function jsonResponse($data = '', $status = Response::HTTP_OK, array $headers = [])
 {
@@ -84,6 +83,20 @@ if (!function_exists('mrPasienAuto')) {
     function kodeOtomatis($prefix = 'BR')
     {
         // BR tahun-bulan-tanggal-random angka 1-9999
+        return $prefix . date('ymd', strtotime(now())) . random_int(1, 9999);
+    }
+}
+
+if (!function_exists('mrLabAuto')) {
+    function kodeAuto($prefix = 'LB')
+    {
+        return $prefix . date('ymd', strtotime(now())) . random_int(1, 9999);
+    }
+}
+
+if (!function_exists('mrRequestAuto')) {
+    function kodeRequest($prefix = 'RQP')
+    {
         return $prefix . date('ymd', strtotime(now())) . random_int(1, 9999);
     }
 }

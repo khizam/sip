@@ -42,6 +42,41 @@
                   </select>
                   <span class="help-block with-errors"></span>
                 </div>
+                <label for="id_kemasan" class="col-md-2 col-md-offset-1 control-label">Kemasan</label>
+                <div class="col-md-8">
+                  <select name="id_kemasan" id="id_kemasan" class="form-control" required>
+                    <option value="">Pilih Kemasan</option>
+                    @foreach ($kemasan as $key => $item)
+                        <option value="{{ $item->id_kemasan }}">{{ $item->jenis_kemasan }}</option>
+                    @endforeach
+                  </select>
+                  <span class="help-block with-errors"></span>
+                </div>
+                <label for="nomor_po" class="col-md-2 col-md-offset-1 control-label">Nomor Po</label>
+                <div class="col-md-8">
+                    <input type="text" name="nomor_po" id="nomor_po" class="form-control">
+                    <span class="help-block with-errors"></span>
+                </div>
+                <label for="pengirim" class="col-md-2 col-md-offset-1 control-label">Pengirim</label>
+                <div class="col-md-8">
+                    <input type="text" name="pengirim" id="pengirim" class="form-control">
+                    <span class="help-block with-errors"></span>
+                </div>
+                <label for="penerima" class="col-md-2 col-md-offset-1 control-label">Penerima</label>
+                <div class="col-md-8">
+                    <input type="text" name="penerima" id="penerima" class="form-control">
+                    <span class="help-block with-errors"></span>
+                </div>
+                <label for="netto" class="col-md-2 col-md-offset-1 control-label">Netto</label>
+                <div class="col-md-8">
+                    <input type="text" name="netto" id="netto" class="form-control">
+                    <span class="help-block with-errors"></span>
+                </div>
+                <label for="kendaraan" class="col-md-2 col-md-offset-1 control-label">Kendaraan</label>
+                <div class="col-md-8">
+                    <input type="text" name="kendaraan" id="kendaraan" class="form-control">
+                    <span class="help-block with-errors"></span>
+                </div>
               </div>
               <div class="form-group row">
                 <label for="jumlah_bahan" class="col-md-2 col-md-offset-1 control-label">Jumlah Bahan</label>

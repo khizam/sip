@@ -30,7 +30,14 @@
                 <th>Kategori</th>
                 <th>Supplier</th>
                 <th>Jumlah Bahan</th>
+                <th>Kemasan</th>
+                <th>Nomor Po</th>
+                <th>Pengirim</th>
+                <th>Penerima</th>
+                <th>Netto</th>
+                <th>Kendaraan</th>
                 <th>Status</th>
+                <th>Tanggal</th>
                 <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
               <tbody>
@@ -77,7 +84,14 @@
             {data: 'nama_kategori'},
             {data: 'nama_supplier'},
             {data: 'jumlah_bahan'},
+            {data: 'jenis_kemasan'},
+            {data: 'nomor_po'},
+            {data: 'pengirim'},
+            {data: 'penerima'},
+            {data: 'netto'},
+            {data: 'kendaraan'},
             {data: 'status'},
+            {data: 'updated_at'},
             {data: 'aksi', searchable: false, sortable: false},
           ]
         });
@@ -115,7 +129,6 @@
       $('#modal-form form').attr('action',url);
       $('#modal-form [name=_method]').val('put');
       $('#modal-form [name=id_bahan]').focus();
-      $('#modal-form [name=id_bahan]').focus();
 
     //$('#modal-form [name=satuan]').val(response.satuan.id_satuan);
 
@@ -125,8 +138,13 @@
           $('#modal-form [name=id_bahan]').val(response.id_bahan);
           $('#modal-form [name=id_kategori]').val(response.id_kategori);
           $('#modal-form [name=id_supplier]').val(response.id_supplier);
+          $('#modal-form [name=id_kemasan]').val(response.id_kemasan);
+          $('#modal-form [name=nomor_po]').val(response.nomor_po);
+          $('#modal-form [name=pengirim]').val(response.pengirim);
+          $('#modal-form [name=penerima]').val(response.penerima);
+          $('#modal-form [name=netto]').val(response.netto);
+          $('#modal-form [name=kendaraan]').val(response.kendaraan);
           $('#modal-form [name=jumlah_bahan]').val(response.jumlah_bahan);
-
         })
       .fail((errors) => {
           alert('Tidak dapat menampilkan data');

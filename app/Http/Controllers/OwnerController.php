@@ -101,7 +101,7 @@ class OwnerController extends Controller
             $kode_produksi = (int) $produksibarang->kode_produksi + 1;
 
             $produksibarang = new produksibarang();
-            $produksibarang->kode_produksi = tambah_nol_didepan($kode_produksi, 6);
+            $produksibarang->kode_produksi = kodeRequest('RQP');
             $produksibarang->id_produk = $request->id_produk;
             $produksibarang->jumlah = $request->jumlah;
             $produksibarang->id_satuan = $request->id_satuan;

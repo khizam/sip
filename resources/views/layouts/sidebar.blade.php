@@ -55,6 +55,9 @@
               @can('user_index')
               <li class="active"><a href="{{ route('parameter.index') }}"><i class="fa fa-sort-amount-asc"></i>Parameter</a></li>
               @endcan
+              @can('user_index')
+              <li class="active"><a href="{{route('kemasan.index') }}"><i class="fa fa-caret-square-o-down"></i>Kemasan</a></li>
+              @endcan
             </ul>
           </li>
           @endcan

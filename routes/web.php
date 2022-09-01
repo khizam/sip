@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{
+use App\Http\Controllers\ {
     KategoriController,
     SupplierController,
     BahanController,
@@ -23,6 +23,7 @@ use App\Http\Controllers\{
     PeralatanKerjaController,
     LabProduksiController,
     ParameterController,
+    KemasanController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -204,6 +205,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/parameter/data', [ParameterController::class, 'data'])
         ->name('parameter.data');
     Route::resource('/parameter', ParameterController::class);
+
+    Route::get('/kemasan/data', [KemasanController::class, 'data'])
+        ->name('kemasan.data');
+    Route::resource('/kemasan', KemasanController::class);
 
 
 });
