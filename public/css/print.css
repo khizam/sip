@@ -1,0 +1,193 @@
+/* CSS RESET */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* Custom */
+body{
+    font-size: 14px;
+    margin: 0 auto;
+}
+body .container{
+    padding:20px;
+    padding-top: 0px!important;
+}
+.text-center{
+    text-align:center;
+}
+.content{
+    margin-bottom:10px;
+}
+.d-inline-block{
+    display:inline-block;
+}
+.d-block{
+    display:block;
+}
+.row {
+    display:block;
+}
+.font-weight{
+    font-weight:600;
+    font-size:15px;
+}
+.font-weight-1{
+    font-weight:550;
+    font-size:15px;
+}
+.mb-1{
+    margin-bottom:10px;
+}
+.mr-2{
+    margin-right:10px;
+}
+.text-indent{
+    text-indent:10px;
+}
+.ml-0{
+    margin-left: 0;
+    padding: 0;
+}
+.mt-2{
+    margin-top:5px;
+}
+ol.inner{
+    list-style:none;
+}
+ol li{
+    margin-bottom:8px;
+}
+ol.list li:last-child{
+    list-style:none;
+}
+p{
+    font-size:14px;
+    font-weight:500;
+    line-height: 140%;
+}
+table{
+    width: 100%;
+    border-collapse: collapse;
+}
+table th{
+    padding:5px;
+    text-align: center;
+}
+table td{
+    padding: 5px 10px;
+}
+table img{
+    width: 50px;
+}
+/* table,th,td{
+    border: 1px solid black;
+} */
+.max-width{
+    max-width: 60%;
+}
+.max-width-30{
+    max-width: 30%;
+}
+.absolute{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.m-auto{
+    margin-left: 20px;
+}
+.width{
+    width: 200px;
+}
+.relative{
+    position: relative;
+}
+.i{
+    font-style: italic;
+}
+.abs{
+    position: absolute;
+}
+.f-14{
+    font-size: 14px;
+}
+.green-light{
+    background-color: #4caf50;
+}
+.text-right{
+    text-align: right;
+}
+span {
+    font-size: 14px;
+}
+span.title {
+    display: inline-block;
+    font-weight: 500;
+    width: 8.3rem;
+}
+.w-6 {
+    width: 6rem!important;
+}
+span.body {
+    display: inline-block;
+    margin-left: .4rem;
+    font-weight: 500;
+    width: 9rem;
+}
+.b-1 {
+    border: .5px solid black!important;
+}
+.prt-title {
+    display: flex; justify-content: center; align-items: center; margin-bottom: 0; margin-block-start: 1.5rem;
+}
+li {
+    margin-bottom: 5px!important;
+}
+.b-1 p {
+    display: inline-block;
+    margin: 0.5rem auto;
+}
+
+b,p,span {
+    font-size: 14px;
+}

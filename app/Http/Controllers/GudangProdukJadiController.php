@@ -30,9 +30,10 @@ class GudangProdukJadiController extends Controller
 
     public function data()
     {
-        $gudangProdukjadi = GudangProdukJadi::leftJoin('grade_lab_produksi', 'grade_lab_produksi.id_gradelab', '=', 'gudang_produk.id_gradelab')
-            ->select('gudang_produk.*', 'grade_lab_produksi.jumlah_produk', 'grade_lab_produksi.stok', 'grade_lab_produksi.id_grade')
-            ->where('gudang_produk.id_gradelab')
+        $gudangProdukjadi = GudangProdukJadi::Join('grade_lab_produksi', 'grade_lab_produksi.id_gradelab', '=', 'gudang_produk.id_gradelab')
+            ->Join('grade', 'grade.id_grade', '=', 'grade_lab_produksi.id_grade')
+            ->Join('produk', 'produk.id_produk', '=', 'grade_lab_produksi.id_produk')
+            ->select('gudang_produk.*', 'grade_lab_produksi.jumlah_produk', 'grade_lab_produksi.stok', 'grade_lab_produksi.id_grade', 'grade_lab_produksi.id_produk', 'grade.nama_grade', 'produk.nama_produk')
             ->orderBy('grade_lab_produksi.id_gradelab', 'ASC');
 
         return datatables()
@@ -42,7 +43,7 @@ class GudangProdukJadiController extends Controller
             ->addColumn('aksi', function ($gudangProdukjadi) {
                 return '
                 <div class="btn-group">
-                    <button onclick="editForm(`' . route('grade-lab-produksi.update', $gudangProdukjadi->id_gradelab) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+
                     <button onclick="deleteData(`' . route('grade-lab-produksi.destroy', $gudangProdukjadi->id_gradelab) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                 </div>
                 ';

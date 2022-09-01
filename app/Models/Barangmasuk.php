@@ -20,6 +20,15 @@ class Barangmasuk extends Model
         'id_kategori',
         'id_supplier',
         'jumlah_bahan',
+        'id_kemasan',
+        'nomor_po',
+        'pengirim',
+        'penerima',
+        'berat_kotor',
+        'tara',
+        'netto',
+        'reject',
+        'kendaraan',
     ];
 
     /**
@@ -44,5 +53,9 @@ class Barangmasuk extends Model
 
     public function supplier(){
         return $this->belongsTo(Supplier::class,'id_supplier','id_supplier');
+    }
+
+    public function kemasan(){
+        return $this->belongsTo(Kemasan::class,'id_kemasan','id_kemasan');
     }
 }

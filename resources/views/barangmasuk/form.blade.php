@@ -4,6 +4,7 @@
           @csrf
           @method('post')
 
+          {{-- <input type="hidden" name="id_satuan" value="{{ $barangmasuk->id_satuan }}"> --}}
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -40,6 +41,56 @@
                     @endforeach
                   </select>
                   <span class="help-block with-errors"></span>
+                </div>
+                <label for="id_kemasan" class="col-md-2 col-md-offset-1 control-label">Kemasan</label>
+                <div class="col-md-8">
+                  <select name="id_kemasan" id="id_kemasan" class="form-control" required>
+                    <option value="">Pilih Kemasan</option>
+                    @foreach ($kemasan as $key => $item)
+                        <option value="{{ $item->id_kemasan }}">{{ $item->jenis_kemasan }}</option>
+                    @endforeach
+                  </select>
+                  <span class="help-block with-errors"></span>
+                </div>
+                <label for="nomor_po" class="col-md-2 col-md-offset-1 control-label">Nomor Po</label>
+                <div class="col-md-8">
+                    <input type="text" name="nomor_po" id="nomor_po" class="form-control">
+                    <span class="help-block with-errors"></span>
+                </div>
+                <label for="pengirim" class="col-md-2 col-md-offset-1 control-label">Pengirim</label>
+                <div class="col-md-8">
+                    <input type="text" name="pengirim" id="pengirim" class="form-control">
+                    <span class="help-block with-errors"></span>
+                </div>
+                <label for="penerima" class="col-md-2 col-md-offset-1 control-label">Penerima</label>
+                <div class="col-md-8">
+                    <input type="text" name="penerima" id="penerima" class="form-control">
+                    <span class="help-block with-errors"></span>
+                </div>
+                <label for="berat_kotor" class="col-md-2 col-md-offset-1 control-label">Berat Kotor</label>
+                <div class="col-md-8">
+                    <input type="number" name="berat_kotor" id="berat_kotor" class="form-control">
+                    <span class="help-block with-errors"></span>
+                </div>
+                <label for="tara" class="col-md-2 col-md-offset-1 control-label">Tara</label>
+                <div class="col-md-8">
+                    <input type="number" name="tara" id="tara" class="form-control">
+                    <span class="help-block with-errors"></span>
+                </div>
+                <label for="netto" class="col-md-2 col-md-offset-1 control-label">Netto</label>
+                <div class="col-md-8">
+                    <input type="text" name="netto" id="netto" class="form-control">
+                    <span class="help-block with-errors"></span>
+                </div>
+                <label for="reject" class="col-md-2 col-md-offset-1 control-label">Reject</label>
+                <div class="col-md-8">
+                    <input type="number" name="reject" id="reject" class="form-control">
+                    <span class="help-block with-errors"></span>
+                </div>
+                <label for="kendaraan" class="col-md-2 col-md-offset-1 control-label">Kendaraan</label>
+                <div class="col-md-8">
+                    <input type="text" name="kendaraan" id="kendaraan" class="form-control">
+                    <span class="help-block with-errors"></span>
                 </div>
               </div>
               <div class="form-group row">

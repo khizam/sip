@@ -9,6 +9,7 @@ use App\Models\ProduksiBarang;
 use App\Models\Produk;
 use App\Models\Satuan;
 use App\Models\User;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,7 @@ class OwnerController extends Controller
      */
     public function index()
     {
+        $this->authorize('request_index');
         $produk = Produk::all()->pluck('nama_produk', 'id_produk');
         $statusProduksi = StatusProduksi::all()->pluck('status', 'id_status');
         $user = User::all()->pluck('name', 'id');
@@ -33,6 +35,7 @@ class OwnerController extends Controller
 
     public function data()
     {
+        $this->authorize('request_index');
         $produksibarang = ProduksiBarang::leftJoin('produk', 'produk.id_produk', '=', 'produksi_barang.id_produk')
             ->leftJoin('status_produksi', 'status_produksi.id_status', '=', 'produksi_barang.id_status')
             ->leftJoin('users', 'users.id', '=', 'produksi_barang.id_user')
@@ -92,12 +95,13 @@ class OwnerController extends Controller
     public function store(Request $request)
     {
         try {
+            $this->authorize('request_create');
             DB::beginTransaction();
             $produksibarang = ProduksiBarang::latest()->first() ?? new ProduksiBarang();
             $kode_produksi = (int) $produksibarang->kode_produksi + 1;
 
             $produksibarang = new produksibarang();
-            $produksibarang->kode_produksi = tambah_nol_didepan($kode_produksi, 6);
+            $produksibarang->kode_produksi = kodeRequest('RQP');
             $produksibarang->id_produk = $request->id_produk;
             $produksibarang->jumlah = $request->jumlah;
             $produksibarang->id_satuan = $request->id_satuan;
@@ -125,6 +129,7 @@ class OwnerController extends Controller
      */
     public function show($id)
     {
+        $this->authorize('request_edit');
         $produksibarang = ProduksiBarang::find($id);
 
         return response()->json($produksibarang);
@@ -150,6 +155,7 @@ class OwnerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize('request_edit');
         $produksibarang = ProduksiBarang::find($id);
         $produksibarang->update($request->all());
 
@@ -164,9 +170,17 @@ class OwnerController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('request_delete');
         $produksibarang = ProduksiBarang::find($id);
         $produksibarang->delete();
 
         return response(null, 204);
+    }
+
+    public function cetak()
+    {
+        $produksibarangs = ProduksiBarang::all(['produksi_barang']);
+        $pdf = PDF::loadView('owner/cetak_owner', compact('produksibarangs'))->setPaper('a4', 'landscape');
+        return $pdf->stream();
     }
 }

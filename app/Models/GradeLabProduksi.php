@@ -16,6 +16,7 @@ class GradeLabProduksi extends Model
     protected $fillable = [
         'id_produksi',
         'id_grade',
+        'id_produk',
         'jumlah_produk',
         'stok',
     ];
@@ -27,6 +28,11 @@ class GradeLabProduksi extends Model
     public function grade()
     {
         return $this->belongsTo(Grade::class, 'id_grade');
+    }
+
+    public function produk()
+    {
+        return $this->belongsTo(Produk::class, 'id_produk');
     }
 
     public function produksi()

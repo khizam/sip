@@ -8,7 +8,7 @@
 	<style type="text/css">
 		table tr td,
 		table tr th{
-			
+
 			font-size: 8pt;
 		}
 	</style>

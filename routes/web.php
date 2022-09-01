@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{
+use App\Http\Controllers\ {
     KategoriController,
     SupplierController,
     BahanController,
@@ -22,6 +22,9 @@ use App\Http\Controllers\{
     GudangProdukJadiController,
     PeralatanKerjaController,
     LabProduksiController,
+    ParameterController,
+    KemasanController,
+    ParameterLabController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -83,15 +86,25 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('lab.updateLab');
     Route::put('/lab/check-status/{id}', [LabController::class, 'checkStatus'])
         ->name('lab.checkStatus');
+    Route::get('/lab/cetak_lab', [LabController::class, 'cetak']);
     Route::get('/lab/cetak_pdf', [LabController::class, 'printPdfLab']);
     Route::resource('/lab', LabController::class);
+
+    Route::resource('/detailParameter', ParameterLabController::class)
+        ->except('index')
+        ->names('detailParameter');
+    Route::get('/detailParameter/index/{id_lab?}', [ParameterLabController::class, 'index'])
+        ->name('detailParameter.index');
+    Route::get('/detailParameter/data/{id_lab}', [ParameterLabController::class, 'data'])
+        ->name('detailParameter.data');
+    Route::put('/detailParameter/update-detail/{id}', [ParameterLabController::class, 'updateDetail'])
+        ->name('detailParameter.updateDetail');
 
     Route::get('/gudang/data', [GudangController::class, 'data'])
         ->name('gudang.data');
     Route::get('/gudang/edit-gudang/{id}', [GudangController::class, 'editGudang'])
         ->name('gudang.editGudang');
     Route::resource('/gudang', GudangController::class);
-
 
     Route::get('/gudang_request/data', [GudangRequestController::class, 'data'])
         ->name('gudang_request.data');
@@ -110,6 +123,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/owner/data', [OwnerController::class, 'data'])
         ->name('owner.data');
+    Route::get('/owner/cetak_owner', [OwnerController::class, 'cetak']);
     Route::resource('/owner', OwnerController::class);
 
     Route::resource('/detailProduksi', DetailProduksiController::class)
@@ -193,6 +207,22 @@ Route::group(['middleware' => 'auth'], function () {
         ->names('gudang_produksi');
     Route::get('gudangproduksi/data', [GudangProdukJadiController::class, 'data'])
         ->name('gudang_produksi.data');
+    // Route::get('gudang-produksi', [GudangProdukJadiController::class, 'index'])
+    //     ->name('gudang_produksi.index');
+
     Route::get('gudang-produksi', [GudangProdukJadiController::class, 'index'])
         ->name('gudang_produksi.index');
+
+    Route::get('/parameter/data', [ParameterController::class, 'data'])
+        ->name('parameter.data');
+    Route::resource('/parameter', ParameterController::class);
+
+    Route::get('/kemasan/data', [KemasanController::class, 'data'])
+        ->name('kemasan.data');
+    Route::resource('/kemasan', KemasanController::class);
+
+    Route::get('/jenis_produksi/data', [JenisProduksiController::class, 'data'])
+        ->name('jenis_produksi.data');
+    Route::resource('/jenis_produksi', JenisProduksiController::class);
+
 });

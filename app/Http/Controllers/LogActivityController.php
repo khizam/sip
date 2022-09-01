@@ -11,6 +11,7 @@ class LogActivityController extends Controller
 
     public function index()
     {
+        // $this->authorize('logactivity_index');
         return view('log_activity.index');
     }
 

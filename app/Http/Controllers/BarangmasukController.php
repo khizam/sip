@@ -9,6 +9,7 @@ use App\Models\Supplier;
 use App\Models\Barangmasuk;
 use App\Models\Satuan;
 use App\Models\Lab;
+use App\Models\Kemasan;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -31,8 +32,9 @@ class BarangmasukController extends Controller
         $kategori = Kategori::all(['nama_kategori', 'id_kategori']);
         $supplier = Supplier::all(['nama_supplier', 'id_supplier']);
         $satuans = Satuan::all(['satuan', 'id_satuan']);
+        $kemasan = Kemasan::all(['jenis_kemasan', 'id_kemasan']);
 
-        return view('barangmasuk.index', compact('bahan', 'kategori', 'supplier', 'satuans'));
+        return view('barangmasuk.index', compact('bahan', 'kategori', 'supplier', 'satuans', 'kemasan'));
     }
 
     public function data()
@@ -42,13 +44,13 @@ class BarangmasukController extends Controller
         }
         $barangmasuk = Barangmasuk::join('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
             ->leftJoin('kategori', 'kategori.id_kategori', '=', 'barangmasuk.id_kategori')
+            // ->leftJoin('satuan', 'satuan.id_satuan', '=', 'barangmasuk.id_satuan')
             ->leftJoin('supplier', 'supplier.id_supplier', '=', 'barangmasuk.id_supplier')
+            ->leftJoin('kemasan', 'kemasan.id_kemasan', '=', 'barangmasuk.id_kemasan')
             // ->leftJoin('satuan', 'satuan.id_satuan', '=', 'barangmasuk.id_satuan')
             ->join('lab', 'lab.id_barangmasuk', '=', 'barangmasuk.id_barangmasuk')
-            ->select('barangmasuk.*', 'nama_bahan', 'id_satuan', 'nama_kategori', 'nama_supplier', 'lab.status', 'satuan')
+            ->select('barangmasuk.*', 'bahan.nama_bahan', 'kategori.nama_kategori', 'supplier.nama_supplier', 'lab.status', 'kemasan.jenis_kemasan')
             ->orderBy('kode_barangmasuk', 'asc');
-
-
 
         return datatables()
             ->of($barangmasuk)
@@ -64,7 +66,7 @@ class BarangmasukController extends Controller
             <div class="">
                 <button onclick="editForm(`' . route('barangmasuk.update', $barangmasuk->id_barangmasuk) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
                 <button onclick="deleteData(`' . route('barangmasuk.destroy', $barangmasuk->id_barangmasuk) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
-                <button onclick="alert(`belum ada fungsi :(`)" class="btn btn-xs btn-primary btn-flat">Lab <i class="fa fa-flask"></i></button>
+
             </div>
             ';
             })
@@ -72,45 +74,10 @@ class BarangmasukController extends Controller
             ->make(true);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public static function convertdate()
-    // {
-    //     date_default_timezone_set('Asia/jakarta');
-    //     $date = date('dmy');
-    //     return $date;
-    // }
-
-    // public static function autonumber($barangmasuk, $primary, $prefix) {
-    //     $q=DB::table($barangmasuk)->select(DB::raw('Max(RIGHT('.$primary.',5)) as kd_max'));
-    //     $prx=$prefix.Dateindo::convertdate();
-    //     if($q->count()>0)
-    //     {
-    //         foreach($q->get() as $k)
-    //         {
-    //             $tmp = ((int)$k->kd_max)+1;
-    //             $kd = $prx.sprintf("%06s", $tmp);
-    //         }
-    // }
-    // else
-    // {
-    //     $kd = $prx."000001";
-    // }
-    // return $kd;
-    // }
-
-
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-
+    // <button onclick="alert(`belum ada fungsi :(`)" class="btn btn-xs btn-primary btn-flat">Lab <i class="fa fa-flask"></i></button>
+    // $maxNumber = DB::table('labpdaftar')->max('id');
+    // $prefix = "PA";
+    // $register = $prefix . str_pad($maxNumber + 1, 5, '0', STR_PAD_LEFT);
 
     public function store(Request $request)
     {
@@ -120,22 +87,40 @@ class BarangmasukController extends Controller
             $barangmasuk = Barangmasuk::latest()->first() ?? new Barangmasuk();
             $kode_barangmasuk = (int) $barangmasuk->kode_barangmasuk + 1;
 
-            $barangmasuk = new barangmasuk();
+
+            $barangmasuk = new Barangmasuk();
             $barangmasuk->kode_barangmasuk = tambah_nol_didepan($kode_barangmasuk, 6);
+            // $maxNumber = DB::table('barangmasuk')->max('id_barangmasuk');
+            // $prefix = "PA";
+            // $kode_barangmasuk = $prefix . str_pad($maxNumber + 1, 5, '0', STR_PAD_LEFT);
+
+
+            $barangmasuk = new barangmasuk();
+            $barangmasuk->kode_barangmasuk = kodeOtomatis('BR');
             // $request['kode_barangmasuk'] = 'P'. tambah_nol_didepan((int)$barangmasuk->id_barangmasuk +1, 6);
+
             $lab = Lab::latest()->first() ?? new Lab();
             $kode_lab = (int) $lab->kode_lab + 1;
 
             $barangmasuk->id_bahan = $request->id_bahan;
             $barangmasuk->id_kategori = $request->id_kategori;
             $barangmasuk->id_supplier = $request->id_supplier;
+            $barangmasuk->id_kemasan = $request->id_kemasan;
+            $barangmasuk->nomor_po = $request->nomor_po;
+            $barangmasuk->pengirim = $request->pengirim;
+            $barangmasuk->penerima = $request->penerima;
+            $barangmasuk->berat_kotor = $request->berat_kotor;
+            $barangmasuk->tara = $request->tara;
+            $barangmasuk->netto = $request->netto;
+            $barangmasuk->reject = $request->reject;
+            $barangmasuk->kendaraan = $request->kendaraan;
             $barangmasuk->jumlah_bahan = $request->jumlah_bahan;
             $barangmasuk->save();
 
             $insertLab = null;
             if ($barangmasuk) {
                 $insertLab = Lab::create([
-                    'kode_lab' => tambah_nol_didepan($kode_lab, 6),
+                    'kode_lab' => kodeAuto('LB'),($kode_lab),
                     'id_barangmasuk' => $barangmasuk->id_barangmasuk,
                     'satuan' => $barangmasuk->id_satuan,
                     'bahan_layak' => 0,
@@ -201,6 +186,19 @@ class BarangmasukController extends Controller
         try {
             $this->authorize('barangmasuk_edit');
             $barangmasuk = Barangmasuk::find($id);
+            $barangmasuk->id_bahan = $request->id_bahan;
+            $barangmasuk->id_kategori = $request->id_kategori;
+            $barangmasuk->id_supplier = $request->id_supplier;
+            $barangmasuk->id_kemasan = $request->id_kemasan;
+            $barangmasuk->nomor_po = $request->nomor_po;
+            $barangmasuk->pengirim = $request->pengirim;
+            $barangmasuk->penerima = $request->penerima;
+            $barangmasuk->berat_kotor = $request->berat_kotor;
+            $barangmasuk->tara = $request->tara;
+            $barangmasuk->netto = $request->netto;
+            $barangmasuk->reject = $request->reject;
+            $barangmasuk->kendaraan = $request->kendaraan;
+            $barangmasuk->jumlah_bahan = $request->jumlah_bahan;
             if ($barangmasuk == null) {
                 throw new NotFoundHttpException('barang masuk tidak ditemukan');
             }
