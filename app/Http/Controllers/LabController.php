@@ -266,8 +266,9 @@ class LabController extends Controller
     public function printPdfLab()
     {
         $this->authorize('lab_edit');
-        $labs = Lab::with('barang_masuk.bahan')->get();
-        $pdf = Pdf::loadview('lab.lab_pdf', compact('labs'));
-        return $pdf->download('laporan-lab.pdf');
+        // $labs = Lab::with('barang_masuk.bahan')->get();
+        // $pdf = Pdf::loadview('lab.lab_pdf', compact('labs'));
+        // return $pdf->download('laporan-lab.pdf');
+        return view('lab.print_lab');
     }
 }
