@@ -6,6 +6,7 @@ use App\Http\Requests\StoreDetailParameterRequest;
 use App\Models\ParameterLab;
 use App\Models\Parameter;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -35,7 +36,7 @@ class ParameterLabController extends Controller
     {
         $parameterLab = ParameterLab::leftJoin('lab', 'lab.id_lab', '=', 'parameter_lab.id_lab')
             ->leftJoin('parameter', 'parameter.id_parameter', '=', 'parameter_lab.id_parameter')
-            ->select('lab.id_lab', 'lab.id_barangmasuk', 'parameter.id_parameter', 'parameter.nama_parameter')
+            ->select('lab.id_lab', 'lab.id_barangmasuk', 'id_parameterlab', 'parameter.id_parameter', 'parameter.nama_parameter')
             ->orderBy('parameter_lab.id_parameterlab', 'asc')
             ->where('parameter_lab.id_lab', $id_lab);
 
@@ -43,13 +44,10 @@ class ParameterLabController extends Controller
             ->of($parameterLab)
             ->addIndexColumn()
 
-        ->addColumn('aksi', function ($detailproduksi) {
-            $html = '<div class="">';
-                $html .= '<button onclick="editDetailForm(`' . route('detailProduksi.show', $detailproduksi->id_detail) . '` , `' . route('detailProduksi.update', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-pencil"></i></button>
-                <button onclick="deleteData(`' . route('detailProduksi.destroy', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>';
-                $html .= '<button onclick="deleteData(`' . route('detailProduksi.destroy', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>';
-
-                $html .= '</div>';
+            ->addColumn('aksi', function ($parameterLab) {
+                $html = '<div class="">
+                    <button onclick="deleteData(`' . route('detailParameter.destroy', $parameterLab->id_parameterlab) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                    </div>';
                 return $html;
             })
             ->rawColumns(['aksi'])
@@ -70,20 +68,28 @@ class ParameterLabController extends Controller
     public function store(StoreDetailParameterRequest $request)
     {
         try {
-            DB::beginTransaction();
-            ParameterLab::create($request->validated());
-            DB::commit();
+            DB::beginTransaction(); // mulai
+            foreach ($request->id_parameter as $value) {
+                $data = [
+                    'id_lab' => $request->id_lab,
+                    'id_parameter' => $value,
+                ];
+                // dump($data);
+                ParameterLab::create($data);
+            }
+            // die();
+            DB::commit(); // melakukan
+            // dd('debuging sampe sini');
             return redirect()
-                ->route('parameterlab.index', $request->id_lab)
+                ->route('detailParameter.index', $request->id_lab)
                 ->with('success', 'berhasil diproses');
         } catch (\Throwable $th) {
-            DB::rollback();
+            DB::rollback(); // mengembalikan
             Log::error("tambah request detail produksi" . $th);
             return redirect()
-                ->route('parameterlab.index', $request->id_lab)
+                ->route('detailParameter.index', $request->id_lab)
                 ->with('errors-throw', $th->getMessage());
         }
-
     }
     /**
      * Display the specified resource.
@@ -127,8 +133,9 @@ class ParameterLabController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $parameterLab = ParameterLab::find($id);
+        $parameterLab->delete();
+
+        return response()->json('', Response::HTTP_NO_CONTENT);
     }
-
-
 }

@@ -129,27 +129,13 @@ class LabController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $bahanLayak = $request->bahan_layak;
-        $bahanTidakLayak = $request->bahan_tidak_layak;
         try {
             $this->authorize('lab_edit');
             DB::beginTransaction();
             $barangMasuk = Lab::with('barang_masuk')->find($id);
-            $jumlahBahanBrgMsk = $barangMasuk->barang_masuk->jumlah_bahan;
-            if ($bahanLayak <= $jumlahBahanBrgMsk || $bahanTidakLayak <= $jumlahBahanBrgMsk) {
-                $totalBahanLab = $bahanLayak + $bahanTidakLayak;
-                if ($totalBahanLab <= $jumlahBahanBrgMsk) {
-                    $barangMasuk->update($request->only(['bahan_layak', 'bahan_tidak_layak', 'status']));
-                    DB::commit();
-                    return jsonResponse('Data berhasil disimpan', 200);
-                } else {
-                    DB::rollback();
-                    return jsonResponse('Jumlah bahan layak, tidak boleh lebih dari ' . $jumlahBahanBrgMsk, Response::HTTP_NOT_ACCEPTABLE);
-                }
-            } else {
-                DB::rollback();
-                return jsonResponse('Jumlah bahan layak, tidak boleh lebih dari ' . $jumlahBahanBrgMsk, Response::HTTP_NOT_ACCEPTABLE);
-            }
+            $barangMasuk->update($request->only(['bahan_layak', 'bahan_tidak_layak', 'status']));
+            DB::commit();
+            return jsonResponse('Data berhasil disimpan', 200);
         } catch (AuthorizationException $th) {
             return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
         } catch (\Throwable $th) {
@@ -231,31 +217,24 @@ class LabController extends Controller
                 throw new NotFoundHttpException("Barang tidak ditemukan");
             }
             if ($request->status == StatusLabEnum::Accept) {
-                $jumlahHasilLab = $lab->bahan_layak + $lab->bahan_tidak_layak;
-                $jumlahBahanBrgMsk = $lab->barang_masuk->jumlah_bahan;
-                if ($jumlahBahanBrgMsk != $jumlahHasilLab) {
-                    throw new HttpException(Response::HTTP_NOT_ACCEPTABLE, "Bahan yang diverifikasi {$jumlahHasilLab} dari {$jumlahBahanBrgMsk}");
-                }
-            }
-
-            // Update Lab id_status_gudang
-            $request->merge([
-                'id_status_gudang' => StatusGudangEnum::Sudah
-            ]);
-            $lab->update($request->all());
-
-            // Save To Gudang
-            $cariBahandiGudang = Gudang::where('id_bahan', $lab->barang_masuk->id_bahan)->first();
-            if (!is_null($cariBahandiGudang)) {
-                $ttlStokBahan = $cariBahandiGudang->stok + $lab->bahan_layak;
-                $cariBahandiGudang->update([
-                    'stok' => $ttlStokBahan,
+                $request->merge([
+                    'id_status_gudang' => StatusGudangEnum::Sudah
                 ]);
-            } else {
-                $gudang = new Gudang();
-                $gudang->id_bahan = $lab->barang_masuk->id_bahan;
-                $gudang->stok = $lab->bahan_layak;
-                $gudang->save();
+                $lab->update($request->all());
+
+                // Save To Gudang
+                $cariBahandiGudang = Gudang::where('id_bahan', $lab->barang_masuk->id_bahan)->first();
+                if (!is_null($cariBahandiGudang)) {
+                    $ttlStokBahan = $cariBahandiGudang->stok + $lab->bahan_layak;
+                    $cariBahandiGudang->update([
+                        'stok' => $ttlStokBahan,
+                    ]);
+                } else {
+                    $gudang = new Gudang();
+                    $gudang->id_bahan = $lab->barang_masuk->id_bahan;
+                    $gudang->stok = $lab->bahan_layak;
+                    $gudang->save();
+                }
             }
             DB::commit();
             return jsonResponse('Data berhasil disimpan', 200);
@@ -278,7 +257,6 @@ class LabController extends Controller
         // $pdf = Pdf::loadview('lab.lab_pdf', compact('labs'));
         // return $pdf->download('laporan-lab.pdf');
         return view('lab.print_lab');
-
     }
 
     public function cetak()

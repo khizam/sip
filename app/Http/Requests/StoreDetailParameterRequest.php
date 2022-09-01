@@ -13,7 +13,7 @@ class StoreDetailParameterRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,7 +25,7 @@ class StoreDetailParameterRequest extends FormRequest
     {
         return [
             'id_lab' => 'required|exists:lab,id_lab',
-            'id_parameter' => 'required|exists:parameter,id_parameter',
+            'id_parameter' => 'required|array|exists:parameter,id_parameter',
         ];
     }
 }
