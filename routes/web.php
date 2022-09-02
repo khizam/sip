@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ {
+use App\Http\Controllers\{
     KategoriController,
     SupplierController,
     BahanController,
@@ -86,8 +86,8 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('lab.updateLab');
     Route::put('/lab/check-status/{id}', [LabController::class, 'checkStatus'])
         ->name('lab.checkStatus');
-    Route::get('/lab/cetak_lab', [LabController::class, 'cetak']);
-    Route::get('/lab/cetak_pdf', [LabController::class, 'printPdfLab']);
+    Route::get('/lab/cetak_pdf', [LabController::class, 'printPdfLab'])->name('lab.cetakAll');
+    Route::get('/lab/cetak/{id_lab}', [LabController::class, 'printByLab'])->name('lab.printByLab');
     Route::resource('/lab', LabController::class);
 
     Route::resource('/detailParameter', ParameterLabController::class)
@@ -224,5 +224,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/jenis_produksi/data', [JenisProduksiController::class, 'data'])
         ->name('jenis_produksi.data');
     Route::resource('/jenis_produksi', JenisProduksiController::class);
-
 });

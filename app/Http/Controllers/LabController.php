@@ -56,12 +56,14 @@ class LabController extends Controller
                 return '<span class="label label-success">' . $lab->id_lab . '</span>';
             })
             ->addColumn('aksi', function ($lab) {
-                $html = '<div class="">
+                $html = '<div class="" style="display: flex; column-gap: 3px">
                     <button onclick="editLabForm(`' . route('lab.editLab', $lab->id_lab) . '` , `' . route('lab.updateLab', $lab->id_lab) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-pencil"></i></button>
                     <a href=' . route('detailParameter.index', $lab->id_lab) . ' class="btn btn-xs btn-primary btn-flat">Parameter Lab</a>';
                 if ($lab->status != StatusLabEnum::Accept) {
                     $html .= '<button onclick="editForm(`' . route('lab.edit', $lab->id_lab) . '` , `' . route('lab.update', $lab->id_lab) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-plus"></i></button>
                     <button onclick="check(`' . route('lab.edit', $lab->id_lab) . '` , `' . route('lab.checkStatus', $lab->id_lab) . '`)" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-check"></i></button>';
+                } else {
+                    $html .= '<a href="' . route('lab.printByLab', $lab->id_lab) . '" target="_blank" class="btn btn-xs btn-warning btn-flat ml-1"><i class="fa fa-print"></i></button>';
                 }
                 $html .= '</div>';
                 return $html;
@@ -249,21 +251,14 @@ class LabController extends Controller
     {
         $this->authorize('lab_edit');
 
-        $labs = Lab::with('barang_masuk.bahan')->get();
-        $pdf = Pdf::loadview('lab.lab_pdf', compact('labs'))->setPaper('a4', 'potrait');
-        return $pdf->download('laporan-lab.pdf');
-
-        // $labs = Lab::with('barang_masuk.bahan')->get();
-        // $pdf = Pdf::loadview('lab.lab_pdf', compact('labs'));
-        // return $pdf->download('laporan-lab.pdf');
-        return view('lab.print_lab');
+        $labs = Lab::with(['barang_masuk.bahan', 'barang_masuk.kategori', 'barang_masuk.supplier', 'parameterLab'])->get();
+        return view('lab.print_lab', compact('labs'));
     }
 
-    public function cetak()
+    public function printByLab($id_lab)
     {
-        // yang dipakai
-        $labs = Lab::with(['barang_masuk.bahan'])->get();
-        $pdf = PDF::loadView('lab/cetak_lab', compact('labs'))->setPaper('a4', 'landscape');
-        return $pdf->stream();
+        $lab = Lab::with(['barang_masuk.bahan', 'barang_masuk.kategori', 'barang_masuk.supplier', 'barang_masuk.kemasan', 'parameterLab'])->where('id_lab', $id_lab)->first();
+        // dd($lab);
+        return view('lab.print', compact('lab'));
     }
 }

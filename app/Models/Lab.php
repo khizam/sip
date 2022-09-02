@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Lab extends Model
@@ -49,6 +50,16 @@ class Lab extends Model
     public function barang_masuk()
     {
         return $this->hasOne(Barangmasuk::class, 'id_barangmasuk', 'id_barangmasuk');
+    }
+
+    /**
+     * Get all of the parameter for the Lab
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function parameterLab(): HasMany
+    {
+        return $this->hasMany(ParameterLab::class, 'id_lab');
     }
 
     public function status_gudang()
