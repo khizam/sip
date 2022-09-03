@@ -123,7 +123,7 @@ table img{
     border: 1px solid black;
 } */
 .max-width{
-    max-width: 60%;
+    max-width: 70%;
 }
 .max-width-30{
     max-width: 30%;
@@ -163,7 +163,7 @@ span {
 span.title {
     display: inline-block;
     font-weight: 500;
-    width: 8.3rem;
+    width: 6.3rem;
 }
 .w-6 {
     width: 6rem!important;
@@ -172,7 +172,8 @@ span.body {
     display: inline-block;
     margin-left: .4rem;
     font-weight: 500;
-    width: 9rem;
+    width: 10rem;
+    text-transform: capitalize;
 }
 .b-1 {
     border: .5px solid black!important;
@@ -190,4 +191,39 @@ li {
 
 b,p,span {
     font-size: 14px;
+}
+
+
+/* Baru */
+.header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    column-gap: 3rem;
+}
+.img-header {
+    display: inline-block;
+    margin-left: 1rem;
+}
+.table-border th, tr, td {
+    border: 1px solid black;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.table-border th {
+    font-weight: 550;
+}
+.t-center {
+    text-align: center;
+}
+.menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.t-2 {
+    width: 2rem;
 }
