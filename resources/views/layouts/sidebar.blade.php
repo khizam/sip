@@ -58,6 +58,9 @@
               @can('user_index')
               <li class="active"><a href="{{route('kemasan.index') }}"><i class="fa fa-caret-square-o-down"></i>Kemasan</a></li>
               @endcan
+              @can('user_index')
+              <li class="active"><a href="{{route('jenisproduksi.index') }}"><i class="fa  fa-pie-chart"></i>Jenis Produksi</a></li>
+              @endcan
             </ul>
           </li>
           @endcan

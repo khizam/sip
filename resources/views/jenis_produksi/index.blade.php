@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('title')
-      Parameter
+      Jenis Produksi
 @endsection
 
 @section('breadcrumb')
 @parent
-<li class="active">Parameter</li>
+<li class="active">Jenis Produksi</li>
 @endsection
 
 @section('content')
@@ -16,17 +16,17 @@
       <div class="col-md-12">
         <div class="box">
           <div class="box-header with-border">
-            <button onclick="addForm('{{ route('parameter.store') }}')" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
+            <button onclick="addForm('{{ route('jenisproduksi.store') }}')" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
           </div>
           <div class="box-body table-responsive">
             <table class="table table-striped table-bordered">
               <thead>
                 <th width="5%">No</th>
-                <th>Parameter</th>
-                <th>Nomor Parameter</th>
+                <th>Jenis</th>
                 <th width="15%"><i class="fa fa-cog"></i></th>
               </thead>
               <tbody>
+
               </tbody>
             </table>
           </div>
@@ -34,7 +34,7 @@
       </div>
 </div>
 
-@includeIf('parameter.form')
+@includeIf('jenis_produksi.form')
 @endsection
 
 @push('scripts')
@@ -46,13 +46,13 @@
             processing: true,
             autoWidth: false,
             ajax: {
-              url: '{{ route('parameter.data') }}',
+              url: '{{ route('jenisproduksi.data') }}',
             },
             columns: [
               {data: 'DT_RowIndex', searchable: false, sortable: false},
-              {data: 'nama_parameter'},
-              {data: 'nomor_parameter'},
+              {data: 'jenis'},
               {data: 'aksi', searchable: false, sortable: false},
+
             ]
         });
 
@@ -78,8 +78,7 @@
         $('#modal-form form')[0].reset();
         $('#modal-form form').attr('action', url);
         $('#modal-form [name=_method]').val('post');
-        $('#modal-form [name=nama_parameter]').focus();
-        $('#modal-form [name=nomor_parameter]').focus();
+        $('#modal-form [name=jenis]').focus();
     }
 
     function editForm(url) {
@@ -89,13 +88,11 @@
         $('#modal-form form')[0].reset();
         $('#modal-form form').attr('action', url);
         $('#modal-form [name=_method]').val('put');
-        $('#modal-form [name=nama_parameter]').focus();
-        $('#modal-form [name=nomor_parameter]').focus();
+        $('#modal-form [name=jenis]').focus();
 
         $.get(url)
             .done((response) => {
-              $('#modal-form [name=nama_parameter]').val(response.nama_parameter);
-              $('#modal-form [name=nomor_parameter]').val(response.nomor_parameter);
+              $('#modal-form [name=jenis]').val(response.jenis);
             })
             .fail((errors) => {
                 alert('Tidak dapat menampilkan data');

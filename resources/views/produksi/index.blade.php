@@ -27,6 +27,7 @@
                 </th> --}}
                 <th>Kode Produksi</th>
                 <th>Produk</th>
+                <th>Jenis</th>
                 <th>Jumlah</th>
                 <th>Satuan</th>
                 <th>Status</th>
@@ -70,6 +71,7 @@
             {data: 'DT_RowIndex', searchable: false, sortable: false},
             {data: 'kode_produksi'},
             {data: 'nama_produk'},
+            {data: 'jenis'},
             {data: 'jumlah'},
             {data: 'satuan'},
             {data: 'status'},

@@ -36,7 +36,7 @@ class ParameterLabController extends Controller
     {
         $parameterLab = ParameterLab::leftJoin('lab', 'lab.id_lab', '=', 'parameter_lab.id_lab')
             ->leftJoin('parameter', 'parameter.id_parameter', '=', 'parameter_lab.id_parameter')
-            ->select('lab.id_lab', 'lab.id_barangmasuk', 'id_parameterlab', 'parameter.id_parameter', 'parameter.nama_parameter')
+            ->select('lab.id_lab', 'lab.id_barangmasuk', 'id_parameterlab', 'parameter.id_parameter', 'parameter.nama_parameter', 'parameter.nomor_parameter')
             ->orderBy('parameter_lab.id_parameterlab', 'asc')
             ->where('parameter_lab.id_lab', $id_lab);
 

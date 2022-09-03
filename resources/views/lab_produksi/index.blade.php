@@ -54,7 +54,7 @@
           },
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
-            {data: 'id_labproduksi'},
+            {data: 'id_produksi'},
             {data: 'created_at'},
             {data: 'nama_produk'},
             {data: 'jumlah'},

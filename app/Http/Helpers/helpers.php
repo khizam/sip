@@ -100,3 +100,10 @@ if (!function_exists('mrRequestAuto')) {
         return $prefix . date('ymd', strtotime(now())) . random_int(1, 9999);
     }
 }
+
+if (!function_exists('mrLabProduksiAuto')) {
+    function kodeLabProduksi($prefix = 'LP')
+    {
+        return $prefix . date('ymd', strtotime(now())) . random_int(1, 9999);
+    }
+}

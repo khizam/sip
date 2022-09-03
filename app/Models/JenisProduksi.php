@@ -16,7 +16,7 @@ class JenisProduksi extends Model
     protected $primaryKey = 'id_jenisproduksi';
 
     protected $fillable = [
-        'jenis'
+        'jenis',
     ];
 
     protected static $logFillable = true;

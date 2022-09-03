@@ -57,6 +57,7 @@ class ParameterController extends Controller
     {
         $parameter = new Parameter();
         $parameter->nama_parameter = $request->nama_parameter;
+        $parameter->nomor_parameter = $request->nomor_parameter;
         $parameter->save();
 
         return response()->json('Data berhasil disimpan', 200);

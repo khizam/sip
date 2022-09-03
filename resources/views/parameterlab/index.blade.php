@@ -21,6 +21,7 @@
                         <thead>
                             <th width="5%">No</th>
                             <th>Parameter</th>
+                            <th>Nomor Parameter</th>
                             <th width="15%"><i class="fa fa-cog"></i></th>
                         </thead>
                         <tbody>
@@ -118,6 +119,9 @@
                     },
                     {
                         data: 'nama_parameter'
+                    },
+                    {
+                        data: 'nomor_parameter'
                     },
                     // {data: 'proses'},
                     {

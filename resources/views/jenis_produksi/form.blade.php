@@ -11,14 +11,9 @@
             </div>
             <div class="modal-body">
               <div class="form-group row">
-                <label for="nama_parameter" class="col-md-2 col-md-offset-1 control-label">Parameter</label>
+                <label for="jenis" class="col-md-2 col-md-offset-1 control-label">Jenis</label>
                 <div class="col-md-7">
-                    <input type="text" name="nama_parameter" id="nama_parameter" class="form-control" required autofocus>
-                    <span class="help-block with-errors"></span>
-                </div>
-                <label for="nomor_parameter" class="col-md-2 col-md-offset-1 control-label">Nomor Parameter</label>
-                <div class="col-md-7">
-                    <input type="number" name="nomor_parameter" id="nomor_parameter" class="form-control" required autofocus>
+                    <input type="text" name="jenis" id="jenis" class="form-control" required autofocus>
                     <span class="help-block with-errors"></span>
                 </div>
               </div>

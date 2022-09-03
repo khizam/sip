@@ -17,6 +17,7 @@ class Parameter extends Model
 
     protected $fillable = [
         'nama_parameter',
+        'nomor_parameter'
     ];
 
     protected static $logFillable = true;

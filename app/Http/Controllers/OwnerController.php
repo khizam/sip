@@ -9,6 +9,7 @@ use App\Models\ProduksiBarang;
 use App\Models\Produk;
 use App\Models\Satuan;
 use App\Models\User;
+use App\Models\JenisProduksi;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,8 +30,9 @@ class OwnerController extends Controller
         $statusProduksi = StatusProduksi::all()->pluck('status', 'id_status');
         $user = User::all()->pluck('name', 'id');
         $satuan = Satuan::all()->pluck('satuan', 'id_satuan');
+        $jenisproduksi = JenisProduksi::all()->pluck('jenis', 'id_jenisproduksi');
 
-        return view('owner.index', compact('produk', 'user', 'statusProduksi', 'satuan'));
+        return view('owner.index', compact('produk', 'user', 'statusProduksi', 'satuan', 'jenisproduksi'));
     }
 
     public function data()
@@ -40,7 +42,8 @@ class OwnerController extends Controller
             ->leftJoin('status_produksi', 'status_produksi.id_status', '=', 'produksi_barang.id_status')
             ->leftJoin('users', 'users.id', '=', 'produksi_barang.id_user')
             ->leftJoin('satuan', 'satuan.id_satuan', '=', 'produksi_barang.id_satuan')
-            ->select('produksi_barang.*', 'produk.nama_produk', 'status_produksi.status', 'users.id', 'satuan.satuan')
+            ->leftJoin('jenis_produksi', 'jenis_produksi.id_jenisproduksi', '=', 'produksi_barang.id_jenisproduksi')
+            ->select('produksi_barang.*', 'produk.nama_produk', 'status_produksi.status', 'users.id', 'satuan.satuan', 'jenis_produksi.jenis')
             ->orderBy('created_at', 'asc');
 
         return datatables()
@@ -106,6 +109,7 @@ class OwnerController extends Controller
             $produksibarang->jumlah = $request->jumlah;
             $produksibarang->id_satuan = $request->id_satuan;
             $produksibarang->id_status = null;
+            $produksibarang->id_jenisproduksi = $request->id_jenisproduksi;
             $produksibarang->id_user = Auth::id();
             $produksibarang->save();
 

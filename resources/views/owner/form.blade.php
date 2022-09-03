@@ -41,6 +41,18 @@
                     <span class="help-block with-errors"></span>
                 </div>
               </div>
+              <div class="form-group row">
+                <label for="id_jenisproduksi" class="col-md-2 col-md-offset-1 control-label">Jenis Produksi</label>
+                <div class="col-md-8">
+                    <select name="id_jenisproduksi" id="id_jenisproduksi" class="form-control" required>
+                      <option value="">Pilih Jenis Produksi</option>
+                      @foreach ($jenisproduksi as $jen => $items)
+                          <option value="{{ $jen }}">{{ $items }}</option>
+                      @endforeach
+                    </select>
+                    <span class="help-block with-errors"></span>
+                </div>
+              </div>
             </div>
             <div class="modal-footer">
               <button class="btn btn-sm btn-flat btn-primary">Simpan</button>

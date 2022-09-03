@@ -33,8 +33,8 @@ class JenisProduksiController extends Controller
         ->addColumn('aksi', function ($jenisproduksi) {
             return '
             <div class="btn-group">
-                <button onclick="editForm(`'. route('jenis_produksi.update', $jenisproduksi->id_jenisproduksi) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                <button onclick="deleteData(`'. route('jenis_produksi.delete', $jenisproduksi->id_jenisproduksi) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                <button onclick="editForm(`'. route('jenisproduksi.update', $jenisproduksi->id_jenisproduksi) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                <button onclick="deleteData(`'. route('jenisproduksi.destroy', $jenisproduksi->id_jenisproduksi) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
             </div>
             ';
         })
@@ -110,6 +110,9 @@ class JenisProduksiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $jenisproduksi = JenisProduksi::find($id);
+        $jenisproduksi->delete();
+
+        return response(null, 204);
     }
 }

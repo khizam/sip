@@ -20,6 +20,7 @@
                     <table class="table table-striped table-bordered">
                         <thead>
                             <th width="5%">No</th>
+                            <th>Kode Produksi</th>
                             <th>Produk</th>
                             <th>Grade</th>
                             <th>Jumlah Produk</th>
@@ -52,6 +53,9 @@
                         data: 'DT_RowIndex',
                         searchable: false,
                         sortable: false
+                    },
+                    {
+                        data: 'kode_gudangproduk'
                     },
                     {
                         data: 'nama_produk'

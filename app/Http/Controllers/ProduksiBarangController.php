@@ -39,9 +39,10 @@ class ProduksiBarangController extends Controller
     {
         $produksibarang = ProduksiBarang::leftJoin('produk', 'produk.id_produk', '=', 'produksi_barang.id_produk')
             ->leftJoin('status_produksi', 'status_produksi.id_status', '=', 'produksi_barang.id_status')
+            ->leftJoin('jenis_produksi', 'jenis_produksi.id_jenisproduksi', '=', 'produksi_barang.id_jenisproduksi')
             ->leftJoin('users', 'users.id', '=', 'produksi_barang.id_user')
             ->leftJoin('satuan', 'satuan.id_satuan', '=', 'produksi_barang.id_satuan')
-            ->select('produksi_barang.*', 'produk.nama_produk', 'status_produksi.status', 'users.id', 'satuan.satuan')
+            ->select('produksi_barang.*', 'produk.nama_produk', 'status_produksi.status', 'users.id', 'satuan.satuan', 'jenis_produksi.jenis')
             ->orderBy('id_produksi', 'asc');
 
         return datatables()
@@ -156,9 +157,12 @@ class ProduksiBarangController extends Controller
                 'lost' => null
             ];
             if (is_null($produksiItem)) {
+                dd($produksiItem);
                 $dataLab += [
                     'id_produksi' => $id_produksi,
+                    'kode_labproduksi' => kodeLabProduksi('LP'),
                 ];
+                dd($dataLab);
                 LabProduksi::create($dataLab);
             } else {
                 $produksiItem->update($dataLab);

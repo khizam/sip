@@ -25,6 +25,7 @@ use App\Http\Controllers\ {
     ParameterController,
     KemasanController,
     ParameterLabController,
+    JenisProduksiController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -221,8 +222,8 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('kemasan.data');
     Route::resource('/kemasan', KemasanController::class);
 
-    Route::get('/jenis_produksi/data', [JenisProduksiController::class, 'data'])
-        ->name('jenis_produksi.data');
-    Route::resource('/jenis_produksi', JenisProduksiController::class);
+    Route::get('/jenisproduksi/data', [JenisProduksiController::class, 'data'])
+        ->name('jenisproduksi.data');
+    Route::resource('/jenisproduksi', JenisProduksiController::class);
 
 });
