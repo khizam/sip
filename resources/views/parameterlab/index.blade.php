@@ -22,7 +22,9 @@
                             <th width="5%">No</th>
                             <th>Parameter</th>
                             <th>Nomor Parameter</th>
+                            @can('lab_delete')
                             <th width="15%"><i class="fa fa-cog"></i></th>
+                            @endcan
                         </thead>
                         <tbody>
                         </tbody>
@@ -73,7 +75,9 @@
                             <!-- /.form-group -->
 
                             <div class="form-group">
+                                @can('lab_create')
                                 <button type="submit" class="btn btn-sm btn-flat btn-primary">Simpan</button>
+                                @endcan
                             </div>
                         </div>
                     </form>
@@ -124,11 +128,13 @@
                         data: 'nomor_parameter'
                     },
                     // {data: 'proses'},
+                    @can('lab_delete')
                     {
                         data: 'aksi',
                         searchable: false,
                         sortable: false
                     },
+                    @endcan
                 ]
             });
 

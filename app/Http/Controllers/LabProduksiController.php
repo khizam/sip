@@ -32,13 +32,15 @@ class LabProduksiController extends Controller
             ->leftJoin('produk', 'produk.id_produk', '=', 'produksi_barang.id_produk')
             ->leftJoin('status_produksi', 'status_produksi.id_status', '=', 'produksi_barang.id_status')
             ->orderBy('lab_produksi.created_at', 'DESC')
-            ->select(['id_labproduksi', 'produk.nama_produk', 'status_produksi.status', 'lab_produksi.jumlah_produksi', 'lab_produksi.kode_labproduksi', 'lab_produksi.created_at', 'produksi_barang.jumlah', 'produksi_barang.id_produksi']);
+            ->select(['id_labproduksi', 'produk.nama_produk', 'status_produksi.status', 'lab_produksi.jumlah_produksi', 'lab_produksi.created_at', 'produksi_barang.jumlah', 'produksi_barang.id_produksi', 'produksi_barang.kode_produksi']);
 
         return datatables()
             ->of($labProduksi)
             ->addIndexColumn()
 
-
+            ->addColumn('created_at', function ($labProduksi) {
+                return date('d-m-Y:H:i:s', strtotime($labProduksi->created_at));
+            })
             ->addColumn('lost', function ($labProduksi) {
                 return is_null($labProduksi->lost) ? '0' : $labProduksi->lost;
             })

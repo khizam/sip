@@ -41,6 +41,9 @@ class LogActivityController extends Controller
             $causer = $newLogsActivity->causer->name ?? 'Database Seeder';
             return "<span class='label label-success'>{$causer}</span";
         })
+        ->addColumn('created_at', function ($newLogsActivity) {
+            return date('d-m-Y H:i:s', strtotime($newLogsActivity->created_at));
+       })
         ->rawColumns(['attributes_to_text','causer.name'])
         ->make(true);
     }

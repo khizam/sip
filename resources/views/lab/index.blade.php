@@ -14,7 +14,10 @@
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <a href="{{ route('lab.cetakAll') }}" class="btn btn-danger btn-xs" target="_blank"> Cetak PDF</a>
+                    {{-- <a href="{{ route('lab.cetakAll') }}" class="btn btn-danger btn-xs" target="_blank"> Cetak PDF</a> --}}
+                    @can('lab_create')
+                    <a href="{{ route('lab.cetakAll') }}" class="btn btn-danger btn-xs" target="_blank">Cetak PDF</a>
+                    @endcan
                 </div>
                 <div class="box-body table-responsive">
                     <table class="table table-striped table-bordered">
@@ -27,7 +30,9 @@
                             <th>Bahan Layak</th>
                             <th>Status</th>
                             <th>Status Gudang</th>
+
                             <th width="15%"><i class="fa fa-cog"></i></th>
+
                         </thead>
                         <tbody>
                         </tbody>
@@ -79,18 +84,19 @@
                     {
                         data: 'bahan_layak'
                     },
-                    // {data: 'satuan'},
                     {
                         data: 'status'
                     },
                     {
                         data: 'status_gudang'
                     },
+
                     {
                         data: 'aksi',
                         searchable: false,
                         sortable: false
                     },
+
                 ]
             });
 
@@ -223,7 +229,6 @@
                     $('#modal-form-edit-lab [name=kd_barangmasuk]').val(response.barang_masuk.kode_barangmasuk);
                     $('#modal-form-edit-lab [name=bahan]').val(response.barang_masuk.bahan.nama_bahan);
                     $('#modal-form-edit-lab [name=satuan]').val(response.barang_masuk.bahan.satuan.satuan);
-                    $('#modal-form-edit-lab [name=parameter]').val(response.parameter);
                     $('#modal-form-edit-lab [name=hasil]').val(response.hasil);
                     $('#modal-form-edit-lab [name=kesimpulan]').val(response.kesimpulan);
                     $('#modal-form-edit-lab [name=grid]').val(response.grid);

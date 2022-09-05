@@ -14,8 +14,10 @@
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header with-border">
+                    @can('barangmasuk_create')
                     <button onclick="addForm('{{ route('barangmasuk.store') }}')" class="btn btn-primary btn-xs btn-flat"><i
-                            class="fa fa-plus-circle"></i> Tambah</button>
+                        class="fa fa-plus-circle"></i> Tambah</button>
+                    @endcan
                 </div>
                 <div class="box-body table-responsive">
                     <table class="table table-striped table-bordered">
@@ -37,7 +39,9 @@
                             <th>Kendaraan</th>
                             <th>Status</th>
                             <th>Tanggal</th>
+                            @can('barangmasuk_create')
                             <th width="15%"><i class="fa fa-cog"></i></th>
+                            @endcan
                         </thead>
                         <tbody>
                         </tbody>
@@ -79,7 +83,7 @@
                         searchable: false,
                         sortable: false
                     },
-                    // {data: 'select_all'},
+
                     {
                         data: 'kode_barangmasuk'
                     },
@@ -128,11 +132,13 @@
                     {
                         data: 'created_at'
                     },
+                    @can('barangmasuk_edit', 'barangmasuk_delete')
                     {
                         data: 'aksi',
                         searchable: false,
                         sortable: false
                     },
+                    @endcan
                 ]
             });
 

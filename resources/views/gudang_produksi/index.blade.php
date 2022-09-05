@@ -55,7 +55,7 @@
                         sortable: false
                     },
                     {
-                        data: 'kode_gudangproduk'
+                        data: 'kode_produksi'
                     },
                     {
                         data: 'nama_produk'
@@ -69,11 +69,13 @@
                     {
                         data: 'stok'
                     },
+                    @can('gudang_delete')
                     {
                         data: 'aksi',
                         searchable: false,
                         sortable: false
                     },
+                    @endcan
                 ]
             });
 

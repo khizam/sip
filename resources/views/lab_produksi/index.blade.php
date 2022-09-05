@@ -16,7 +16,9 @@
       <div class="col-md-12">
         <div class="box">
           <div class="box-header with-border">
+            @can('labproduksi_create')
             <a href="/lab/grade/{id_produksi}" class="btn btn-primary btn-xs" target="_blank">Cetak PDF</a>
+            @endcan
           </div>
           <div class="box-body table-responsive">
             <table class="table table-striped table-bordered">
@@ -54,7 +56,7 @@
           },
           columns: [
             {data: 'DT_RowIndex', searchable: false, sortable: false},
-            {data: 'id_produksi'},
+            {data: 'kode_produksi'},
             {data: 'created_at'},
             {data: 'nama_produk'},
             {data: 'jumlah'},

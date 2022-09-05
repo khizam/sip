@@ -37,5 +37,14 @@ class BarangMasukPermissionSeeder extends Seeder
 
         $barangmasukRole = Role::findById(RolesEnum::Owner);
         $barangmasukRole->givePermissionTo(['barangmasuk_index','barangmasuk_create','barangmasuk_edit','barangmasuk_delete']);
+
+        $gudangRole = Role::findById(RolesEnum::Gudang);
+        $gudangRole->givePermissionTo(['barangmasuk_index','barangmasuk_create','barangmasuk_edit','barangmasuk_delete']);
+
+        $labRole = Role::findById(RolesEnum::Lab);
+        $labRole->givePermissionTo(['barangmasuk_index']);
+
+        $produksiRole = Role::findById(RolesEnum::Produksi);
+        $produksiRole->givePermissionTo(['barangmasuk_index']);
     }
 }

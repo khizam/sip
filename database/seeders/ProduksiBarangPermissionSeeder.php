@@ -40,5 +40,11 @@ class ProduksiBarangPermissionSeeder extends Seeder
 
         $produksibarangRole = Role::findById(RolesEnum::Produksi);
         $produksibarangRole->givePermissionTo(['produksibarang_index','produksibarang_create','produksibarang_edit','produksibarang_delete']);
+
+        $labRole = Role::findById(RolesEnum::Lab);
+        $labRole->givePermissionTo(['produksibarang_index']);
+
+        $gudangRole = Role::findById(RolesEnum::Gudang);
+        $gudangRole->givePermissionTo(['produksibarang_index']);
     }
 }

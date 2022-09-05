@@ -67,9 +67,11 @@
                         <span class="help-block">{{ $message }}</span>
                         @enderror
                     </div>
+                    @can('labproduksi_create')
                     <div class="form-group">
                         <button type="submit" class="btn btn-sm btn-flat btn-primary">Simpan</button>
                     </div>
+                    @endcan
                     <!-- /.form-group -->
                 </div>
                 <div class="col-md-6">
@@ -117,7 +119,9 @@
               <th>Nama Grade</th>
               <th>Jumlah Produk</th>
               <th>Stok</th>
+              @can('labproduksi_delete', 'labproduksi_edit')
               <th width="15%"><i class="fa fa-cog"></i></th>
+              @endcan
             </thead>
             <tbody>
             </tbody>
@@ -129,7 +133,9 @@
 
 <div class="row" style="margin-bottom: 1rem">
     <div class="col-md-12" style="display: flex; flex-direction: column">
+        @can('labproduksi_create')
         <button type="button" class="btn btn-success" onclick="tambahkanKeGudangProduksi('{{ route('gudang_produksi.store') }}')" id="tambah_gudang" data-proses="{{ request()->segment(3) }}">Tambahkan ke Gudang Produksi</button>
+        @endcan
     </div>
 </div>
 @endsection
@@ -156,7 +162,9 @@
             {data: 'nama_grade'},
             {data: 'jumlah_produk'},
             {data: 'stok'},
+            @can('labproduksi_delete', 'labproduksi_edit')
             {data: 'aksi', searchable: false, sortable: false},
+            @endcan
           ]
         });
 

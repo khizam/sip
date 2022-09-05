@@ -33,6 +33,9 @@ class PeralatanKerjaController extends Controller
         return datatables()
             ->of($peralatanKerja)
             ->addIndexColumn()
+            ->addColumn('created_at', function ($peralatanKerja) {
+                return date('d-m-Y H:i:s', strtotime($peralatanKerja->created_at));
+            })
             ->addColumn('aksi', function ($peralatanKerja) {
                 return '
             <div class="btn-group">

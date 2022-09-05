@@ -20,7 +20,6 @@ class Lab extends Model
         'kode_lab',
         'id_barangmasuk',
         'satuan',
-        'parameter',
         'hasil',
         'kesimpulan',
         'grid',

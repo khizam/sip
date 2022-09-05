@@ -36,5 +36,14 @@ class RequestProduksiPermissionSeeder extends Seeder
 
         $ownerRole = Role::findById(RolesEnum::Owner);
         $ownerRole->givePermissionTo(['request_index','request_create','request_edit','request_delete']);
+
+        $produksiRole = Role::findById(RolesEnum::Produksi);
+        $produksiRole->givePermissionTo(['request_index']);
+
+        $labRole = Role::findById(RolesEnum::Lab);
+        $labRole->givePermissionTo(['request_index']);
+
+        $gudangRole = Role::findById(RolesEnum::Gudang);
+        $gudangRole->givePermissionTo(['request_index']);
     }
 }

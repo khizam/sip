@@ -33,7 +33,8 @@ class GudangProdukJadiController extends Controller
         $gudangProdukjadi = GudangProdukJadi::Join('grade_lab_produksi', 'grade_lab_produksi.id_gradelab', '=', 'gudang_produk.id_gradelab')
             ->Join('grade', 'grade.id_grade', '=', 'grade_lab_produksi.id_grade')
             ->Join('produk', 'produk.id_produk', '=', 'grade_lab_produksi.id_produk')
-            ->select('gudang_produk.*', 'grade_lab_produksi.jumlah_produk', 'grade_lab_produksi.stok', 'grade_lab_produksi.id_grade', 'grade_lab_produksi.id_produk', 'grade.nama_grade', 'produk.nama_produk')
+            ->Join('produksi_barang', 'produksi_barang.id_produksi', '=', 'grade_lab_produksi.id_produksi')
+            ->select('gudang_produk.*', 'grade_lab_produksi.jumlah_produk', 'grade_lab_produksi.stok', 'grade_lab_produksi.id_grade', 'grade_lab_produksi.id_produk', 'grade.nama_grade', 'produk.nama_produk', 'grade_lab_produksi.id_produksi', 'produksi_barang.kode_produksi')
             ->orderBy('grade_lab_produksi.id_gradelab', 'ASC');
 
         return datatables()
@@ -43,7 +44,6 @@ class GudangProdukJadiController extends Controller
             ->addColumn('aksi', function ($gudangProdukjadi) {
                 return '
                 <div class="btn-group">
-
                     <button onclick="deleteData(`' . route('grade-lab-produksi.destroy', $gudangProdukjadi->id_gradelab) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                 </div>
                 ';

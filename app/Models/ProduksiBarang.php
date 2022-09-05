@@ -18,6 +18,7 @@ class ProduksiBarang extends Model
 
     protected $fillable = [
         'id_produk',
+        'kode_labproduksi',
         'id_status',
         'jumlah',
         'keterangan',

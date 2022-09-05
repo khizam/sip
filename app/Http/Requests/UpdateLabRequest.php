@@ -25,7 +25,6 @@ class UpdateLabRequest extends FormRequest
     {
         return [
             'satuan' => 'required',
-            'parameter'=>'required|string',
             'hasil'=>'required|string',
             'kesimpulan'=>'required|string',
             'grid'=>'required|string',

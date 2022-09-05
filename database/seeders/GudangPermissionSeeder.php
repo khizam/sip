@@ -40,5 +40,11 @@ class GudangPermissionSeeder extends Seeder
 
         $gudangRole = Role::findById(RolesEnum::Gudang);
         $gudangRole->givePermissionTo(['gudang_index','gudang_create','gudang_edit','gudang_delete']);
+
+        $labRole = Role::findById(RolesEnum::Lab);
+        $labRole->givePermissionTo(['gudang_index']);
+
+        $produksiRole = Role::findById(RolesEnum::Produksi);
+        $produksiRole->givePermissionTo(['gudang_index']);
     }
 }

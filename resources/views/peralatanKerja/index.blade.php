@@ -25,6 +25,7 @@
                             <th width="5%">No</th>
                             <th>Alat</th>
                             <th>Jumlah Alat</th>
+                            <th>Tanggal dan Jam</th>
                             <th width="15%"><i class="fa fa-cog"></i></th>
                         </thead>
                         <tbody>
@@ -60,6 +61,9 @@
                     },
                     {
                         data: 'jumlah_alat'
+                    },
+                    {
+                        data: 'created_at'
                     },
                     {
                         data: 'aksi',

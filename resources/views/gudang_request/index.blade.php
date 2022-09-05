@@ -66,7 +66,9 @@
             {data: 'status'},
             {data: 'keterangan'},
             // {data: 'Status'},
+            @can('gudang_create')
             {data: 'aksi', searchable: false, sortable: false},
+            @endcan
           ]
         });
 

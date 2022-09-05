@@ -39,5 +39,11 @@ class LabPermissionSeeder extends Seeder
 
         $labRole = Role::findById(RolesEnum::Lab);
         $labRole->givePermissionTo(['lab_index','lab_create','lab_edit','lab_delete']);
+
+        $gudangRole = Role::findById(RolesEnum::Gudang);
+        $gudangRole->givePermissionTo(['lab_index']);
+
+        $produksiRole = Role::findById(RolesEnum::Produksi);
+        $produksiRole->givePermissionTo(['lab_index']);
     }
 }

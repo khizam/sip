@@ -33,7 +33,9 @@
                 <th>Status</th>
                 <th>Keterangan</th>
                 <th>Jumlah_hasil_produksi</th>
+                @can('produksibarang_create')
                 <th width="15%"><i class="fa fa-cog"></i></th>
+                @endcan
               </thead>
               <tbody>
               </tbody>
@@ -77,7 +79,9 @@
             {data: 'status'},
             {data: 'keterangan'},
             {data: 'jumlah_hasil_produksi'},
+            @can('produksibarang_create')
             {data: 'aksi', searchable: false, sortable: false},
+            @endcan
           ]
         });
 

@@ -61,15 +61,14 @@ class BarangmasukController extends Controller
             ->addColumn('jumlah_bahan', function ($barangmasuk) {
                 return format_uang($barangmasuk->jumlah_bahan);
             })
-            ->addColumn('created_at', function ($barangmasuk) {
-                return date('d-m-Y H:i:s', strtotime($barangmasuk->created_at));
+           ->addColumn('created_at', function ($barangmasuk) {
+                 return date('d-m-Y H:i:s', strtotime($barangmasuk->created_at));
             })
             ->addColumn('aksi', function ($barangmasuk) {
                 return '
             <div class="">
                 <button onclick="editForm(`' . route('barangmasuk.update', $barangmasuk->id_barangmasuk) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
                 <button onclick="deleteData(`' . route('barangmasuk.destroy', $barangmasuk->id_barangmasuk) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
-
             </div>
             ';
             })

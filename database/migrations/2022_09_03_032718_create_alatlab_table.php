@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddKodeLabToLabProduksi extends Migration
+class CreateAlatlabTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class AddKodeLabToLabProduksi extends Migration
      */
     public function up()
     {
-        Schema::table('lab_produksi', function (Blueprint $table) {
-            $table->string('kode_labproduksi')->nullable()
-            ->unique()
-            ->after('id_labproduksi');
+        Schema::create('alatlab', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
 
@@ -27,8 +26,6 @@ class AddKodeLabToLabProduksi extends Migration
      */
     public function down()
     {
-        Schema::table('lab_produksi', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('alatlab');
     }
 }

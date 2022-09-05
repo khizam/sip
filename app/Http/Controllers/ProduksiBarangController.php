@@ -157,12 +157,10 @@ class ProduksiBarangController extends Controller
                 'lost' => null
             ];
             if (is_null($produksiItem)) {
-                dd($produksiItem);
                 $dataLab += [
                     'id_produksi' => $id_produksi,
-                    'kode_labproduksi' => kodeLabProduksi('LP'),
+
                 ];
-                dd($dataLab);
                 LabProduksi::create($dataLab);
             } else {
                 $produksiItem->update($dataLab);

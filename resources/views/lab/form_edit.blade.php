@@ -43,15 +43,6 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label for="parameter" class="col-md-2 col-md-offset-1 control-label">Parameter</label>
-                                <div class="col-md-8">
-                                    <textarea name="parameter" id="parameter" cols="3" rows="3" class="form-control"></textarea>
-                                    <span class="help-block with-errors"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
                                 <label for="hasil" class="col-md-2 col-md-offset-1 control-label">Hasil</label>
                                 <div class="col-md-8">
                                     <textarea name="hasil" id="hasil" cols="3" rows="3" class="form-control"></textarea>

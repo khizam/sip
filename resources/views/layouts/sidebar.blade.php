@@ -161,6 +161,22 @@
             </a>
           </li>
 
+          {{-- <li class="header">Laporan Input</li>
+          <li class="active treeview">
+              <a href="#">
+                  <i class="fa fa-th"></i> <span>Laporan</span>
+                  <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                  </span>
+              </a>
+              <ul class="treeview-menu">
+                  <li class="active"><a href=""><i class=" fa fa-cubes"></i> Aktivitas Gudang</a></li>
+                  <li class="active"><a href=""><i class="fa fa-flask"></i> Aktivitas Lab</a></li>
+                  <li class="active"><a href=""><i class="fa fa-area-chart"></i> Aktivitas Produksi</a></a></li>
+              </ul>
+          </li> --}}
+
+
           @can('peralatan_index')
           <li class="header">Peralatan</li>
           <li>
@@ -172,8 +188,7 @@
           </li>
           @endcan
 
-
-
+            @can('logactivity_index')
             <li class="header">Log Aktivitas</li>
             <li class="active treeview">
                 <a href="#">
@@ -187,6 +202,7 @@
                                 class="fa fa-circle-o"></i>Aktivitas user</a></li>
                 </ul>
             </li>
+            @endcan
 
 
         </ul>

@@ -102,7 +102,7 @@ if (!function_exists('mrRequestAuto')) {
 }
 
 if (!function_exists('mrLabProduksiAuto')) {
-    function kodeLabProduksi($prefix = 'LP')
+    function KodeLabProduksi($prefix = 'LP')
     {
         return $prefix . date('ymd', strtotime(now())) . random_int(1, 9999);
     }

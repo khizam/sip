@@ -19,6 +19,6 @@ class RoleSeeder extends Seeder
         Role::create(['name'=>'produksi']);
         Role::create(['name'=>'gudang']);
         Role::create(['name'=>'inventory alat']);
-      
+
     }
 }

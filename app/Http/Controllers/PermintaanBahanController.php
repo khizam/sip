@@ -22,6 +22,8 @@ class PermintaanBahanController extends Controller
                 'id_detail_produksi' => $detail_produksi->id_detail,
                 'jumlah_bahan' => $detail_produksi->jumlah,
                 'status' => StatusPermintaanBahanEnum::Proses,
+
+
             ];
             $permintaan = PermintaanBahan::create($data);
             event(new PermintaanBahanEvent($permintaan));
