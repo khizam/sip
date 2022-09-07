@@ -87,15 +87,6 @@ class BarangmasukController extends Controller
             $this->authorize('barangmasuk_create');
             DB::beginTransaction();
             $barangmasuk = Barangmasuk::latest()->first() ?? new Barangmasuk();
-            $kode_barangmasuk = (int) $barangmasuk->kode_barangmasuk + 1;
-
-
-            // $barangmasuk = new Barangmasuk();
-            // $barangmasuk->kode_barangmasuk = tambah_nol_didepan($kode_barangmasuk, 6);
-            // $maxNumber = DB::table('barangmasuk')->max('id_barangmasuk');
-            // $prefix = "PA";
-            // $kode_barangmasuk = $prefix . str_pad($maxNumber + 1, 5, '0', STR_PAD_LEFT);
-
 
             $barangmasuk = new barangmasuk();
             $barangmasuk->kode_barangmasuk = kodeOtomatis('BR');
