@@ -40,8 +40,9 @@
       </div>
 </div>
 
+
 @includeIf('lab_produksi.form_selesai')
-@includeIf('lab_produksi.form_lost')
+
 @endsection
 
 @push('scripts')
