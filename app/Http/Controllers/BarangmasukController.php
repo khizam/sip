@@ -88,9 +88,9 @@ class BarangmasukController extends Controller
             DB::beginTransaction();
             $barangmasuk = Barangmasuk::latest()->first() ?? new Barangmasuk();
 
-            $barangmasuk = new barangmasuk();
+
             $barangmasuk->kode_barangmasuk = kodeOtomatis('BR');
-            // $request['kode_barangmasuk'] = 'P'. tambah_nol_didepan((int)$barangmasuk->id_barangmasuk +1, 6);
+
 
             $lab = Lab::latest()->first() ?? new Lab();
             $kode_lab = (int) $lab->kode_lab + 1;

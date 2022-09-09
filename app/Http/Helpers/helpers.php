@@ -79,7 +79,7 @@ function jsonResponse($data = '', $status = Response::HTTP_OK, array $headers = 
     return response()->json($data, $status, $headers);
 }
 
-if (!function_exists('mrPasienAuto')) {
+if (!function_exists('kodeOtomatis')) {
     function kodeOtomatis($prefix = 'BR')
     {
         // BR tahun-bulan-tanggal-random angka 1-9999
