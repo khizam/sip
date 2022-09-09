@@ -37,6 +37,7 @@
 </div>
 
 @includeIf('grade.form')
+@includeIf('lab_produksi.form_selesai')
 @endsection
 
 @push('scripts')
@@ -72,6 +73,26 @@
               });
             }
         })
+
+        $('#modal_form_selesai form').validator().on('submit', function (e) {
+            if (! e.preventDefault()) {
+              $.ajax({
+                  url: $('#modal_form_selesai form').attr('action'),
+                  method: $('#modal_form_selesai [name=_method]').val() ?? 'PUT',
+                  data: $('#modal_form_selesai form').serialize(),
+                  dataType: "json"
+              })
+              .done((response) => {
+                $('#modal_form_selesai').modal('hide');
+                table.ajax.reload();
+              })
+              .fail((errors) => {
+                errors.responseJSON !== '' ? alert(errors.responseJSON) : alert('Tidak dapat menyimpan data');
+                return;
+              });
+            }
+        })
+
     });
 
     function addForm(url) {
@@ -101,6 +122,16 @@
           return;
       });
 
+    }
+
+    function selesaiLostLab(url, url_show) {
+        $('#modal_form_selesai').modal('show');
+        $('#modal_form_selesai .modal-title').text('lost');
+
+        $('#modal_form_selesai form')[0].reset();
+        $('#modal_form_selesai form').attr('action',url);
+        $('#modal_form_selesai [name=_method]').val('put');
+        $('#modal_form_selesai [name=lost]').focus();
     }
 
 

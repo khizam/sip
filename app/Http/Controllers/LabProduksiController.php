@@ -32,7 +32,7 @@ class LabProduksiController extends Controller
             ->leftJoin('produk', 'produk.id_produk', '=', 'produksi_barang.id_produk')
             ->leftJoin('status_produksi', 'status_produksi.id_status', '=', 'produksi_barang.id_status')
             ->orderBy('lab_produksi.created_at', 'DESC')
-            ->select(['id_labproduksi', 'produk.nama_produk', 'status_produksi.status', 'lab_produksi.jumlah_produksi', 'lab_produksi.created_at', 'produksi_barang.jumlah', 'produksi_barang.id_produksi', 'produksi_barang.kode_produksi']);
+            ->select(['id_labproduksi', 'produk.nama_produk', 'status_produksi.status', 'lab_produksi.jumlah_produksi', 'lab_produksi.created_at', 'lab_produksi.lost', 'produksi_barang.jumlah', 'produksi_barang.id_produksi', 'produksi_barang.kode_produksi']);
 
         return datatables()
             ->of($labProduksi)
@@ -47,31 +47,43 @@ class LabProduksiController extends Controller
             ->addColumn('aksi', function ($labProduksi) {
                 $html = '<div class="">
                      <a href=' . route('grade-lab-produksi.index', $labProduksi->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">grade produk</a>
+                     <button onclick="selesaiLostLab(`' . route('lab-produksi.selesai_lost', $labProduksi->id_labproduksi) . '`)" class="btn btn-xs btn-success btn-flat"><i class="fa fa-check"></i></button>
                     </div>';
-
                 return $html;
             })
             ->rawColumns(['aksi', 'kode_lab'])
             ->make(true);
     }
 
-    public function selesaiLost(Request $request, $id_produksi)
+    public function selesaiLost(Request $request, $id_labproduksi)
     {
         try {
             DB::beginTransaction();
-            $labProduksi = LabProduksi::find($id_produksi);
-            $Lost = $request->lost;
-            if ($Lost > $labProduksi->jumlah_produksi) {
-                throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR, "jumlah Lost tidak lebih dari" . $labProduksi->jumlah_produksi);
+            $labproduksi = LabProduksi::find($id_labproduksi);
+            $jumlahLost = $request->lost;
+            if ($jumlahLost > $labproduksi->jumlah_produksi) {
+                throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR, "Jumlah lost tidak lebih dari jumlah produksi" . $labproduksi->jumlah_produksi);
             }
-            if ($labProduksi->count() == 0) {
-                throw new NotFoundHttpException("Permintaan Lost Tidak ditemukan");
+            if ($labproduksi->count() == 0) {
+                throw new NotFoundHttpException("Permintaan produksi tidak ditemukan");
             }
-            $labProduksi->update([
-                'lost' => $Lost,
+            $labproduksi->update([
+                'lost' => $jumlahLost,
             ]);
+            $labiItem = LabProduksi::where('id_labproduksi', $id_labproduksi)->first();
+            $dataLab = [
+                'lost' => $jumlahLost,
+            ];
+            if (is_null($labiItem)) {
+                $dataLab += [
+                    'id_labproduksi' => $id_labproduksi,
+                ];
+                LabProduksi::create($dataLab);
+            } else {
+                $labiItem->update($dataLab);
+            }
             DB::commit();
-            return jsonResponse($labProduksi);
+            return jsonResponse($labproduksi);
         } catch (NotFoundHttpException $th) {
                 DB::rollback();
                 return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);

@@ -190,11 +190,12 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('lab-produksi.data');
     Route::resource('/lab-produksi', LabProduksiController::class)
         ->names('lab-produksi');
-    Route::put('/lab-produksi/lost/{id_produksi}', [LabProduksiController::class, 'selesaiLost'])
-        ->name('lab-produksi.plus_Lost');
-
     Route::get('/lab-produksi/grade/{id_produksi}', [LabProduksiController::class, 'halGrade'])
         ->name('lab-produksi.halGrade');
+    Route::put('/lab-produksi/selesai/{id_labproduksi}', [LabProduksiController::class, 'selesaiLost'])
+        ->name('lab-produksi.selesai_lost');
+
+
 
     Route::resource('/grade-lab-produksi', GradeLabProduksiController::class)
         ->except('index')
