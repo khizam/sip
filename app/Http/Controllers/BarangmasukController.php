@@ -90,7 +90,7 @@ class BarangmasukController extends Controller
 
 
             $barangmasuk->kode_barangmasuk = kodeOtomatis('BR');
-            //a
+            //ates
 
             $lab = Lab::latest()->first() ?? new Lab();
             $kode_lab = (int) $lab->kode_lab + 1;
