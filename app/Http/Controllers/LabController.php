@@ -176,6 +176,8 @@ class LabController extends Controller
             }
             // $lab->update($request->validated());
             $lab->hasil = $request->hasil;
+            $lab->kesimpulan = $request->kesimpulan;
+            $lab->grid = $request->grid;
             $lab->save();
             return jsonResponse($lab);
         } catch (AuthorizationException $th) {
