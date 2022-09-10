@@ -113,6 +113,7 @@
           $('#modal-form [name=jumlah]').val(response.jumlah);
           $('#modal-form [name=id_status]').val(response.id_status);
           $('#modal-form [name=id_satuan]').val(response.id_satuan);
+          $('#modal-form [name=id_jenisproduksi]').val(response.id_jenisproduksi);
           $('#modal-form [name=keterangan]').val(response.keterangan);
         })
       .fail((errors) => {

@@ -167,7 +167,7 @@
             $('#modal-form [name=id_bahan]').focus();
         }
 
-        function editForm(url) {
+        function editForm(url, url_show) {
             $('#modal-form').modal('show');
             $('#modal-form .modal-title').text('Edit Barangmasuk');
 
@@ -178,7 +178,7 @@
 
             //$('#modal-form [name=satuan]').val(response.satuan.id_satuan);
 
-            $.get(url)
+            $.get(url, url_show)
                 .done((response) => {
                     $('#modal-form [name=kode_barangmasuk]').val(response.kode_barangmasuk);
                     $('#modal-form [name=id_bahan]').val(response.id_bahan);
@@ -188,15 +188,17 @@
                     $('#modal-form [name=nomor_po]').val(response.nomor_po);
                     $('#modal-form [name=pengirim]').val(response.pengirim);
                     $('#modal-form [name=penerima]').val(response.penerima);
+                    $('#modal-form [name=berat_kotor]').val(response.berat_kotor);
+                    $('#modal-form [name=tara]').val(response.tara);
                     $('#modal-form [name=netto]').val(response.netto);
                     $('#modal-form [name=kendaraan]').val(response.kendaraan);
+                    $('#modal-form [name=reject]').val(response.reject);
                     $('#modal-form [name=jumlah_bahan]').val(response.jumlah_bahan);
                 })
                 .fail((errors) => {
                     alert('Tidak dapat menampilkan data');
                     return;
                 });
-
         }
 
         function deleteData(url) {
