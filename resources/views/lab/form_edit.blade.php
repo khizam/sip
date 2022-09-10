@@ -63,7 +63,7 @@
                             <div class="col-md-12">
                                 <label for="grid" class="col-md-2 col-md-offset-1 control-label">Grid</label>
                                 <div class="col-md-8">
-                                    <textarea name="grid" id="bahan_layak" class="form-control" ></textarea>
+                                    <input name="grid" id="grid" class="form-control">
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>
