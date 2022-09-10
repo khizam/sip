@@ -170,8 +170,8 @@ class LabController extends Controller
     {
         try {
             $this->authorize('lab_edit');
-            $lab = Lab::where('id_lab', $id)->first();
-            if ($lab == null) {
+            $lab = Lab::where('id_lab', $id);
+            if ($lab->first() == null) {
                 throw new NotFoundHttpException("Barang tidak ditemukan");
             }
             $lab->update($request->validated());
