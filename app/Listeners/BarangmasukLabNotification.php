@@ -29,6 +29,6 @@ class BarangmasukLabNotification
     {
         $role = RolesEnum::Lab;
         $users = NotificationService::getUserByRole($role)->get();
-        Notification::send($users, new \App\Notifications\BarangmasukLabNotification($event->data));
+        // Notification::send($users, new \App\Notifications\BarangmasukLabNotification($event->data));
     }
 }

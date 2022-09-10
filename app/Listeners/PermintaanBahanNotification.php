@@ -35,6 +35,6 @@ class PermintaanBahanNotification
         //Push Notification to Role "Gudang"
         $produksi = NotificationService::getUserByRole($role)->firstOrFail();
         $data = NotificationService::getNotificationUser($produksi);
-        event(new PushNotificationEvent($data, $role));
+        // event(new PushNotificationEvent($data, $role));
     }
 }
