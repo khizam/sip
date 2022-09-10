@@ -225,7 +225,7 @@
 
             $.get(url)
                 .done((response) => {
-                    $('#modal-form-edit-lab [name=id_lab]').val(response.id_barangmasuk);
+                    $('#modal-form-edit-lab [name=id_lab]').val(response.id_lab);
                     $('#modal-form-edit-lab [name=kd_barangmasuk]').val(response.barang_masuk.kode_barangmasuk);
                     $('#modal-form-edit-lab [name=bahan]').val(response.barang_masuk.bahan.nama_bahan);
                     $('#modal-form-edit-lab [name=satuan]').val(response.barang_masuk.bahan.satuan.satuan);
