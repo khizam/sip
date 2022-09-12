@@ -174,10 +174,9 @@ class LabController extends Controller
             if ($lab == null) {
                 throw new NotFoundHttpException("Barang tidak ditemukan");
             }
-            // $lab->update($request->validated());
-            $lab->hasil = $request->hasil;
-            $lab->kesimpulan = $request->kesimpulan;
-            $lab->grid = $request->grid;
+            // $lab->hasil = $request->hasil;
+            // $lab->kesimpulan = $request->kesimpulan;
+            // $lab->grid = $request->grid;
             $lab->save();
             return jsonResponse($lab);
         } catch (AuthorizationException $th) {
