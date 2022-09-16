@@ -82,7 +82,7 @@ class LabController extends Controller
     {
         $this->authorize('lab_create');
         return response()->json('Data berhasil disimpan', 200);
-        return response()->json('Data tidak berhasil disimpan');
+        // return response()->json('Data tidak berhasil disimpan');
     }
 
     /**
@@ -174,9 +174,9 @@ class LabController extends Controller
             if ($lab == null) {
                 throw new NotFoundHttpException("Barang tidak ditemukan");
             }
-            // $lab->hasil = $request->hasil;
-            // $lab->kesimpulan = $request->kesimpulan;
-            // $lab->grid = $request->grid;
+            $lab->hasil = $request->hasil;
+            $lab->kesimpulan = $request->kesimpulan;
+            $lab->grid = $request->grid;
             $lab->save();
             return jsonResponse($lab);
         } catch (AuthorizationException $th) {

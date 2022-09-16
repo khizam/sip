@@ -26,6 +26,8 @@ use App\Http\Controllers\{
     KemasanController,
     ParameterLabController,
     JenisProduksiController,
+    DashboardController,
+    BatchController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -54,7 +56,11 @@ Route::middleware([
     })->name('dashboard');
 });
 
+
 Route::group(['middleware' => 'auth'], function () {
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::get('/kategori/data', [KategoriController::class, 'data'])
         ->name('kategori.data');
     Route::resource('/kategori', KategoriController::class);
@@ -116,7 +122,6 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('gudang_request.terima_permintaan');
     Route::put('/gudang_request/tolak/{id_request}', [GudangRequestController::class, 'tolakPermintaanBahan'])
         ->name('gudang_request.tolak_permintaan');
-
 
     // Route User
     Route::get('/user/data', [UserController::class, 'data'])
@@ -236,4 +241,11 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('alatlab.data');
     Route::resource('/alatlab', AlatLabController::class);
 
+    Route::resource('/batchDetail', BatchController::class)
+        ->except('index')
+        ->names('batch');
+    Route::get('/batchDetail/index/{id_produksi?}', [BatchController::class, 'index'])
+        ->name('batchDetail.index');
+    Route::get('/batchDetail/data/{id_produksi}', [BatchController::class, 'data'])
+        ->name('batchDetail.data');
 });

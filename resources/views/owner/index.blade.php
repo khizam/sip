@@ -16,7 +16,9 @@
       <div class="col-md-12">
         <div class="box">
           <div class="box-header with-border">
+            @can(['request_index','request_create','request_edit','request_delete'])
             <button onclick="addForm('{{ route('owner.store') }}')" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
+            @endcan
             {{-- <a href="/lab/cetak_lab" class="btn btn-danger btn-xs" target="_blank"> Cetak PDF</a> --}}
             {{-- <a href="/owner/cetak_owner" class="btn btn-danger btn-xs" target="_blank"> Cetak Pdf</a> --}}
 
@@ -34,8 +36,11 @@
                 <th>Jumlah</th>
                 <th>Satuan</th>
                 <th>Status</th>
+                <th>Batch</th>
                 <th>Keterangan</th>
+                @can('create_request')
                 <th width="15%"><i class="fa fa-cog"></i></th>
+                @endcan
               </thead>
               <tbody>
               </tbody>
@@ -68,9 +73,13 @@
             {data: 'jumlah'},
             {data: 'satuan'},
             {data: 'status'},
+            {data: 'batch'},
             {data: 'keterangan'},
+            @can(['request_edit', 'request_delete'])
             {data: 'aksi', searchable: false, sortable: false},
-          ]
+            @endcan
+        ]
+
         });
 
         $('#modal-form').validator().on('submit', function (e) {

@@ -12,67 +12,117 @@
 @section('content')
 <!-- Small boxes (Stat box) -->
 <div class="row">
+    @can(['barangmasuk_index', 'barangmasuk_create', 'barangmasuk_edit', 'barangmasuk_delete'])
       <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <div class="small-box bg-aqua">
           <div class="inner">
-            <h3>150</h3>
-
-            <p>New Orders</p>
-          </div>
-          <div class="icon">
-            <i class="ion ion-bag"></i>
-          </div>
-          <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-        </div>
-      </div>
-      <!-- ./col -->
-      <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-green">
-          <div class="inner">
-            <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-            <p>Bounce Rate</p>
-          </div>
-          <div class="icon">
-            <i class="ion ion-stats-bars"></i>
-          </div>
-          <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-        </div>
-      </div>
-      <!-- ./col -->
-      <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-yellow">
-          <div class="inner">
-            <h3>44</h3>
-
-            <p>User Registrations</p>
-          </div>
-          <div class="icon">
-            <i class="ion ion-person-add"></i>
-          </div>
-          <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-        </div>
-      </div>
-      <!-- ./col -->
-      <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-red">
-          <div class="inner">
-            <h3>65</h3>
-
-            <p>Unique Visitors</p>
+                <h3>{{ $barangmasuk }}</h3>
+                <p>Barang Masuk</p>
           </div>
           <div class="icon">
             <i class="ion ion-pie-graph"></i>
           </div>
-          <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          <a href="{{ route('barangmasuk.index') }}" class="small-box-footer">Lanjut Barang Masuk<i class="fa fa-arrow-circle-right"></i></a>
         </div>
       </div>
+      @endcan
       <!-- ./col -->
+      @can(['lab_index','lab_create','lab_edit','lab_delete'])
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-green">
+          <div class="inner">
+            <h3>{{ $lab }}</h3>
+            <p>Jumlah Barang Lab</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-stats-bars"></i>
+          </div>
+          <a href="{{ route('lab.index') }}" class="small-box-footer">Lanjut Lab <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      @endcan
+      <!-- ./col -->
+      @can(['labproduksi_index','labproduksi_create','labproduksi_edit','labproduksi_delete'])
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-yellow">
+          <div class="inner">
+            <h3>{{$labproduksi}}</h3>
+            <p>Jumlah Lab Produksi</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-stats-bars"></i>
+          </div>
+          <a href="{{ route('lab-produksi.index') }}" class="small-box-footer">Lanjut Lab Produksi<i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      @endcan
+      <!-- ./col -->
+      @can(['gudang_index','gudang_create','gudang_edit','gudang_delete'])
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-red">
+          <div class="inner">
+            <h3>{{$gudang}}</h3>
+            <p>Jumlah bahan gudang</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-pie-graph"></i>
+          </div>
+          <a href="{{ route('gudang.index') }}" class="small-box-footer">Jumlah Bahan Di gudang<i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      @endcan
+      <!-- ./col -->
+      @can(['gudang_index','gudang_create','gudang_edit','gudang_delete'])
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-blue">
+          <div class="inner">
+            <h3>{{$gudangprodukjadi}}</h3>
+            <p>Jumlah produk gudang sesuai grade</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-pie-graph"></i>
+          </div>
+          <a href="{{ route('gudang_produksi.index') }}" class="small-box-footer">Jumlah Bahan Di gudang<i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      @endcan
+      @can(['gudang_index','gudang_create','gudang_edit','gudang_delete'])
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-orange">
+          <div class="inner">
+            <h3>{{$permintaanbahan}}</h3>
+            <p>Gudang permintaan Bahan</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-pie-graph"></i>
+          </div>
+          <a href="{{ route('gudang_request.index') }}" class="small-box-footer">Jumlah Bahan Di gudang<i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      @endcan
+      @can(['produksibarang_index','produksibarang_create','produksibarang_edit','produksibarang_delete'])
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-purple">
+          <div class="inner">
+            <h3>{{$produksibarang}}</h3>
+            <p>Proses Produksi</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-podium"></i>
+          </div>
+          <a href="{{ route('produksi.index') }}" class="small-box-footer">Jumlah Produksi<i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      @endcan
 </div>
+
 <div class="row">
       <div class="col-md-12">
         <div class="box">

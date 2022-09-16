@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddStokBahanToGudangTable extends Migration
+class AddBatchToProduksiBarangTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class AddStokBahanToGudangTable extends Migration
      */
     public function up()
     {
-        Schema::table('gudang', function (Blueprint $table) {
-            $table->decimal('stok')
-                ->nullable()
-                ->after('id_bahan');
+        Schema::table('produksi_barang', function (Blueprint $table) {
+            $table->integer('batch')->nullable();
         });
     }
 
@@ -27,7 +25,7 @@ class AddStokBahanToGudangTable extends Migration
      */
     public function down()
     {
-        Schema::table('gudang', function (Blueprint $table) {
+        Schema::table('produksi_barang', function (Blueprint $table) {
             //
         });
     }

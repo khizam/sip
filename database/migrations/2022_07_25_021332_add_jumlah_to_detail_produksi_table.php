@@ -14,7 +14,7 @@ class AddJumlahToDetailProduksiTable extends Migration
     public function up()
     {
         Schema::table('detail_produksi', function (Blueprint $table) {
-            $table->integer('jumlah')
+            $table->float('jumlah')
             ->nullable()
             ->after('id_produksi');
         });

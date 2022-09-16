@@ -61,7 +61,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label for="grid" class="col-md-2 col-md-offset-1 control-label">Grid</label>
+                                <label for="grid" class="col-md-2 col-md-offset-1 control-label">Grade</label>
                                 <div class="col-md-8">
                                     <input name="grid" id="grid" class="form-control">
                                     <span class="help-block with-errors"></span>

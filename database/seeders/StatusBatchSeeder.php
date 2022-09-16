@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\StatusGudangProduksi;
+use App\Models\StatusBatch;
 use Illuminate\Database\Seeder;
 
-class StatusGudangProduksiSeeder extends Seeder
+class StatusBatchSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,14 +16,12 @@ class StatusGudangProduksiSeeder extends Seeder
     {
         $data = [
             [
-
-                'status'=>'belum di gudang produksi',
+                'status'=>'belum selesai',
             ],
             [
-
-                'status'=>'sudah di gudang produksi',
+                'status'=>'selesai',
             ],
         ];
-        StatusGudangProduksi::insert($data);
+        StatusBatch::insert($data);
     }
 }

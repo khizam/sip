@@ -21,7 +21,7 @@ class CreatePermintaanBahanTable extends Migration
                 ->on('detail_produksi')
                 ->onUpdate('restrict')
                 ->onDelete('restrict');
-            $table->integer('jumlah_bahan')->nullable();
+            $table->float('jumlah_bahan')->nullable();
             $table->text('keterangan')->nullable();
             $table->unsignedBigInteger('id_user_produksi')->nullable();
             $table->foreign('id_user_produksi')

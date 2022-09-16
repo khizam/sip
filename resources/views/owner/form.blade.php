@@ -53,6 +53,13 @@
                     <span class="help-block with-errors"></span>
                 </div>
               </div>
+              <div class="form-group row">
+                <label for="batch" class="col-md-2 col-md-offset-1 control-label">Batch</label>
+                <div class="col-md-8">
+                    <input type="number" name="batch" id="batch" class="form-control" value="0">
+                    <span class="help-block with-errors"></span>
+                </div>
+              </div>
             </div>
             <div class="modal-footer">
               <button class="btn btn-sm btn-flat btn-primary">Simpan</button>

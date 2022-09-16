@@ -14,7 +14,7 @@ class AddBahanLayakDanTidakLayakToLabTable extends Migration
     public function up()
     {
         Schema::table('lab', function (Blueprint $table) {
-            $table->smallInteger('bahan_layak')
+            $table->float('bahan_layak')
                 ->nullable()
                 ->after('grid');
             $table->smallInteger('bahan_tidak_layak')

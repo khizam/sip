@@ -69,22 +69,22 @@
                 </div>
                 <label for="berat_kotor" class="col-md-2 col-md-offset-1 control-label">Berat Kotor</label>
                 <div class="col-md-8">
-                    <input type="number" name="berat_kotor" id="berat_kotor" class="form-control">
+                    <input type="number_format" name="berat_kotor" id="berat_kotor" class="form-control">
                     <span class="help-block with-errors"></span>
                 </div>
                 <label for="tara" class="col-md-2 col-md-offset-1 control-label">Tara</label>
                 <div class="col-md-8">
-                    <input type="number" name="tara" id="tara" class="form-control">
+                    <input type="number_format" name="tara" id="tara" class="form-control">
                     <span class="help-block with-errors"></span>
                 </div>
                 <label for="netto" class="col-md-2 col-md-offset-1 control-label">Netto</label>
                 <div class="col-md-8">
-                    <input type="text" name="netto" id="netto" class="form-control">
+                    <input type="number_format" name="netto" id="netto" class="form-control">
                     <span class="help-block with-errors"></span>
                 </div>
                 <label for="reject" class="col-md-2 col-md-offset-1 control-label">Reject</label>
                 <div class="col-md-8">
-                    <input type="number" name="reject" id="reject" class="form-control">
+                    <input type="number_format" name="reject" id="reject" class="form-control">
                     <span class="help-block with-errors"></span>
                 </div>
                 <label for="kendaraan" class="col-md-2 col-md-offset-1 control-label">Kendaraan</label>
@@ -96,7 +96,7 @@
               <div class="form-group row">
                 <label for="jumlah_bahan" class="col-md-2 col-md-offset-1 control-label">Jumlah Bahan</label>
                 <div class="col-md-6">
-                    <input type="number" name="jumlah_bahan" id="jumlah_bahan" class="form-control" value="0">
+                    <input type="number_format" name="jumlah_bahan" id="jumlah_bahan" class="form-control">
                     <span class="help-block with-errors"></span>
                 </div>
                 <div class="col-md-2">

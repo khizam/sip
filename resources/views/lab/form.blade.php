@@ -63,7 +63,7 @@
                             <div class="col-md-12">
                                 <label for="bahan_layak" class="col-md-2 col-md-offset-1 control-label">Bahan Layak</label>
                                 <div class="col-md-8">
-                                    <input type="number" name="bahan_layak" id="bahan_layak" class="form-control" />
+                                    <input type="number_format" name="bahan_layak" id="bahan_layak" class="form-control" />
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>

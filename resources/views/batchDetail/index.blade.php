@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('title')
-      Detail Produksi
+      Batch Produksi
 @endsection
 
 @section('breadcrumb')
 @parent
-<li class="active">Detail Produksi</li>
+<li class="active">Batch Produksi</li>
 @endsection
 
 @section('content')
@@ -30,21 +30,26 @@
                     @error('id_produksi')
                     <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
-                    <div class="form-group @error('id_bahan') has-error @enderror">
-                        <label>Bahan</label>
-                        <select class="form-control select2" style="width: 100%;" name="id_bahan" id="id_bahan">
+                    <div class="form-group @error('jumlah') has-error @enderror">
+                        <label for="jumlah">Nama Batch</label>
+                        <input type="number_format" name="jumlah" id="jumlah" class="form-control">
+                        @error('jumlah')
+                        <span class="help-block">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    {{-- <div class="form-group @error('id_produksi') has-error @enderror">
+                        <label>Batch</label>
+                        <select class="form-control select2" style="width: 100%;" name="id_produksi" id="id_produksi">
                             <option value="">Pilih Bahan</option>
-                            @foreach ($bahan as $item)
-                            <option value="{{ $item->id_bahan }}">{{ $item->nama_bahan }}</option>
-                            @endforeach
+
                         </select>
                         @error('id_bahan')
                         <span class="help-block">{{ $message }}</span>
                         @enderror
-                    </div>
+                    </div> --}}
                     <!-- /.form-group -->
                     <div class="form-group @error('jumlah') has-error @enderror">
-                        <label for="jumlah">Jumlah Bahan</label>
+                        <label for="jumlah">Judul Batch</label>
                         <input type="number_format" name="jumlah" id="jumlah" class="form-control">
                         @error('jumlah')
                         <span class="help-block">{{ $message }}</span>
@@ -55,6 +60,20 @@
                     </div>
                 </div>
                 <div class="col-md-6">
+                    <div class="form-group @error('jumlah') has-error @enderror">
+                        <label for="jumlah">Total Batch</label>
+                        <input type="number_format" name="jumlah" id="jumlah" class="form-control">
+                        @error('jumlah')
+                        <span class="help-block">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="form-group @error('jumlah') has-error @enderror">
+                        <label for="jumlah">Jumlah Produksi</label>
+                        <input type="number_format" name="jumlah" id="jumlah" class="form-control">
+                        @error('jumlah')
+                        <span class="help-block">{{ $message }}</span>
+                        @enderror
+                    </div>
                     @if (session()->has('errors'))
                     <div class="alert alert-danger alert-dismissible">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -93,7 +112,7 @@
             <th>Nama Bahan</th>
             <th>Jumlah</th>
             <th>Permintaan Bahan</th>
-            <th>Keterangan</th>
+            <th>Status</th>
             <th width="15%"><i class="fa fa-cog"></i></th>
           </thead>
           <tbody>
@@ -114,7 +133,7 @@
 @endisset
 @endif
 
-@includeIf('detailProduksi.form_edit')
+{{-- @includeIf('detailProduksi.form_edit') --}}
 @endsection
 
 @push('scripts')

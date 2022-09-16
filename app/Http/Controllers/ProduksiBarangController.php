@@ -76,10 +76,12 @@ class ProduksiBarangController extends Controller
                 } elseif ($produksibarang->id_status == StatusProduksiEnum::Terima) {
                     $html .= '<button onclick="editForm(`' . route('produksi.update', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
                     <button onclick="deleteData(`' . route('produksi.destroy', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
-                    <a href=' . route('detailProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">detail produksi</a>';
+                    <a href=' . route('detailProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">detail produksi</a>
+                    <a href=' . route('batchDetail.index', $produksibarang->id_produksi) .' class="btn btn-xs btn-primary btn-flat">Batch</a>';
                 } elseif ($produksibarang->id_status == StatusProduksiEnum::Proses) {
                     $html .= '<button onclick="selesaiProduksiBarang(`' . route('produksi.selesai_produksi', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-success btn-flat"><i class="fa fa-check"></i></button>
-                    <a href=' . route('detailProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">detail produksi</a>';
+                    <a href=' . route('detailProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">detail produksi</a>
+                    ';
                 }
                 $html .= '</div>';
                 return $html;

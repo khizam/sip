@@ -24,10 +24,10 @@ class AddBrgmsuktambahToBarangmasukTable extends Migration
             $table->string('nomor_po');
             $table->string('pengirim');
             $table->string('penerima');
-            $table->integer('berat_kotor');
-            $table->integer('tara');
-            $table->integer('netto');
-            $table->integer('reject')->nullable();
+            $table->float('berat_kotor');
+            $table->float('tara');
+            $table->float('netto');
+            $table->float('reject')->nullable();
             $table->string('kendaraan');
         });
     }

@@ -11,6 +11,7 @@ use App\Models\Satuan;
 use App\Models\Lab;
 use App\Models\Kemasan;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -34,6 +35,7 @@ class BarangmasukController extends Controller
         $satuans = Satuan::all(['satuan', 'id_satuan']);
         $kemasan = Kemasan::all(['jenis_kemasan', 'id_kemasan']);
 
+
         return view('barangmasuk.index', compact('bahan', 'kategori', 'supplier', 'satuans', 'kemasan'));
     }
 
@@ -45,11 +47,12 @@ class BarangmasukController extends Controller
         $barangmasuk = Barangmasuk::join('bahan', 'bahan.id_bahan', '=', 'barangmasuk.id_bahan')
             ->leftJoin('kategori', 'kategori.id_kategori', '=', 'barangmasuk.id_kategori')
             // ->leftJoin('satuan', 'satuan.id_satuan', '=', 'barangmasuk.id_satuan')
+            ->leftJoin('users', 'users.id', '=', 'barangmasuk.user_id')
             ->leftJoin('supplier', 'supplier.id_supplier', '=', 'barangmasuk.id_supplier')
             ->leftJoin('kemasan', 'kemasan.id_kemasan', '=', 'barangmasuk.id_kemasan')
             // ->leftJoin('satuan', 'satuan.id_satuan', '=', 'barangmasuk.id_satuan')
             ->join('lab', 'lab.id_barangmasuk', '=', 'barangmasuk.id_barangmasuk')
-            ->select('barangmasuk.*', 'bahan.nama_bahan', 'kategori.nama_kategori', 'supplier.nama_supplier', 'lab.status', 'kemasan.jenis_kemasan')
+            ->select('barangmasuk.*', 'bahan.nama_bahan', 'kategori.nama_kategori', 'supplier.nama_supplier', 'lab.status', 'kemasan.jenis_kemasan', 'users.name')
             ->orderBy('kode_barangmasuk', 'asc');
 
         return datatables()
@@ -108,6 +111,7 @@ class BarangmasukController extends Controller
             $barangmasuk->reject = $request->reject;
             $barangmasuk->kendaraan = $request->kendaraan;
             $barangmasuk->jumlah_bahan = $request->jumlah_bahan;
+            $barangmasuk->user_id = Auth::id();
             $barangmasuk->save();
 
             $insertLab = null;
@@ -145,9 +149,7 @@ class BarangmasukController extends Controller
         try {
             $this->authorize('barangmasuk_edit');
             $barangmasuk = Barangmasuk::find($id);
-            if ($barangmasuk == null) {
-                throw new NotFoundHttpException('barang masuk tidak ditemukan');
-            }
+            return response()->json($barangmasuk);
         } catch (AuthorizationException $th) {
             return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
         } catch (NotFoundHttpException $th) {
@@ -192,10 +194,8 @@ class BarangmasukController extends Controller
             $barangmasuk->reject = $request->reject;
             $barangmasuk->kendaraan = $request->kendaraan;
             $barangmasuk->jumlah_bahan = $request->jumlah_bahan;
-            if ($barangmasuk == null) {
-                throw new NotFoundHttpException('barang masuk tidak ditemukan');
-            }
-            $barangmasuk->update($request->all());
+            $barangmasuk->save();
+            return jsonResponse('Data berhasil disimpan', 200);
         } catch (AuthorizationException $th) {
             return jsonResponse($th->getMessage(), Response::HTTP_FORBIDDEN);
         } catch (NotFoundHttpException $th) {

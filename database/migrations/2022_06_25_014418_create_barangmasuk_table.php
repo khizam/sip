@@ -33,7 +33,7 @@ class CreateBarangmasukTable extends Migration
                 ->on('supplier')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->integer('jumlah_bahan');
+            $table->float('jumlah_bahan');
             $table->timestamps();
         });
     }

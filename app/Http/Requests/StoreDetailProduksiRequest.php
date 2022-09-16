@@ -16,6 +16,8 @@ class StoreDetailProduksiRequest extends FormRequest
         return true;
     }
 
+
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -26,7 +28,7 @@ class StoreDetailProduksiRequest extends FormRequest
         return [
             'id_bahan' => 'required|exists:bahan,id_bahan',
             'id_produksi' => 'required|exists:produksi_barang,id_produksi',
-            'jumlah' => 'required|integer|not_in:0',
+            'jumlah' => 'required|regex:/^\d+(\.\d{1,2})?$/',
         ];
     }
 }

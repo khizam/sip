@@ -111,6 +111,7 @@ class OwnerController extends Controller
             $produksibarang->id_status = null;
             $produksibarang->id_jenisproduksi = $request->id_jenisproduksi;
             $produksibarang->id_user = Auth::id();
+            $produksibarang->batch = $request->batch;
             $produksibarang->save();
 
             // Notification to Produksi User

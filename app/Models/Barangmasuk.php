@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -29,6 +30,7 @@ class Barangmasuk extends Model
         'netto',
         'reject',
         'kendaraan',
+        'id',
     ];
 
     /**
@@ -58,4 +60,6 @@ class Barangmasuk extends Model
     public function kemasan(){
         return $this->belongsTo(Kemasan::class,'id_kemasan','id_kemasan');
     }
+
+
 }

@@ -31,6 +31,7 @@
                 <th>Jumlah</th>
                 <th>Satuan</th>
                 <th>Status</th>
+                <th>Jumlah Batch</th>
                 <th>Keterangan</th>
                 <th>Jumlah_hasil_produksi</th>
                 @can('produksibarang_create')
@@ -77,6 +78,7 @@
             {data: 'jumlah'},
             {data: 'satuan'},
             {data: 'status'},
+            {data: 'batch'},
             {data: 'keterangan'},
             {data: 'jumlah_hasil_produksi'},
             @can('produksibarang_create')
