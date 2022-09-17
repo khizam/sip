@@ -16,7 +16,7 @@
             <div class="box">
                 <div class="box-header with-border">
                     <a href="{{ route('produksi.index') }}" class="btn btn-sm btn-flat btn-info">Back</a>
-                    <h4>Bahan Produksi - @isset($statusProduksi)
+                    <h4>Batch Produksi - @isset($statusProduksi)
                             <i class="bg-primary"
                                 style="border-radius: 25% 10%; padding: 3px 5px">{{ $statusProduksi->status->id_status == \App\Models\Enums\StatusProduksiEnum::Terima ? 'Produksi diterima' : $statusProduksi->status->status }}</i>
                         @endisset
@@ -49,10 +49,11 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <form action="{{ route('batch.store') }}" method="post">
+                            <span id="store_url" data-url="{{ route('batch.store') }}"></span>
+                            <form action="{{ route('batch.store') }}" method="post" id="form_batch">
                                 @csrf
                                 @method('post')
-                                <input type="hidden" name="id_produksi" value="{{ request()->route('id_produksi') }}">
+                                <input type="hidden" name="id_produksi" value="{{ request()->segment(3) }}">
                                 @if (session()->has('fail'))
                                     <div class="alert alert-danger alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert"
@@ -151,20 +152,21 @@
                 ]
             });
 
-            $('#modal_edit_detail').validator().on('submit', function(e) {
+            $('#form_batch').validator().on('submit', function(e) {
                 e.preventDefault()
-                console.log('da')
-                let url = $('#modal_edit_detail').attr('action')
-                console.log(url)
+                let url = $('#form_batch').attr('action')
                 $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('[name=csrf-token]').attr('content')
+                        },
                         url: url,
-                        method: $('#modal_edit_detail [name=_method]').val() ?? 'PUT',
-                        data: $('#modal_edit_detail form').serialize(),
+                        method: $('#form_batch [name=_method]').val() ?? 'PUT',
+                        data: $('#form_batch').serialize(),
                         dataType: "json"
                     })
                     .done((response) => {
-                        $('#modal_edit_detail').modal('hide');
                         table.ajax.reload();
+                        resetForm()
                     })
                     .fail((errors) => {
                         errors.responseJSON !== '' ? alert(errors.responseJSON) : alert(
@@ -176,23 +178,14 @@
 
 
         function editDetailForm(url, formUrl) {
-            $('#modal_edit_detail').modal('show');
-            $('#modal_edit_detail .modal-title').text('Edit Detail Produksi');
-
-            $('#modal_edit_detail form')[0].reset();
-            $('#modal_edit_detail').attr('action', formUrl);
-            $('#modal_edit_detail [name=_method]').val('put');
-            $('#modal_edit_detail [name=id_bahan]').focus();
-            $('#modal_edit_detail [name=id_bahan]').find('option:not(:first)').removeAttr('selected', true).trigger(
-                'change');
+            $('#form_batch').attr('action', formUrl)
+            $('#form_batch [name=_method]').val('PUT');
             $.get(url)
                 .done((response) => {
-                    $('#modal_edit_detail [name=id_detail]').val(response.id_detail);
-                    $('#modal_edit_detail [name=id_produksi]').val(response.id_produksi);
-                    $('#modal_edit_detail [name=jumlah]').val(response.jumlah);
-                    $('#modal_edit_detail [name=id_bahan] option[value="' + response.id_bahan + '"]').attr("selected",
-                        true);
-                    $('#modal_edit_detail [name=id_bahan]').trigger('change');
+                    $('#form_batch [name=id_batch]').val(response.id_batch);
+                    $('#form_batch [name=id_produksi]').val(response.id_produksi);
+                    $('#form_batch [name=nama]').val(response.nama_batch);
+                    $('#form_batch [name=jumlah]').val(response.jumlah_batch);
                 })
                 .fail((errors) => {
                     alert(errors.responseJSON ?? 'Tidak dapat menampilkan data');
@@ -208,6 +201,7 @@
                     })
                     .done((response) => {
                         table.ajax.reload();
+                        resetForm()
                     })
                     .fail((errors) => {
                         alert('Tidak dapat menghapus data');
@@ -216,45 +210,12 @@
             }
         }
 
-        function permintaanKeGudang(url) {
-            if (confirm('Permintaan ke gudang ?')) {
-                $.post(url, {
-                        '_token': $('[name=csrf-token]').attr('content'),
-                    })
-                    .done((response) => {
-                        table.ajax.reload();
-                    })
-                    .fail((errors) => {
-                        alert(errors);
-                        return;
-                    });
-            }
-        }
-
-        function canProsesProduksi(url) {
-            if (confirm('Apakah akan dilanjutkan ke proses produksi ?')) {
-
-                let id_produksi = $('#proses_produksi').attr('data-proses')
-                let token = $('[name=csrf-token]').attr('content')
-                let data = {
-                    '_token': $('[name=csrf-token]').attr('content'),
-                    'id_produksi': id_produksi
-                }
-
-                $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: data,
-                        dataType: 'json'
-                    })
-                    .done((response) => {
-                        window.location.href = response
-                    })
-                    .fail((errors) => {
-                        alert(errors.responseJSON);
-                        return;
-                    });
-            }
+        function resetForm() {
+            $('#form_batch').attr('action', $('#store_url').attr('data-url'))
+            $('#form_batch [name=_method]').val('POST');
+            $('#form_batch [name=id_batch]').val('');
+            $('#form_batch [name=nama]').val('');
+            $('#form_batch [name=jumlah]').val('');
         }
     </script>
 @endpush
