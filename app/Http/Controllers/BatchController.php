@@ -36,11 +36,11 @@ class BatchController extends Controller
             ->of($batch)
             ->addIndexColumn()
 
-            ->addColumn('aksi', function ($detailproduksi) {
+            ->addColumn('aksi', function ($batch) {
                 return '
                 <div class="btn-group">
-                        <button onClick="" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                        <button onClick="" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                        <button onClick="editDetailForm(`' . route('batch.edit', $batch->id_batch) . '`,`' . route('batch.update', $batch->id_batch) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                        <button onClick="deleteData(`' . route('batch.destroy', $batch->id_batch) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                 </div>
                 ';
             })
@@ -63,7 +63,7 @@ class BatchController extends Controller
         $batch = ProduksiBarang::find($request->id_produksi, ['batch']);
         $countBatch = Batch::where('id_produksi', $request->id_produksi)->count();
         if ($countBatch >= $batch->batch) {
-            return redirect()->back()->with('fail', 'batch maksimal ' . $batch->batch);
+            return jsonResponse('batch maksimal ' . $batch->batch, 500);
         } else {
             Batch::create([
                 'nama_batch' => $request->nama,
@@ -71,42 +71,25 @@ class BatchController extends Controller
                 'id_status' => 1,
                 'jumlah_batch' => $request->jumlah
             ]);
-            return redirect()->back()->with('success', 'batch berhasil ditambahkan');
+            return \jsonResponse('Data Berhasil disimpan');
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $batch = Batch::findOrFail($id);
+        return jsonResponse($batch);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $batch = Batch::findOrFail($id);
+        $batch->update([
+            'nama_batch' => $request->nama,
+            'jumlah_batch' => $request->jumlah,
+        ]);
+        return jsonResponse($batch);
     }
 
     /**
