@@ -1,271 +1,260 @@
 @extends('layouts.master')
 
 @section('title')
-      Batch Produksi
+    Batch Produksi
 @endsection
 
 @section('breadcrumb')
-@parent
-<li class="active">Batch Produksi</li>
+    @parent
+    <li class="active">
+        Batch Produksi</li>
 @endsection
 
 @section('content')
-
-
-<div class="box box-default">
-    <div class="box-header with-border">
-        <a href="{{ route('produksi.index') }}" class="btn btn-sm btn-flat btn-info">Back</a>
-        <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="box">
+                <div class="box-header with-border">
+                    <a href="{{ route('produksi.index') }}" class="btn btn-sm btn-flat btn-info">Back</a>
+                    <h4>Bahan Produksi - @isset($statusProduksi)
+                            <i class="bg-primary"
+                                style="border-radius: 25% 10%; padding: 3px 5px">{{ $statusProduksi->status->id_status == \App\Models\Enums\StatusProduksiEnum::Terima ? 'Produksi diterima' : $statusProduksi->status->status }}</i>
+                        @endisset
+                    </h4>
+                </div>
+                <div class="box-body table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <th width="5%">No</th>
+                            <th>Nama Bahan</th>
+                            <th>Jumlah</th>
+                            <th>Status</th>
+                            <th width="15%"><i class="fa fa-cog"></i></th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
-    <!-- /.box-header -->
-    <div class="box-body">
-        <div class="row">
-            <form action="{{ route('detailProduksi.store') }}" method="post">
-            @csrf
-            @method('post')
-                <input type="hidden" name="id_produksi" value="{{ request()->route('id_produksi') }}">
-                <div class="col-md-6">
-                    @error('id_produksi')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
-                    <div class="form-group @error('jumlah') has-error @enderror">
-                        <label for="jumlah">Nama Batch</label>
-                        <input type="number_format" name="jumlah" id="jumlah" class="form-control">
-                        @error('jumlah')
-                        <span class="help-block">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    {{-- <div class="form-group @error('id_produksi') has-error @enderror">
-                        <label>Batch</label>
-                        <select class="form-control select2" style="width: 100%;" name="id_produksi" id="id_produksi">
-                            <option value="">Pilih Bahan</option>
-
-                        </select>
-                        @error('id_bahan')
-                        <span class="help-block">{{ $message }}</span>
-                        @enderror
-                    </div> --}}
-                    <!-- /.form-group -->
-                    <div class="form-group @error('jumlah') has-error @enderror">
-                        <label for="jumlah">Judul Batch</label>
-                        <input type="number_format" name="jumlah" id="jumlah" class="form-control">
-                        @error('jumlah')
-                        <span class="help-block">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-sm btn-flat btn-primary">Simpan</button>
+        <div class="col-md-4">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-minus"></i></button>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group @error('jumlah') has-error @enderror">
-                        <label for="jumlah">Total Batch</label>
-                        <input type="number_format" name="jumlah" id="jumlah" class="form-control">
-                        @error('jumlah')
-                        <span class="help-block">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="form-group @error('jumlah') has-error @enderror">
-                        <label for="jumlah">Jumlah Produksi</label>
-                        <input type="number_format" name="jumlah" id="jumlah" class="form-control">
-                        @error('jumlah')
-                        <span class="help-block">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    @if (session()->has('errors'))
-                    <div class="alert alert-danger alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <h4><i class="icon fa fa-ban"></i> Alert!</h4>
-                        {{ session()->get('errors-throw') }}
-                    </div>
-                    @endif
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form action="{{ route('batch.store') }}" method="post">
+                                @csrf
+                                @method('post')
+                                <input type="hidden" name="id_produksi" value="{{ request()->route('id_produksi') }}">
+                                @if (session()->has('fail'))
+                                    <div class="alert alert-danger alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert"
+                                            aria-hidden="true">&times;</button>
+                                        <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                                        {{ session()->get('fail') }}
+                                    </div>
+                                @endif
 
-                    @if (session()->has('success'))
-                    <div class="alert alert-success alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <h4><i class="icon fa fa-ban"></i> Alert!</h4>
-                        {{ session()->get('success') }}
+                                @if (session()->has('success'))
+                                    <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert"
+                                            aria-hidden="true">&times;</button>
+                                        <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                                        {{ session()->get('success') }}
+                                    </div>
+                                @endif
+                                @error('id_produksi')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                                <div class="form-group @error('jumlah') has-error @enderror">
+                                    <label for="nama">Nama Batch</label>
+                                    <input type="text" name="nama" id="nama" class="form-control">
+                                    @error('nama')
+                                        <span class="help-block">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group @error('jumlah') has-error @enderror">
+                                    <label for="jumlah">Jumlah Produksi</label>
+                                    <input type="number" name="jumlah" id="jumlah" class="form-control">
+                                    @error('jumlah')
+                                        <span class="help-block">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-sm btn-flat btn-primary">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    @endif
+                    <!-- /.row -->
                 </div>
-            </form>
-        </div>
-        <!-- /.row -->
-    </div>
-    <!-- /.box-body -->
-</div>
-
-<div class="row">
-  <div class="col-md-12">
-    <div class="box">
-      <div class="box-header with-border">
-        <h4>Bahan Produksi - @isset($statusProduksi)
-            <i class="bg-primary" style="border-radius: 25% 10%; padding: 3px 5px">{{ $statusProduksi->status->id_status == \App\Models\Enums\StatusProduksiEnum::Terima ? 'Produksi diterima' : $statusProduksi->status->status }}</i>
-        @endisset</h4>
-      </div>
-      <div class="box-body table-responsive">
-        <table class="table table-striped table-bordered">
-          <thead>
-            <th width="5%">No</th>
-            <th>Nama Bahan</th>
-            <th>Jumlah</th>
-            <th>Permintaan Bahan</th>
-            <th>Status</th>
-            <th width="15%"><i class="fa fa-cog"></i></th>
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-@isset($statusProduksi)
-    @if ((!is_null($statusProduksi)) && $statusProduksi->id_status == \App\Models\Enums\StatusProduksiEnum::Terima)
-    <div class="row" style="margin-bottom: 1rem">
-        <div class="col-md-12" style="display: flex; flex-direction: column">
-            <button type="button" class="btn btn-success" onclick="canProsesProduksi('{{ route('produksi.proses_produksi') }}')" id="proses_produksi" data-proses="{{ request()->segment(3) }}">Proses Produksi</button>
+                <!-- /.box-body -->
+            </div>
         </div>
     </div>
-@endisset
-@endif
+    @isset($statusProduksi)
+        @if (!is_null($statusProduksi) && $statusProduksi->id_status == \App\Models\Enums\StatusProduksiEnum::Terima)
+            <div class="row" style="margin-bottom: 1rem">
+                <div class="col-md-12" style="display: flex; flex-direction: column">
+                    <button type="button" class="btn btn-success"
+                        onclick="canProsesProduksi('{{ route('produksi.proses_produksi') }}')" id="proses_produksi"
+                        data-proses="{{ request()->segment(3) }}">Proses Produksi</button>
+                </div>
+            </div>
+        @endisset
+    @endif
 
-{{-- @includeIf('detailProduksi.form_edit') --}}
+    {{-- @includeIf('detailProduksi.form_edit') --}}
 @endsection
 
 @push('scripts')
-
-<!-- Select2 -->
-<script src="{{asset('template/bower_components/select2/dist/js/select2.full.min.js')}}"></script>
-<!-- wajib jquery  -->
-<script>
-
-    let table;
-    $(function () {
-        $('.select2').select2()
-        let url = '{{ route("detailProduksi.data", request()->route("id_produksi")) }}'
-        table = $('.table').DataTable({
-          processing: true,
-          autoWidth: false,
-          ajax: {
-            url: url,
-          },
-          columns: [
-            {data: 'DT_RowIndex', searchable: false, sortable: false},
-            {data: 'nama_bahan'},
-            {data: 'jumlah'},
-            {data: 'permintaan_bahan'},
-            {data: 'keterangan'},
-            // {data: 'proses'},
-            {data: 'aksi', searchable: false, sortable: false},
-          ]
-        });
-
-        $('#modal_edit_detail').validator().on('submit', function (e) {
-            e.preventDefault()
-            console.log('da')
-            let url = $('#modal_edit_detail').attr('action')
-            console.log(url)
-            $.ajax({
-                url: url,
-                method: $('#modal_edit_detail [name=_method]').val() ?? 'PUT',
-                data: $('#modal_edit_detail form').serialize(),
-                dataType: "json"
-            })
-            .done((response) => {
-                $('#modal_edit_detail').modal('hide');
-                table.ajax.reload();
-            })
-            .fail((errors) => {
-                errors.responseJSON !== '' ? alert(errors.responseJSON) : alert('Tidak dapat menyimpan data');
-                return;
+    <!-- Select2 -->
+    <script src="{{ asset('template/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
+    <!-- wajib jquery  -->
+    <script>
+        let table;
+        $(function() {
+            $('.select2').select2()
+            let url = '{{ route('batchDetail.data', request()->segment(3)) }}'
+            table = $('.table').DataTable({
+                processing: true,
+                autoWidth: false,
+                ajax: {
+                    url: url,
+                },
+                columns: [{
+                        data: 'DT_RowIndex',
+                        searchable: false,
+                        sortable: false
+                    },
+                    {
+                        data: 'nama_batch'
+                    },
+                    {
+                        data: 'jumlah_batch'
+                    },
+                    {
+                        data: 'status'
+                    },
+                    {
+                        data: 'aksi',
+                        searchable: false,
+                        sortable: false
+                    },
+                ]
             });
-        })
-    });
 
-
-    function editDetailForm(url, formUrl) {
-        $('#modal_edit_detail').modal('show');
-        $('#modal_edit_detail .modal-title').text('Edit Detail Produksi');
-
-        $('#modal_edit_detail form')[0].reset();
-        $('#modal_edit_detail').attr('action',formUrl);
-        $('#modal_edit_detail [name=_method]').val('put');
-        $('#modal_edit_detail [name=id_bahan]').focus();
-        $('#modal_edit_detail [name=id_bahan]').find('option:not(:first)').removeAttr('selected',true).trigger('change');
-        $.get(url)
-            .done((response) => {
-                $('#modal_edit_detail [name=id_detail]').val(response.id_detail);
-                $('#modal_edit_detail [name=id_produksi]').val(response.id_produksi);
-                $('#modal_edit_detail [name=jumlah]').val(response.jumlah);
-                $('#modal_edit_detail [name=id_bahan] option[value="'+response.id_bahan+'"]').attr("selected", true);
-                $('#modal_edit_detail [name=id_bahan]').trigger('change');
+            $('#modal_edit_detail').validator().on('submit', function(e) {
+                e.preventDefault()
+                console.log('da')
+                let url = $('#modal_edit_detail').attr('action')
+                console.log(url)
+                $.ajax({
+                        url: url,
+                        method: $('#modal_edit_detail [name=_method]').val() ?? 'PUT',
+                        data: $('#modal_edit_detail form').serialize(),
+                        dataType: "json"
+                    })
+                    .done((response) => {
+                        $('#modal_edit_detail').modal('hide');
+                        table.ajax.reload();
+                    })
+                    .fail((errors) => {
+                        errors.responseJSON !== '' ? alert(errors.responseJSON) : alert(
+                            'Tidak dapat menyimpan data');
+                        return;
+                    });
             })
-        .fail((errors) => {
-            alert(errors.responseJSON ?? 'Tidak dapat menampilkan data');
-            return;
         });
-    }
 
-    function deleteData(url) {
-      if (confirm('Yakin ingin menghapus data terpilih')) {
-        $.post(url, {
-          '_token': $('[name=csrf-token]').attr('content'),
-          '_method': 'delete'
-        })
-        .done((response) => {
-          table.ajax.reload();
-        })
-        .fail((errors) => {
-          alert('Tidak dapat menghapus data');
-          return;
-        });
-      }
-    }
 
-    function permintaanKeGudang(url) {
-      if (confirm('Permintaan ke gudang ?')) {
-        $.post(url, {
-          '_token': $('[name=csrf-token]').attr('content'),
-        })
-        .done((response) => {
-          table.ajax.reload();
-        })
-        .fail((errors) => {
-          alert(errors);
-          return;
-        });
-      }
-    }
+        function editDetailForm(url, formUrl) {
+            $('#modal_edit_detail').modal('show');
+            $('#modal_edit_detail .modal-title').text('Edit Detail Produksi');
 
-    function canProsesProduksi(url) {
-        if (confirm('Apakah akan dilanjutkan ke proses produksi ?')) {
-
-            let id_produksi = $('#proses_produksi').attr('data-proses')
-            let token =  $('[name=csrf-token]').attr('content')
-            let data = {
-                '_token': $('[name=csrf-token]').attr('content'),
-                'id_produksi': id_produksi
-            }
-
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: data,
-                dataType: 'json'
-            })
-            .done((response) => {
-                window.location.href = response
-            })
-            .fail((errors) => {
-                alert(errors.responseJSON);
-                return;
-            });
+            $('#modal_edit_detail form')[0].reset();
+            $('#modal_edit_detail').attr('action', formUrl);
+            $('#modal_edit_detail [name=_method]').val('put');
+            $('#modal_edit_detail [name=id_bahan]').focus();
+            $('#modal_edit_detail [name=id_bahan]').find('option:not(:first)').removeAttr('selected', true).trigger(
+                'change');
+            $.get(url)
+                .done((response) => {
+                    $('#modal_edit_detail [name=id_detail]').val(response.id_detail);
+                    $('#modal_edit_detail [name=id_produksi]').val(response.id_produksi);
+                    $('#modal_edit_detail [name=jumlah]').val(response.jumlah);
+                    $('#modal_edit_detail [name=id_bahan] option[value="' + response.id_bahan + '"]').attr("selected",
+                        true);
+                    $('#modal_edit_detail [name=id_bahan]').trigger('change');
+                })
+                .fail((errors) => {
+                    alert(errors.responseJSON ?? 'Tidak dapat menampilkan data');
+                    return;
+                });
         }
-    }
 
-</script>
+        function deleteData(url) {
+            if (confirm('Yakin ingin menghapus data terpilih')) {
+                $.post(url, {
+                        '_token': $('[name=csrf-token]').attr('content'),
+                        '_method': 'delete'
+                    })
+                    .done((response) => {
+                        table.ajax.reload();
+                    })
+                    .fail((errors) => {
+                        alert('Tidak dapat menghapus data');
+                        return;
+                    });
+            }
+        }
+
+        function permintaanKeGudang(url) {
+            if (confirm('Permintaan ke gudang ?')) {
+                $.post(url, {
+                        '_token': $('[name=csrf-token]').attr('content'),
+                    })
+                    .done((response) => {
+                        table.ajax.reload();
+                    })
+                    .fail((errors) => {
+                        alert(errors);
+                        return;
+                    });
+            }
+        }
+
+        function canProsesProduksi(url) {
+            if (confirm('Apakah akan dilanjutkan ke proses produksi ?')) {
+
+                let id_produksi = $('#proses_produksi').attr('data-proses')
+                let token = $('[name=csrf-token]').attr('content')
+                let data = {
+                    '_token': $('[name=csrf-token]').attr('content'),
+                    'id_produksi': id_produksi
+                }
+
+                $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: data,
+                        dataType: 'json'
+                    })
+                    .done((response) => {
+                        window.location.href = response
+                    })
+                    .fail((errors) => {
+                        alert(errors.responseJSON);
+                        return;
+                    });
+            }
+        }
+    </script>
 @endpush

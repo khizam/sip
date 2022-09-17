@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Batch;
 use App\Models\ProduksiBarang;
 use Illuminate\Http\Request;
@@ -14,11 +15,6 @@ class BatchController extends Controller
      */
     public function index($id_produksi = null)
     {
-        // $produksibarang = ProduksiBarang::all(['id_produksi', 'nama_produk']);
-        // $data = [
-        //     'produksibarang' => $produksibarang
-        // ];
-
         return view('batchDetail.index');
     }
 
@@ -28,31 +24,28 @@ class BatchController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function data ($id_produksi)
-     {
-        $batch = Batch::leftJoin('produksi_barang', 'produksi_barang.id_produksi', '=', 'batch.id_produksi')
-            ->leftJoin('status_batch', 'status_batch.id_status', '=', 'batch.id_batch')
-            ->select('batch.nama_batch','produksi_barang.batch','produksi_barang.nama_produk', 'produksi_barang.jumlah', 'produksi_barang.keterangan', 'status_batch.status')
-            ->orderBy('produksi_barang.id_produksi')
-            ->where('batch.id_produksi', $id_produksi);
+    public function data($id_produksi)
+    {
+        $batch = Batch::leftJoin('status_batch', 'status_batch.id_status', '=', 'batch.id_status')
+            ->select('batch.nama_batch', 'jumlah_batch', 'status_batch.status', 'id_batch')
+            ->orderBy('id_batch')
+            ->where('id_produksi', $id_produksi);
 
-            return datatables()
+        return datatables()
             ->of($batch)
             ->addIndexColumn()
 
             ->addColumn('aksi', function ($detailproduksi) {
-                $html = '<div class="">';
-                if (is_null($detailproduksi->id_request)) {
-                    $html .= '<button onclick="editDetailForm(`' . route('detailProduksi.show', $detailproduksi->id_detail) . '` , `' . route('detailProduksi.update', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-pencil"></i></button>
-                    <button onclick="deleteData(`' . route('detailProduksi.destroy', $detailproduksi->id_detail) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>';
-                }
-                $html .= '</div>';
-                return $html;
+                return '
+                <div class="btn-group">
+                        <button onClick="" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                        <button onClick="" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                </div>
+                ';
             })
             ->rawColumns(['aksi', 'permintaan_bahan'])
             ->make(true);
-
-     }
+    }
     public function create()
     {
         //
@@ -66,7 +59,19 @@ class BatchController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $batch = ProduksiBarang::find($request->id_produksi, ['batch']);
+        $countBatch = Batch::where('id_produksi', $request->id_produksi)->count();
+        if ($countBatch >= $batch->batch) {
+            return redirect()->back()->with('fail', 'batch maksimal ' . $batch->batch);
+        } else {
+            Batch::create([
+                'nama_batch' => $request->nama,
+                'id_produksi' => $request->id_produksi,
+                'id_status' => 1,
+                'jumlah_batch' => $request->jumlah
+            ]);
+            return redirect()->back()->with('success', 'batch berhasil ditambahkan');
+        }
     }
 
     /**
@@ -111,6 +116,9 @@ class BatchController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $jenisproduksi = Batch::find($id);
+        $jenisproduksi->delete();
+
+        return response(null, 204);
     }
 }

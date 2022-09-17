@@ -17,6 +17,7 @@ class Batch extends Model
         'id_produksi',
         'nama_batch',
         'id_status',
+        'jumlah_batch'
     ];
 
     protected static $logFillable = true;

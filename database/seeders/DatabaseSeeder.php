@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
             UserPermissionSeeder::class,
             DumpInsertSeeder::class,
             StatusBatchSeeder::class,
+            RequestProduksiPermissionSeeder::class
         ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Batch;
 use App\Models\DetailProduksi;
 use App\Models\Enums\StatusPermintaanBahanEnum;
 use App\Models\Enums\StatusProduksiEnum;
@@ -77,7 +78,7 @@ class ProduksiBarangController extends Controller
                     $html .= '<button onclick="editForm(`' . route('produksi.update', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
                     <button onclick="deleteData(`' . route('produksi.destroy', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                     <a href=' . route('detailProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">detail produksi</a>
-                    <a href=' . route('batchDetail.index', $produksibarang->id_produksi) .' class="btn btn-xs btn-primary btn-flat">Batch</a>';
+                    <a href=' . route('batchDetail.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">Batch</a>';
                 } elseif ($produksibarang->id_status == StatusProduksiEnum::Proses) {
                     $html .= '<button onclick="selesaiProduksiBarang(`' . route('produksi.selesai_produksi', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-success btn-flat"><i class="fa fa-check"></i></button>
                     <a href=' . route('detailProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">detail produksi</a>
@@ -189,6 +190,15 @@ class ProduksiBarangController extends Controller
                 'keterangan' => 'Proses produksi',
                 'id_status' => StatusProduksiEnum::Terima,
             ]);
+            //  Tambahkan Batch
+            for ($i = 1; $i <= $produksibarang->batch; $i++) {
+                Batch::create([
+                    'nama_batch' => 'BATCH ' . $i,
+                    'id_produksi' => $id_produksi,
+                    'id_status' => 1,
+                    'jumlah_batch' => $produksibarang->jumlah / $produksibarang->batch
+                ]);
+            }
             return jsonResponse($produksibarang);
         } catch (NotFoundHttpException $th) {
             return jsonResponse($th->getMessage(), $th->getStatusCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR);

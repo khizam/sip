@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\PermintaanProduksiEvent;
+use App\Models\Batch;
 use App\Models\Enums\StatusProduksiEnum;
 use App\Models\StatusProduksi;
 use App\Models\ProduksiBarang;

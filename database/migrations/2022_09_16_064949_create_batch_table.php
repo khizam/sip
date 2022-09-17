@@ -15,6 +15,7 @@ class CreateBatchTable extends Migration
     {
         Schema::create('batch', function (Blueprint $table) {
             $table->increments('id_batch');
+            $table->integer('jumlah_batch');
             $table->unsignedInteger('id_produksi');
             $table->foreign('id_produksi')
                 ->references('id_produksi')
