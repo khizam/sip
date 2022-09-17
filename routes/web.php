@@ -158,6 +158,10 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('produksi.selesai_produksi');
     Route::get('/produksi/jumlah-produksi/{id_produksi}', [ProduksiBarangController::class, 'showJumlahProduksi'])
         ->name('produksi.showJumlahProduksi');
+    Route::get('/produksi/cetak_pdf', [ProduksiBarangController::class, 'printPdfProduksi'])->name('produksi.cetakAll');
+    Route::get('/produksi/cetak/{id_produksi}', [ProduksiBarangController::class, 'printByProduksi'])->name('produksi.printByProduksi');
+    Route::resource('/produksi', ProduksiBarangController::class);
+
 
     Route::put('/produksi/check-status/{id}', [detailProduksiController::class, 'data'])
         ->name('produksi.checkStatus');

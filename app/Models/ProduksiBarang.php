@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class ProduksiBarang extends Model
@@ -32,25 +33,51 @@ class ProduksiBarang extends Model
      */
     protected static $logFillable = true;
 
+
     /**
      * Specify $logName to make the model use another name than the default. spatie/laravel-acitivtylog
      */
-    protected static $logName = 'produksibarang';
+    protected static $logName = 'produksi_barang';
+
+    protected $guarded = [];
 
     protected $casts = ['created_at', 'updated_at'];
 
-    public function produk(): BelongsTo
+
+
+    public function detailProduksi(): HasMany
     {
-        return $this->belongsTo(Produk::class, 'id_produk');
+        return $this->hasMany(DetailProduksi::class, 'id_produksi');
     }
 
-    public function user(): BelongsTo
+    public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class, 'id_user', 'id');
     }
 
-    public function status(): BelongsTo
+    public function produk()
     {
-        return $this->belongsTo(StatusProduksi::class, 'id_status');
+        return $this->belongsTo(Produk::class, 'id_produk', 'id_produk');
     }
+
+    public function satuan()
+    {
+        return $this->belongsTo(Satuan::class, 'id_satuan', 'id_satuan');
+    }
+
+    public function jenis_produksi()
+    {
+        return $this->belongsTo(JenisProduksi::class, 'id_jenisproduksi', 'id_jenisproduksi');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(StatusProduksi::class, 'id_status', 'id_status');
+    }
+
+    public function detail_Produksi()
+    {
+        return $this->hasOne(DetailProduksi::class, 'id_detail', 'id_detail_produksi');
+    }
+
 }

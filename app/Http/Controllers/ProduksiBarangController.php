@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Batch;
 use App\Models\DetailProduksi;
+use App\Models\JenisProduksi;
+use Illuminate\Auth\Access\AuthorizationException;
 use App\Models\Enums\StatusPermintaanBahanEnum;
 use App\Models\Enums\StatusProduksiEnum;
 use App\Models\LabProduksi;
@@ -12,6 +14,7 @@ use App\Models\Satuan;
 use App\Models\User;
 use App\Models\Produk;
 use App\Models\ProduksiBarang;
+use App\Models\PermintaanBahan;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -78,12 +81,15 @@ class ProduksiBarangController extends Controller
                     $html .= '<button onclick="editForm(`' . route('produksi.update', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
                     <button onclick="deleteData(`' . route('produksi.destroy', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                     <a href=' . route('detailProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">detail produksi</a>
-                    <a href=' . route('batchDetail.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">Batch</a>';
+                    ';
                 } elseif ($produksibarang->id_status == StatusProduksiEnum::Proses) {
                     $html .= '<button onclick="selesaiProduksiBarang(`' . route('produksi.selesai_produksi', $produksibarang->id_produksi) . '`)" class="btn btn-xs btn-success btn-flat"><i class="fa fa-check"></i></button>
                     <a href=' . route('detailProduksi.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">detail produksi</a>
+                    <a href=' . route('batchDetail.index', $produksibarang->id_produksi) . ' class="btn btn-xs btn-primary btn-flat">Batch</a>
+                    <a href="' . route('produksi.printByProduksi', $produksibarang->id_produksi) . '" target="_blank" class="btn btn-xs btn-warning btn-flat ml-1"><i class="fa  fa-print"></i></button>
                     ';
                 }
+
                 $html .= '</div>';
                 return $html;
             })
@@ -249,5 +255,13 @@ class ProduksiBarangController extends Controller
         $produksibarang->delete();
 
         return response(null, 204);
+    }
+
+    public function printByProduksi($id_produksi)
+    {
+        $produksibarang = ProduksiBarang::with(['produk','jenis_produksi','user','satuan','detailProduksi.bahan',
+        'detailProduksi.produksi', 'status', 'detail_Produksi.permintaan_bahan'])->where('id_produksi', $id_produksi)->first();
+
+        return view('produksi.print', compact('produksibarang'));
     }
 }

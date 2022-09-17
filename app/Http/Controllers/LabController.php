@@ -262,7 +262,8 @@ class LabController extends Controller
     public function printByLab($id_lab)
     {
         $this->authorize('lab_edit');
-        $lab = Lab::with(['barang_masuk.bahan', 'barang_masuk.kategori', 'barang_masuk.supplier', 'barang_masuk.kemasan', 'parameterLab'])->where('id_lab', $id_lab)->first();
+        $lab = Lab::with(['barang_masuk.bahan', 'barang_masuk.kategori', 'barang_masuk.supplier',
+        'barang_masuk.kemasan', 'parameterLab'])->where('id_lab', $id_lab)->first();
         // dd($lab);
         return view('lab.print', compact('lab'));
     }

@@ -27,7 +27,8 @@ class BatchController extends Controller
     public function data($id_produksi)
     {
         $batch = Batch::leftJoin('status_batch', 'status_batch.id_status', '=', 'batch.id_status')
-            ->select('batch.nama_batch', 'jumlah_batch', 'status_batch.status', 'id_batch')
+            ->leftJoin('produksi_barang', 'produksi_barang.id_produksi', '=', 'produksi_barang.id_produksi')
+            ->select('batch.nama_batch', 'jumlah_batch', 'status_batch.status', 'id_batch', 'produksi_barang.id_produksi')
             ->orderBy('id_batch')
             ->where('id_produksi', $id_produksi);
 
