@@ -61,11 +61,8 @@ class BarangmasukController extends Controller
             ->addColumn('kode_barangmasuk', function ($barangmasuk) {
                 return '<span class="label label-success">' . $barangmasuk->kode_barangmasuk . '</span>';
             })
-            ->addColumn('jumlah_bahan', function ($barangmasuk) {
-                return format_uang($barangmasuk->jumlah_bahan);
-            })
-           ->addColumn('created_at', function ($barangmasuk) {
-                 return date('d-m-Y H:i:s', strtotime($barangmasuk->created_at));
+            ->addColumn('created_at', function ($barangmasuk) {
+                return date('d-m-Y H:i:s', strtotime($barangmasuk->created_at));
             })
             ->addColumn('aksi', function ($barangmasuk) {
                 return '
