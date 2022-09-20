@@ -70,11 +70,11 @@
                         data: 'stok'
                     },
                     @can('gudang_delete')
-                    {
-                        data: 'aksi',
-                        searchable: false,
-                        sortable: false
-                    },
+                        {
+                            data: 'aksi',
+                            searchable: false,
+                            sortable: false
+                        },
                     @endcan
                 ]
             });

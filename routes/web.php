@@ -61,6 +61,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::get('dashboard/total-data', [DashboardController::class, 'data'])
+        ->name('dashboard.total.data');
+
     Route::get('/kategori/data', [KategoriController::class, 'data'])
         ->name('kategori.data');
     Route::resource('/kategori', KategoriController::class);
