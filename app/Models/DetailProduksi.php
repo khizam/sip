@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class DetailProduksi extends Model
@@ -31,9 +32,9 @@ class DetailProduksi extends Model
      */
     protected static $logName = 'detailproduksi';
 
-    protected $casts = ['created_at', 'updated_at'];
+    protected $with = ['bahan'];
 
-    public function bahan()
+    public function bahan(): BelongsTo
     {
         return $this->belongsTo(Bahan::class, 'id_bahan');
     }
@@ -45,6 +46,7 @@ class DetailProduksi extends Model
 
     public function permintaanBahan()
     {
-        return $this->hasOne(PermintaanBahan::class, 'id_detail_produksi');
+        return $this->belongsTo(PermintaanBahan::class, 'id_detail', 'id_detail_produksi');
     }
+
 }

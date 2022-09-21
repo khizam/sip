@@ -14,10 +14,10 @@ class Batch extends Model
     protected $primaryKey = 'id_batch';
 
     protected $fillable = [
-        'id_produksi',
         'nama_batch',
-        'id_status',
-        'jumlah_batch'
+        'jumlah_batch',
+        'id_produksi',
+        'id_status'
     ];
 
     protected static $logFillable = true;

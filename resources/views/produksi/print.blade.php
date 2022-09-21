@@ -38,7 +38,7 @@
             </div>
         </div>
         <hr style="line-height: 3px; background-color: black">
-        <h2 class="prt-title" style="font-weight: bold; margin-bottom: 1.5rem">HASIL LABORATORIUM BARANG MASUK
+        <h2 class="prt-title" style="font-weight: bold; margin-bottom: 1.5rem">HASIL PROSES PRODUKSI
         </h2>
         {{-- <table>
             <tr style="border: none!important"> --}}
@@ -117,8 +117,16 @@
                             echo '- ' . $item->jumlah . '<br>';
                         });
                     @endphp</td>
-
-
+                    {{-- <td>@php
+                        $produksibarang->detailProduksi->each(function ($item) {
+                            echo '- ' . $item->detailProduksi->permintaanBahan->users->name . '<br>';
+                        });
+                    @endphp</td> --}}
+                    {{-- <td>@php
+                        $produksibarang->detailProduksi->permintaanBahan->each(function ($item) {
+                            echo '- ' . $item->detailProduksi->permintaanBahan->userGudang->name . '<br>';
+                        });
+                    @endphp</td> --}}
                 </tr>
             </tbody>
         </table>

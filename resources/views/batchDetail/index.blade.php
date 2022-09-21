@@ -89,6 +89,15 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
+                                    <label for="id_status">Status batch</label>
+                                    <select name="id_status" id="id_status" class="form-control" required>
+                                        <option value="">Pilih Status Batch</option>
+                                        @foreach ($statusbatchs as $key => $item)
+                                            <option value="{{ $item->id_status }}">{{ $item->status }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <button type="submit" class="btn btn-sm btn-flat btn-primary">Simpan</button>
                                 </div>
                             </form>
@@ -186,6 +195,7 @@
                     $('#form_batch [name=id_produksi]').val(response.id_produksi);
                     $('#form_batch [name=nama]').val(response.nama_batch);
                     $('#form_batch [name=jumlah]').val(response.jumlah_batch);
+                    $('#form_batch [name=id_status]').val(response.id_status);
                 })
                 .fail((errors) => {
                     alert(errors.responseJSON ?? 'Tidak dapat menampilkan data');

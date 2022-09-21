@@ -60,6 +60,4 @@ class Barangmasuk extends Model
     public function kemasan(){
         return $this->belongsTo(Kemasan::class,'id_kemasan','id_kemasan');
     }
-
-
 }

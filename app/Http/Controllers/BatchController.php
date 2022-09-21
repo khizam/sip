@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Batch;
+use App\Models\StatusBatch;
 use App\Models\ProduksiBarang;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,9 @@ class BatchController extends Controller
      */
     public function index($id_produksi = null)
     {
-        return view('batchDetail.index');
+        $statusbatchs = StatusBatch::all(['status', 'id_status']);
+
+        return view('batchDetail.index', compact('statusbatchs'));
     }
 
     /**
@@ -27,8 +30,7 @@ class BatchController extends Controller
     public function data($id_produksi)
     {
         $batch = Batch::leftJoin('status_batch', 'status_batch.id_status', '=', 'batch.id_status')
-            ->leftJoin('produksi_barang', 'produksi_barang.id_produksi', '=', 'produksi_barang.id_produksi')
-            ->select('batch.nama_batch', 'jumlah_batch', 'status_batch.status', 'id_batch', 'produksi_barang.id_produksi')
+            ->select('batch.nama_batch', 'jumlah_batch', 'status_batch.status', 'id_batch', 'id_produksi')
             ->orderBy('id_batch')
             ->where('id_produksi', $id_produksi);
 
@@ -88,7 +90,9 @@ class BatchController extends Controller
         $batch->update([
             'nama_batch' => $request->nama,
             'jumlah_batch' => $request->jumlah,
+            'id_status' => $request->id_status,
         ]);
+
         return jsonResponse($batch);
     }
 

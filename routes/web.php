@@ -256,3 +256,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/batchDetail/data/{id_produksi}', [BatchController::class, 'data'])
         ->name('batchDetail.data');
 });
+

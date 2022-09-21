@@ -39,13 +39,14 @@ class PermintaanBahan extends Model
         return $this->belongsTo(DetailProduksi::class, 'id_detail_produksi');
     }
 
-    public function userProduksi()
+    public function users()
     {
-        return $this->belongsTo(User::class, 'id_user_produksi');
+        return $this->belongsTo(User::class, 'id_user_produksi', 'id');
     }
 
     public function userGudang()
     {
-        return $this->belongsTo(User::class, 'id_user_gudang');
+        return $this->belongsTo(User::class, 'id_user_gudang', 'id');
     }
+
 }

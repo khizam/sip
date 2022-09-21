@@ -16,7 +16,7 @@
       <div class="col-md-12">
         <div class="box">
           <div class="box-header with-border">
-            {{-- <button onclick="addForm('{{ route('produksi.store') }}')" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button> --}}
+           <a href="{{ route('produksi.cetakAll') }}" class="btn btn-danger btn-xs" target="_blank">Cetak PDF</a>
           </div>
           <div class="box-body table-responsive">
             <table class="table table-striped table-bordered">

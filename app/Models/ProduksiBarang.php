@@ -45,10 +45,7 @@ class ProduksiBarang extends Model
 
 
 
-    public function detailProduksi(): HasMany
-    {
-        return $this->hasMany(DetailProduksi::class, 'id_produksi');
-    }
+
 
     public function user()
     {
@@ -58,6 +55,11 @@ class ProduksiBarang extends Model
     public function produk()
     {
         return $this->belongsTo(Produk::class, 'id_produk', 'id_produk');
+    }
+
+    public function bahan()
+    {
+        return $this->hasOne(Bahan::class, 'id_bahan', 'id_bahan');
     }
 
     public function satuan()
@@ -75,9 +77,8 @@ class ProduksiBarang extends Model
         return $this->belongsTo(StatusProduksi::class, 'id_status', 'id_status');
     }
 
-    public function detail_Produksi()
+    public function detailProduksi(): HasMany
     {
-        return $this->hasOne(DetailProduksi::class, 'id_detail', 'id_detail_produksi');
+        return $this->hasMany(DetailProduksi::class, 'id_produksi');
     }
-
 }
